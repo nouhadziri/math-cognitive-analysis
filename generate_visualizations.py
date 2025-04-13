@@ -161,147 +161,148 @@ def generate_html_report(data, domain_stats, skill_stats, skill_definitions, ski
     domain_fig = create_domain_chart(domain_stats)
     domain_chart_html = domain_fig.to_html(full_html=False, include_plotlyjs='cdn')
     
-    # Generate tables
-    domain_table_html = generate_domain_table(domain_stats)
-    skills_table_html = generate_skills_table(skill_stats, skill_definitions, skill_examples)
-    
     # Generate skills chart
     skills_fig = create_skills_chart(skill_stats)
     skills_chart_html = skills_fig.to_html(full_html=False, include_plotlyjs='cdn')
     
+    # Generate tables
+    domain_table_html = generate_domain_table(domain_stats)
+    skills_table_html = generate_skills_table(skill_stats, skill_definitions, skill_examples)
+    
+    # Generate skills HTML
+    skills_html = generate_skills_html(skill_stats, skill_definitions, skill_examples)
+    
     # Create HTML content
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Math Cognitive Analysis</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                margin: 0;
-                padding: 20px;
-                color: #333;
-            }}
-            .container {{
-                max-width: 1200px;
-                margin: 0 auto;
-            }}
-            .chart-container {{
-                margin: 20px 0;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }}
-            .table-container {{
-                margin: 20px 0;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                overflow-x: auto;
-            }}
-            table {{
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-            }}
-            th, td {{
-                border: 1px solid #ddd;
-                padding: 12px;
-                text-align: left;
-            }}
-            th {{
-                background-color: #f2f2f2;
-                font-weight: bold;
-            }}
-            .evidence {{
-                background-color: #f8f9fa;
-                padding: 10px;
-                border-radius: 4px;
-            }}
-            .skills-section {{
-                margin-top: 40px;
-            }}
-            .skill-card {{
-                background: white;
-                border-radius: 8px;
-                padding: 20px;
-                margin: 20px 0;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }}
-            .skill-header {{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 10px;
-            }}
-            .skill-name {{
-                font-size: 1.2em;
-                font-weight: bold;
-                color: #2c3e50;
-            }}
-            .skill-count {{
-                background: #3498db;
-                color: white;
-                padding: 5px 10px;
-                border-radius: 15px;
-                font-size: 0.9em;
-            }}
-            .skill-definition {{
-                color: #666;
-                margin: 10px 0;
-            }}
-            .examples {{
-                margin-top: 15px;
-            }}
-            .example {{
-                background: #f8f9fa;
-                padding: 10px;
-                margin: 10px 0;
-                border-radius: 4px;
-            }}
-            .example-text {{
-                font-style: italic;
-            }}
-            .example-explanation {{
-                color: #666;
-                margin-top: 5px;
-            }}
-            h1, h2 {{
-                color: #2c3e50;
-            }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Math Cognitive Analysis</h1>
-            
-            <div class="chart-container">
-                <h2>Mathematical Domains Distribution</h2>
-                {domain_chart_html}
-            </div>
-            
-            {domain_table_html}
-            
-            <div class="chart-container">
-                <h2>Cognitive Skills Distribution</h2>
-                {skills_chart_html}
-            </div>
-            
-            {skills_table_html}
-            
-            <div class="skills-section">
-                <h2>Detailed Skill Analysis</h2>
-                {generate_skills_html(skill_stats, skill_definitions, skill_examples)}
-            </div>
+    html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Cognitive Analysis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }}
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+        }}
+        .chart-container {{
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        .table-container {{
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }}
+        th, td {{
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }}
+        th {{
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }}
+        .evidence {{
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }}
+        .skills-section {{
+            margin-top: 40px;
+        }}
+        .skill-card {{
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }}
+        .skill-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }}
+        .skill-name {{
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }}
+        .skill-count {{
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }}
+        .skill-definition {{
+            color: #666;
+            margin: 10px 0;
+        }}
+        .examples {{
+            margin-top: 15px;
+        }}
+        .example {{
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }}
+        .example-text {{
+            font-style: italic;
+        }}
+        .example-explanation {{
+            color: #666;
+            margin-top: 5px;
+        }}
+        h1, h2 {{
+            color: #2c3e50;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Math Cognitive Analysis</h1>
+        
+        <div class="chart-container">
+            <h2>Mathematical Domains Distribution</h2>
+            {domain_chart_html}
         </div>
-    </body>
-    </html>
-    """
+        
+        {domain_table_html}
+        
+        <div class="chart-container">
+            <h2>Cognitive Skills Distribution</h2>
+            {skills_chart_html}
+        </div>
+        
+        {skills_table_html}
+        
+        <div class="skills-section">
+            <h2>Detailed Skill Analysis</h2>
+            {skills_html}
+        </div>
+    </div>
+</body>
+</html>"""
     
     # Write to file
     with open('docs/index.html', 'w') as f:
