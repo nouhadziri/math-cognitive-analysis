@@ -14,7 +14,7 @@ A comprehensive analysis and visualization tool for understanding cognitive skil
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/nouhadziri/math-cognitive-analysis.git
+git clone git@github.com:nouhadziri/math-cognitive-analysis.git
 cd math-cognitive-analysis
 ```
 
