@@ -36,6 +36,22 @@ def analyze_skills(data):
     
     return skill_counts, skill_definitions, skill_examples
 
+def analyze_skills_per_domain_and_model(data):
+    """Analyze cognitive skills distribution across domains and models."""
+    domain_model_skills = {}
+    
+    for example in data['examples']:
+        domain = example.get('domain', 'Unknown')
+        if domain not in domain_model_skills:
+            domain_model_skills[domain] = {'groundtruth': {}, 'gemini': {}, 'deepseek': {}}
+        
+        for model, solution in example['solutions'].items():
+            for skill in solution.get('skills', []):
+                skill_name = skill['name']
+                domain_model_skills[domain][model][skill_name] = domain_model_skills[domain][model].get(skill_name, 0) + 1
+    
+    return domain_model_skills
+
 def create_domain_chart(domain_stats):
     df = pd.DataFrame(list(domain_stats.items()), columns=['Domain', 'Count'])
     fig = go.Figure(data=[
@@ -78,6 +94,47 @@ def create_skills_chart(skill_stats):
         yaxis_title='Skill',
         height=800,
         template='plotly_white'
+    )
+    
+    return fig
+
+def create_skills_per_domain_chart(domain_model_skills):
+    """Create a chart showing skills distribution per domain and model."""
+    # Prepare data for plotting
+    domains = list(domain_model_skills.keys())
+    models = ['groundtruth', 'gemini', 'deepseek']
+    
+    # Create subplots for each domain
+    fig = make_subplots(
+        rows=len(domains), 
+        cols=1,
+        subplot_titles=domains,
+        vertical_spacing=0.1
+    )
+    
+    # Add traces for each domain
+    for i, domain in enumerate(domains, 1):
+        for model in models:
+            skills = list(domain_model_skills[domain][model].keys())
+            counts = list(domain_model_skills[domain][model].values())
+            
+            fig.add_trace(
+                go.Bar(
+                    x=skills,
+                    y=counts,
+                    name=model,
+                    showlegend=(i == 1)  # Show legend only for first subplot
+                ),
+                row=i,
+                col=1
+            )
+    
+    # Update layout
+    fig.update_layout(
+        title='Cognitive Skills Distribution by Domain and Model',
+        height=300 * len(domains),
+        template='plotly_white',
+        barmode='group'
     )
     
     return fig
@@ -164,6 +221,11 @@ def generate_html_report(data, domain_stats, skill_stats, skill_definitions, ski
     # Generate skills chart
     skills_fig = create_skills_chart(skill_stats)
     skills_chart_html = skills_fig.to_html(full_html=False, include_plotlyjs='cdn')
+    
+    # Generate skills per domain chart
+    domain_model_skills = analyze_skills_per_domain_and_model(data)
+    skills_per_domain_fig = create_skills_per_domain_chart(domain_model_skills)
+    skills_per_domain_html = skills_per_domain_fig.to_html(full_html=False, include_plotlyjs='cdn')
     
     # Generate skills table and HTML
     skills_table_html = generate_skills_table(skill_stats, skill_definitions, skill_examples)
@@ -287,6 +349,11 @@ def generate_html_report(data, domain_stats, skill_stats, skill_definitions, ski
         <div class="chart-container">
             <h2>Cognitive Skills Distribution</h2>
             {skills_chart_html}
+        </div>
+        
+        <div class="chart-container">
+            <h2>Skills Distribution by Domain and Model</h2>
+            {skills_per_domain_html}
         </div>
         
         {skills_table_html}
