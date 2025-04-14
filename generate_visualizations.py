@@ -165,11 +165,8 @@ def generate_html_report(data, domain_stats, skill_stats, skill_definitions, ski
     skills_fig = create_skills_chart(skill_stats)
     skills_chart_html = skills_fig.to_html(full_html=False, include_plotlyjs='cdn')
     
-    # Generate tables
-    domain_table_html = generate_domain_table(domain_stats)
+    # Generate skills table and HTML
     skills_table_html = generate_skills_table(skill_stats, skill_definitions, skill_examples)
-    
-    # Generate skills HTML
     skills_html = generate_skills_html(skill_stats, skill_definitions, skill_examples)
     
     # Create HTML content
@@ -286,8 +283,6 @@ def generate_html_report(data, domain_stats, skill_stats, skill_definitions, ski
             <h2>Mathematical Domains Distribution</h2>
             {domain_chart_html}
         </div>
-        
-        {domain_table_html}
         
         <div class="chart-container">
             <h2>Cognitive Skills Distribution</h2>
