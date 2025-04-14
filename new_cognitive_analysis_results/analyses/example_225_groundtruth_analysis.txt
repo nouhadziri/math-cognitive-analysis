@@ -1,0 +1,145 @@
+Problem:
+A hexagon inscribed in a circle has three consecutive sides, each of length 3, and three consecutive sides, each of length 5. The chord of the circle that divides the hexagon into two trapezoids, one with three sides, each of length 3, and the other with three sides, each of length 5, has length equal to $m/n$, where $m$ and $n$ are relatively prime positive integers. Find $m + n$.
+
+Domain: Geometry
+
+Solution Trajectory (groundtruth):
+In hexagon $ABCDEF$, let $AB=BC=CD=3$ and let $DE=EF=FA=5$. Since arc $BAF$ is one third of the circumference of the circle, it follows that $\angle BCF = \angle BEF=60^{\circ}$. Similarly, $\angle CBE =\angle CFE=60^{\circ}$. Let $P$ be the intersection of $\overline{BE}$ and $\overline{CF}$, $Q$ that of $\overline{BE}$ and $\overline{AD}$, and $R$ that of $\overline{CF}$ and $\overline{AD}$. Triangles $EFP$ and  $BCP$ are equilateral, and by symmetry, triangle $PQR$ is isosceles and thus also equilateral.  [asy]
+import olympiad; import geometry; size(150); defaultpen(linewidth(0.8));
+real angleUnit = 15;
+draw(Circle(origin,1));
+pair D = dir(22.5);
+pair C = dir(3*angleUnit + degrees(D));
+pair B = dir(3*angleUnit + degrees(C));
+pair A = dir(3*angleUnit + degrees(B));
+pair F = dir(5*angleUnit + degrees(A));
+pair E = dir(5*angleUnit + degrees(F));
+draw(A--B--C--D--E--F--cycle);
+dot("$A$",A,A); dot("$B$",B,B); dot("$C$",C,C); dot("$D$",D,D); dot("$E$",E,E); dot("$F$",F,F);
+draw(A--D^^B--E^^C--F);
+label("$3$",D--C,SW); label("$3$",B--C,S); label("$3$",A--B,SE); label("$5$",A--F,NE); label("$5$",F--E,N); label("$5$",D--E,NW);
+[/asy]
+
+Furthermore, $\angle BAD$ and $\angle BED$ subtend the same arc, as do $\angle ABE$ and $\angle ADE$. Hence triangles $ABQ$ and $EDQ$ are similar. Therefore, $$\frac{AQ}{EQ}=\frac{BQ}{DQ}=\frac{AB}{ED}=\frac{3}{5}.$$ It follows that $$\frac{\frac{AD-PQ}{2}}{PQ+5} =\frac{3}{5}\quad
+\mbox {and}\quad \frac{3-PQ}{\frac{AD+PQ}{2}}=\frac{3}{5}.$$ Solving the two equations simultaneously  yields $AD=360/49,$ so $m+n=\boxed{409}$.
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Geometric Visualization</skill>
+<definition>The ability to mentally represent, manipulate, and reason about geometric objects and their spatial relationships</definition>
+
+<start>0</start>
+<end>210</end>
+<text>In hexagon $ABCDEF$, let $AB=BC=CD=3$ and let $DE=EF=FA=5$. Since arc $BAF$ is one third of the circumference of the circle, it follows that $\angle BCF = \angle BEF=60^{\circ}$. Similarly, $\angle CBE =\angle CFE=60^{\circ}$.</text>
+<explanation>The solver begins by visualizing the hexagon with its specific side lengths and inscribing it in a circle. They're mentally representing the geometric configuration and using properties of inscribed angles to determine specific angle measures. This requires strong spatial reasoning and understanding of how objects relate in a circular context.</explanation>
+
+<start>210</start>
+<end>398</end>
+<text>Let $P$ be the intersection of $\overline{BE}$ and $\overline{CF}$, $Q$ that of $\overline{BE}$ and $\overline{AD}$, and $R$ that of $\overline{CF}$ and $\overline{AD}$. Triangles $EFP$ and  $BCP$ are equilateral, and by symmetry, triangle $PQR$ is isosceles and thus also equilateral.</text>
+<explanation>The solver extends their geometric visualization by introducing additional points (P, Q, R) formed by intersections of line segments. They're mentally constructing these points and reasoning about the properties of the resulting triangles, which requires sophisticated spatial visualization skills.</explanation>
+
+<skill>Strategic Introduction of Auxiliary Elements</skill>
+<definition>The ability to identify and introduce additional geometric elements (points, lines, angles) that aren't explicitly mentioned in the problem but help create pathways to the solution</definition>
+
+<start>210</start>
+<end>337</end>
+<text>Let $P$ be the intersection of $\overline{BE}$ and $\overline{CF}$, $Q$ that of $\overline{BE}$ and $\overline{AD}$, and $R$ that of $\overline{CF}$ and $\overline{AD}$.</text>
+<explanation>The solver strategically introduces three auxiliary points (P, Q, R) formed by the intersections of key line segments. These points aren't mentioned in the original problem but create a framework that enables further analysis and ultimately leads to the solution. This demonstrates the ability to extend the given problem structure with helpful additional elements.</explanation>
+
+<start>398</start>
+<end>677</end>
+<text>[asy]
+import olympiad; import geometry; size(150); defaultpen(linewidth(0.8));
+real angleUnit = 15;
+draw(Circle(origin,1));
+pair D = dir(22.5);
+pair C = dir(3*angleUnit + degrees(D));
+pair B = dir(3*angleUnit + degrees(C));
+pair A = dir(3*angleUnit + degrees(B));
+pair F = dir(5*angleUnit + degrees(A));
+pair E = dir(5*angleUnit + degrees(F));
+draw(A--B--C--D--E--F--cycle);
+dot("$A$",A,A); dot("$B$",B,B); dot("$C$",C,C); dot("$D$",D,D); dot("$E$",E,E); dot("$F$",F,F);
+draw(A--D^^B--E^^C--F);
+label("$3$",D--C,SW); label("$3$",B--C,S); label("$3$",A--B,SE); label("$5$",A--F,NE); label("$5$",F--E,N); label("$5$",D--E,NW);
+[/asy]</text>
+<explanation>Though this is diagram code, it shows the solver is strategically drawing the auxiliary lines AD, BE, and CF, which aren't mentioned in the original problem. These lines create the intersections P, Q, and R that become crucial to the solution approach.</explanation>
+
+<skill>Pattern Recognition and Symmetry Exploitation</skill>
+<definition>The ability to identify patterns, symmetries, and regularities in geometric configurations and leverage them to simplify complex problems</definition>
+
+<start>337</start>
+<end>398</end>
+<text>Triangles $EFP$ and $BCP$ are equilateral, and by symmetry, triangle $PQR$ is isosceles and thus also equilateral.</text>
+<explanation>The solver recognizes patterns in the geometric configuration, specifically identifying equilateral triangles. They also exploit symmetry to determine that triangle PQR is first isosceles and then equilateral. This demonstrates the ability to detect and leverage structural patterns to gain insights about the problem.</explanation>
+
+<start>677</start>
+<end>803</end>
+<text>Furthermore, $\angle BAD$ and $\angle BED$ subtend the same arc, as do $\angle ABE$ and $\angle ADE$. Hence triangles $ABQ$ and $EDQ$ are similar.</text>
+<explanation>The solver recognizes patterns related to inscribed angles subtending the same arc, a key property of circles. They use this pattern recognition to establish similarity between triangles, which is a crucial step toward the solution.</explanation>
+
+<skill>Property Application and Inference</skill>
+<definition>The ability to apply relevant geometric properties, theorems, and principles to draw logical inferences about the problem at hand</definition>
+
+<start>49</start>
+<end>210</end>
+<text>Since arc $BAF$ is one third of the circumference of the circle, it follows that $\angle BCF = \angle BEF=60^{\circ}$. Similarly, $\angle CBE =\angle CFE=60^{\circ}$.</text>
+<explanation>The solver applies properties of inscribed angles and arcs in circles to determine specific angle measures. They make inferences about angles being 60° based on the relationship between arcs and the circumference, demonstrating knowledge of circle geometry properties and the ability to apply them appropriately.</explanation>
+
+<start>677</start>
+<end>803</end>
+<text>Furthermore, $\angle BAD$ and $\angle BED$ subtend the same arc, as do $\angle ABE$ and $\angle ADE$. Hence triangles $ABQ$ and $EDQ$ are similar.</text>
+<explanation>The solver applies the property that inscribed angles subtending the same arc are equal, and uses this to establish triangle similarity. This shows the ability to apply geometric theorems and make logical inferences that advance the solution.</explanation>
+
+<skill>Ratio and Proportion Reasoning</skill>
+<definition>The ability to work with ratios, proportions, and scaling relationships to derive quantitative relationships between geometric elements</definition>
+
+<start>803</start>
+<end>874</end>
+<text>Therefore, $$\frac{AQ}{EQ}=\frac{BQ}{DQ}=\frac{AB}{ED}=\frac{3}{5}.$$</text>
+<explanation>The solver establishes proportional relationships between corresponding sides of similar triangles. They recognize that the ratio of corresponding sides equals the ratio of the original side lengths (3/5), demonstrating strong proportional reasoning skills.</explanation>
+
+<start>874</start>
+<end>975</end>
+<text>It follows that $$\frac{\frac{AD-PQ}{2}}{PQ+5} =\frac{3}{5}\quad
+\mbox {and}\quad \frac{3-PQ}{\frac{AD+PQ}{2}}=\frac{3}{5}.$$</text>
+<explanation>The solver extends their proportional reasoning to create equations involving the unknown quantities. They express complex relationships using ratios and proportions, showing sophisticated quantitative reasoning about the geometric configuration.</explanation>
+
+<skill>Algebraic Manipulation</skill>
+<definition>The ability to formulate and solve algebraic equations based on geometric relationships to determine unknown quantities</definition>
+
+<start>874</start>
+<end>1049</end>
+<text>It follows that $$\frac{\frac{AD-PQ}{2}}{PQ+5} =\frac{3}{5}\quad
+\mbox {and}\quad \frac{3-PQ}{\frac{AD+PQ}{2}}=\frac{3}{5}.$$ Solving the two equations simultaneously  yields $AD=360/49,$ so $m+n=\boxed{409}$.</text>
+<explanation>The solver formulates two algebraic equations based on the geometric relationships they've established. They then solve these equations simultaneously to determine that AD = 360/49, which leads to the final answer of m+n = 409. This demonstrates the ability to translate geometric insights into algebraic form and manipulate equations to reach a numerical solution.</explanation>
+
+<skill>Problem Decomposition</skill>
+<definition>The ability to break down a complex problem into simpler, more manageable sub-problems or steps that can be tackled sequentially</definition>
+
+<start>0</start>
+<end>398</end>
+<text>In hexagon $ABCDEF$, let $AB=BC=CD=3$ and let $DE=EF=FA=5$. Since arc $BAF$ is one third of the circumference of the circle, it follows that $\angle BCF = \angle BEF=60^{\circ}$. Similarly, $\angle CBE =\angle CFE=60^{\circ}$. Let $P$ be the intersection of $\overline{BE}$ and $\overline{CF}$, $Q$ that of $\overline{BE}$ and $\overline{AD}$, and $R$ that of $\overline{CF}$ and $\overline{AD}$. Triangles $EFP$ and  $BCP$ are equilateral, and by symmetry, triangle $PQR$ is isosceles and thus also equilateral.</text>
+<explanation>The solver breaks down the complex hexagon problem by first establishing the basic geometric configuration, then introducing auxiliary elements, and then analyzing the resulting triangles. This step-by-step approach demonstrates the ability to decompose a complex problem into more manageable parts.</explanation>
+
+<start>677</start>
+<end>1049</end>
+<text>Furthermore, $\angle BAD$ and $\angle BED$ subtend the same arc, as do $\angle ABE$ and $\angle ADE$. Hence triangles $ABQ$ and $EDQ$ are similar. Therefore, $$\frac{AQ}{EQ}=\frac{BQ}{DQ}=\frac{AB}{ED}=\frac{3}{5}.$$ It follows that $$\frac{\frac{AD-PQ}{2}}{PQ+5} =\frac{3}{5}\quad
+\mbox {and}\quad \frac{3-PQ}{\frac{AD+PQ}{2}}=\frac{3}{5}.$$ Solving the two equations simultaneously  yields $AD=360/49,$ so $m+n=\boxed{409}$.</text>
+<explanation>The solver continues their decomposition approach by establishing triangle similarity, deriving proportional relationships, formulating equations, and finally solving for the unknown value. Each step builds logically on the previous one, showing systematic problem decomposition.</explanation>
+
+SUMMARY_START
+1. Geometric Visualization - The ability to mentally represent and manipulate geometric objects is fundamental to the entire solution process
+2. Strategic Introduction of Auxiliary Elements - The introduction of points P, Q, R and lines BE, CF, AD creates the framework that enables the solution
+3. Pattern Recognition and Symmetry Exploitation - Identifying equilateral triangles and leveraging symmetry simplifies the complex configuration
+4. Property Application and Inference - Applying circle geometry properties and making logical deductions about angles and similar triangles
+5. Algebraic Manipulation - Translating geometric insights into algebraic equations and solving them to reach the final numerical answer
+SUMMARY_END
+
+Summary of Key Skills:
+1. Geometric Visualization - The ability to mentally represent and manipulate geometric objects is fundamental to the entire solution process
+2. Strategic Introduction of Auxiliary Elements - The introduction of points P, Q, R and lines BE, CF, AD creates the framework that enables the solution
+3. Pattern Recognition and Symmetry Exploitation - Identifying equilateral triangles and leveraging symmetry simplifies the complex configuration
+4. Property Application and Inference - Applying circle geometry properties and making logical deductions about angles and similar triangles
+5. Algebraic Manipulation - Translating geometric insights into algebraic equations and solving them to reach the final numerical answer

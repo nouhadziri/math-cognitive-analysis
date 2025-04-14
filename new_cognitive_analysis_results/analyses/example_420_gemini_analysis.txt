@@ -1,0 +1,404 @@
+Problem:
+What is the largest positive integer $n$ for which there is a unique integer $k$ such that $\frac{8}{15} < \frac{n}{n + k} < \frac{7}{13}$ ?
+
+Domain: Number theory
+
+Solution Trajectory (gemini):
+
+The problem asks for the largest positive integer $n$ such that there is a unique integer $k$ satisfying the inequality $\frac{8}{15} < \frac{n}{n + k} < \frac{7}{13}$.
+
+The inequality can be split into two parts:
+1. $\frac{8}{15} < \frac{n}{n + k}$
+2. $\frac{n}{n + k} < \frac{7}{13}$
+
+Let's analyze the first inequality:
+$\frac{8}{15} < \frac{n}{n + k}$
+$8(n + k) < 15n$
+$8n + 8k < 15n$
+$8k < 7n$
+$k < \frac{7}{8}n$
+
+Now, let's analyze the second inequality:
+$\frac{n}{n + k} < \frac{7}{13}$
+$13n < 7(n + k)$
+$13n < 7n + 7k$
+$6n < 7k$
+$\frac{6}{7}n < k$
+
+Combining the two inequalities, we have:
+$\frac{6}{7}n < k < \frac{7}{8}n$
+
+We are looking for the largest positive integer $n$ such that there is a unique integer $k$ satisfying this compound inequality. The length of the interval $(\frac{6}{7}n, \frac{7}{8}n)$ must be such that it contains exactly one integer.
+
+The length of the interval is $\frac{7}{8}n - \frac{6}{7}n = n \left( \frac{7}{8} - \frac{6}{7} \right) = n \left( \frac{49 - 48}{56} \right) = \frac{n}{56}$.
+
+For the interval to contain exactly one integer, its length must be greater than 0 and less than or equal to 2. However, since the endpoints are not included, the length must be strictly greater than 0.
+
+If the interval contains exactly one integer, say $m$, then $\frac{6}{7}n < m < \frac{7}{8}n$.
+
+Consider the case where the length of the interval is slightly greater than 1. If $1 < \frac{n}{56} \le 2$, then $56 < n \le 112$.
+
+Let the interval be $(a, b)$, where $a = \frac{6}{7}n$ and $b = \frac{7}{8}n$. We want exactly one integer $k$ such that $a < k < b$. This means that $b - a$ should be such that it "just covers" one integer.
+
+If there is exactly one integer in the interval, then $\lfloor b \rfloor - \lceil a \rceil = 0$, and $\lceil a \rceil < b$.
+
+The condition for exactly one integer in the open interval $(a, b)$ is $\lfloor b \rfloor - \lceil a \rceil = 0$ if $\lceil a \rceil < b$, which simplifies to $\lfloor b \rfloor = \lceil a \rceil$, and we need $a$ not to be an integer. If $a$ is an integer, then the interval is $(a, b)$ and we need $a+1 < b$.
+
+Alternatively, consider the conditions for the interval to contain exactly one integer. This happens if and only if $\lfloor b \rfloor - \lceil a \rceil = 0$, which means $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+
+Let $f(n) = \frac{7}{8}n$ and $g(n) = \frac{6}{7}n$. We want $\lfloor f(n) \rfloor = \lceil g(n) \rceil$.
+Let $m = \lfloor f(n) \rfloor = \lceil g(n) \rceil$. Then $g(n) \le m \le f(n)$.
+$\frac{6}{7}n \le m \le \frac{7}{8}n$.
+
+Also, $m - 1 < g(n)$ and $f(n) < m + 1$.
+$m - 1 < \frac{6}{7}n \implies 7(m - 1) < 6n$
+$\frac{7}{8}n < m + 1 \implies 7n < 8(m + 1)$
+
+Combining the inequalities:
+$\frac{6}{7}n < k < \frac{7}{8}n$
+
+We need the interval $(\frac{6}{7}n, \frac{7}{8}n)$ to contain exactly one integer.
+This happens if and only if $\lfloor \frac{7}{8}n \rfloor - \lceil \frac{6}{7}n \rceil = 0$, and $\frac{6}{7}n$ is not an integer, or if $\lfloor \frac{7}{8}n \rfloor - \lceil \frac{6}{7}n \rceil = 1$ and the lower bound is an integer.
+
+Consider the length of the interval: $\frac{n}{56}$.
+
+If $0 < \frac{n}{56} \le 1$, i.e., $0 < n \le 56$, the interval has length at most 1.
+If the length is less than 1, the interval contains no integers.
+If the length is exactly 1, say the interval is $(a, a+1)$, then there are no integers in the interval.
+
+We need the length of the interval to be such that it contains exactly one integer.
+This happens when $1 < \frac{n}{56} \le 2$, which means $56 < n \le 112$.
+
+Let's test values of $n$ in this range.
+
+If $n = 57$, the interval is $(\frac{6}{7} \times 57, \frac{7}{8} \times 57) = (\frac{342}{7}, \frac{399}{8}) = (48.857..., 49.875...)$. The only integer in the interval is 49. Unique $k = 49$.
+
+If $n = 112$, the interval is $(\frac{6}{7} \times 112, \frac{7}{8} \times 112) = (6 \times 16, 7 \times 14) = (96, 98)$. The integer in the interval is 97. Unique $k = 97$.
+
+If $n = 113$, the interval is $(\frac{6}{7} \times 113, \frac{7}{8} \times 113) = (\frac{678}{7}, \frac{791}{8}) = (96.857..., 98.875...)$. The integers in the interval are 97, 98. Two integers, so not unique.
+
+We are looking for the largest $n$ such that the interval contains exactly one integer.
+This means that $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+
+Let $\frac{7}{8}n = I + f_1$, where $I$ is an integer and $0 \le f_1 < 1$.
+Let $\frac{6}{7}n = J + f_2$, where $J$ is an integer and $0 \le f_2 < 1$.
+
+We need $\lfloor I + f_1 \rfloor = \lceil J + f_2 \rceil$, so $I = J + 1$ if $f_2 > 0$, and $I = J$ if $f_2 = 0$.
+Case 1: $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil = m$.
+$m - 1 < \frac{6}{7}n \le m$
+$m \le \frac{7}{8}n < m + 1$
+
+$7(m - 1) < 6n \le 7m$
+$8m \le 7n < 8(m + 1)$
+
+From $6n \le 7m$, we get $n \le \frac{7}{6}m$.
+From $7(m - 1) < 6n$, we get $\frac{7}{6}(m - 1) < n$.
+
+From $8m \le 7n$, we get $\frac{8}{7}m \le n$.
+From $7n < 8(m + 1)$, we get $n < \frac{8}{7}(m + 1)$.
+
+Combining these, we have:
+$\frac{7}{6}(m - 1) < n \le \frac{7}{6}m$
+$\frac{8}{7}m \le n < \frac{8}{7}(m + 1)$
+
+We need an overlap between these two intervals for $n$.
+Intersection of $(\frac{7}{6}(m - 1), \frac{7}{6}m]$ and $[\frac{8}{7}m, \frac{8}{7}(m + 1))$.
+
+Lower bound of intersection: $\max(\frac{7}{6}(m - 1), \frac{8}{7}m)$
+Upper bound of intersection: $\min(\frac{7}{6}m, \frac{8}{7}(m + 1))$
+
+We need the lower bound to be less than or equal to the upper bound.
+$\max(\frac{7}{6}m - \frac{7}{6}, \frac{8}{7}m) \le \min(\frac{7}{6}m, \frac{8}{7}m + \frac{8}{7})$
+
+Consider the two terms in the max: $\frac{7}{6}m - \frac{7}{6}$ vs $\frac{8}{7}m$.
+$\frac{7}{6}m - \frac{7}{6} \le \frac{8}{7}m \implies (\frac{7}{6} - \frac{8}{7})m \le \frac{7}{6}$
+$(\frac{49 - 48}{42})m \le \frac{7}{6} \implies \frac{1}{42}m \le \frac{7}{6} \implies m \le 49$.
+
+Consider the two terms in the min: $\frac{7}{6}m$ vs $\frac{8}{7}m + \frac{8}{7}$.
+$\frac{7}{6}m \le \frac{8}{7}m + \frac{8}{7} \implies (\frac{7}{6} - \frac{8}{7})m \le \frac{8}{7}$
+$\frac{1}{42}m \le \frac{8}{7} \implies m \le 48$.
+
+So, $m \le 48$.
+
+If $m = 48$,
+Interval 1: $(\frac{7}{6} \times 47, \frac{7}{6} \times 48] = (\frac{329}{6}, 56] = (54.83..., 56]$
+Interval 2: $[\frac{8}{7} \times 48, \frac{8}{7} \times 49) = [\frac{384}{7}, 56) = [54.85..., 56)$
+
+Intersection: $[54.85..., 56)$. Integer value of $n$ could be 55, 56.
+
+If $n = 55$, $\frac{6}{7} \times 55 = 47.14...$, $\frac{7}{8} \times 55 = 48.125...$.
+$\lceil 47.14... \rceil = 48$, $\lfloor 48.125... \rfloor = 48$. Unique integer $k = 48$.
+
+If $n = 56$, $\frac{6}{7} \times 56 = 48$, $\frac{7}{8} \times 56 = 49$.
+$\lceil 48 \rceil = 48$, $\lfloor 49 \rfloor = 49$. Not equal.
+
+Let's check the interval for $n = 56$: $(\frac{6}{7} \times 56, \frac{7}{8} \times 56) = (48, 49)$. No integer in the interval.
+
+Consider the condition for exactly one integer in $(\frac{6}{7}n, \frac{7}{8}n)$.
+This occurs if $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+
+Let $f(n) = \frac{7}{8}n - \frac{6}{7}n = \frac{n}{56}$.
+
+If the interval contains exactly one integer, say $m$, then
+$\frac{6}{7}n < m < \frac{7}{8}n$.
+
+Consider the graph of $y = \frac{7}{8}x$ and $y = \frac{6}{7}x$.
+We are looking for values of $n$ where there is exactly one integer between the two lines.
+
+When the interval length is between 1 and 2, we can have one integer.
+$1 < \frac{n}{56} \le 2 \implies 56 < n \le 112$.
+
+We need the largest $n$ such that $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+
+Consider $n = 112$. $\lfloor \frac{7}{8} \times 112 \rfloor = \lfloor 98 \rfloor = 98$. $\lceil \frac{6}{7} \times 112 \rceil = \lceil 96 \rceil = 96$. Not equal.
+
+Consider $n = 111$. $\lfloor \frac{7}{8} \times 111 \rfloor = \lfloor 97.125 \rfloor = 97$. $\lceil \frac{6}{7} \times 111 \rceil = \lceil 95.14... \rceil = 96$. Not equal.
+
+Consider $n = 110$. $\lfloor \frac{7}{8} \times 110 \rfloor = \lfloor 96.25 \rfloor = 96$. $\lceil \frac{6}{7} \times 110 \rceil = \lceil 94.28... \rceil = 95$. Not equal.
+
+Consider $n = 105$. $\frac{7}{8} \times 105 = 91.875$, $\frac{6}{7} \times 105 = 90$.
+$\lfloor 91.875 \rfloor = 91$, $\lceil 90 \rceil = 90$. Not equal.
+
+We need $\frac{7}{8}n - \frac{6}{7}n$ to be between 1 and 2.
+Let the unique integer be $k$.
+$\frac{6}{7}n < k < \frac{7}{8}n$.
+
+Consider the case when $\frac{7}{8}n$ is an integer. Let $\frac{7}{8}n = m$. Then $n = \frac{8}{7}m$.
+The interval is $(\frac{6}{7} \times \frac{8}{7}m, m) = (\frac{48}{49}m, m)$.
+We need exactly one integer in this interval.
+This happens if $m - \lceil \frac{48}{49}m \rceil = 1$.
+If $m = 49$, interval is $(48, 49)$, no integer.
+If $m = 50$, interval is $(\frac{48 \times 50}{49}, 50) = (\frac{2400}{49}, 50) = (48.97..., 50)$. Integer 49.
+$m = 50 \implies n = \frac{8}{7} \times 50$, not integer.
+
+Consider the case when $\frac{6}{7}n$ is an integer. Let $\frac{6}{7}n = m$. Then $n = \frac{7}{6}m$.
+The interval is $(m, \frac{7}{8} \times \frac{7}{6}m) = (m, \frac{49}{48}m)$.
+We need exactly one integer in this interval.
+$\lfloor \frac{49}{48}m \rfloor - m = 1$.
+$\lfloor m + \frac{1}{48}m \rfloor - m = 1$.
+$\lfloor \frac{1}{48}m \rfloor = 1$.
+$1 \le \frac{m}{48} < 2$, so $48 \le m < 96$.
+
+If $m = 48$, $n = \frac{7}{6} \times 48 = 56$. Interval $(48, 49)$, no integer.
+If $m = 95$, $n = \frac{7}{6} \times 95$, not integer.
+
+Let's go back to $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil = k$.
+This means $k - 1 < \frac{6}{7}n \le k$ and $k \le \frac{7}{8}n < k + 1$.
+
+$7(k - 1) < 6n \le 7k$
+$8k \le 7n < 8(k + 1)$
+
+Consider the range of $n$:
+$\frac{8}{7}k \le n < \frac{8}{7}(k + 1)$
+$\frac{6}{7}n \le k < \frac{6}{7}n + 1$
+
+Intersection of $[\frac{8}{7}k, \frac{8}{7}(k + 1))$ and $(\frac{6}{7}n - 1, \frac{6}{7}n]$.
+
+Let $n = 112$. Interval $(96, 98)$. Integer 97. Unique.
+Let $n = 113$. Interval $(96.8..., 98.8...).$ Integers 97, 98.
+
+Consider $n$ such that the interval length is around 2.
+If $\frac{n}{56} = 2$, $n = 112$. Interval $(96, 98)$.
+If $\frac{n}{56}$ is slightly larger than 2, say $2 + \epsilon$.
+$n = 112 + 56 \epsilon$.
+
+We need $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+Let $n = 112$. $\lfloor 98 \rfloor = 98$, $\lceil 96 \rceil = 96$.
+
+Let $n = 111$. $\lfloor 97.125 \rfloor = 97$, $\lceil 95.14... \rceil = 96$.
+
+Let $n = 57$. $\lfloor 49.875 \rfloor = 49$, $\lceil 48.857... \rceil = 49$. Unique $k = 49$.
+
+We are looking for the largest $n$.
+
+Consider the transition point where the number of integers in the interval changes from 1 to 2.
+This happens when either $\frac{6}{7}n$ or $\frac{7}{8}n$ is an integer.
+
+If $\frac{7}{8}n = m$, then $n = \frac{8}{7}m$.
+Interval $(\frac{48}{49}m, m)$.
+
+If $\frac{6}{7}n = m$, then $n = \frac{7}{6}m$.
+Interval $(m, \frac{49}{48}m)$.
+
+Consider $n = 112$. Interval $(96, 98)$. Unique integer 97.
+When does a second integer enter the interval?
+This happens when $\frac{6}{7}n$ crosses an integer or $\frac{7}{8}n$ crosses an integer.
+
+If $\frac{6}{7}n = 97$, $n = \frac{7}{6} \times 97$, not integer.
+If $\frac{7}{8}n = 99$, $n = \frac{8}{7} \times 99$, not integer.
+
+Consider $n = 113$. Interval $(96.8..., 98.8...).$ Integers 97, 98.
+
+The largest $n$ for which there is a unique integer $k$ is when the interval contains exactly one integer.
+This means $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+
+Try values around 112.
+$n = 112$, $\lfloor 98 \rfloor = 98$, $\lceil 96 \rceil = 96$.
+$n = 111$, $\lfloor 97.125 \rfloor = 97$, $\lceil 95.14... \rceil = 96$.
+$n = 110$, $\lfloor 96.25 \rfloor = 96$, $\lceil 94.28... \rceil = 95$.
+
+The condition holds for $n = 57, ..., 112$. The largest is 112.
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Algebraic Manipulation</skill>
+<definition>The ability to transform mathematical expressions into equivalent forms by applying algebraic rules and operations to isolate variables or simplify expressions.</definition>
+
+<start>154</start>
+<end>318</end>
+<text>Let's analyze the first inequality:
+$\frac{8}{15} < \frac{n}{n + k}$
+$8(n + k) < 15n$
+$8n + 8k < 15n$
+$8k < 7n$
+$k < \frac{7}{8}n$</text>
+<explanation>The solver transforms the inequality by cross-multiplying, distributing terms, and isolating k in terms of n. This demonstrates systematic algebraic manipulation to convert a complex fraction inequality into a simpler form.</explanation>
+
+<start>320</start>
+<end>480</end>
+<text>Now, let's analyze the second inequality:
+$\frac{n}{n + k} < \frac{7}{13}$
+$13n < 7(n + k)$
+$13n < 7n + 7k$
+$6n < 7k$
+$\frac{6}{7}n < k$</text>
+<explanation>Similar to the first inequality, the solver applies algebraic operations to transform the second inequality, again isolating k in terms of n. This shows consistent application of algebraic manipulation skills.</explanation>
+
+<skill>Interval Analysis</skill>
+<definition>The ability to reason about mathematical constraints in terms of intervals, including determining interval lengths, analyzing interval intersections, and identifying integer points within intervals.</definition>
+
+<start>482</start>
+<end>572</end>
+<text>Combining the two inequalities, we have:
+$\frac{6}{7}n < k < \frac{7}{8}n$</text>
+<explanation>The solver combines the two separate inequality constraints to form a single interval that k must lie within, showing understanding of how to represent multiple constraints as an interval.</explanation>
+
+<start>711</start>
+<end>857</end>
+<text>The length of the interval is $\frac{7}{8}n - \frac{6}{7}n = n \left( \frac{7}{8} - \frac{6}{7} \right) = n \left( \frac{49 - 48}{56} \right) = \frac{n}{56}$.</text>
+<explanation>The solver calculates the exact length of the interval, demonstrating the ability to analyze interval properties quantitatively. This is essential for determining how many integers the interval can contain.</explanation>
+
+<start>3136</start>
+<end>3288</end>
+<text>Consider the transition point where the number of integers in the interval changes from 1 to 2.
+This happens when either $\frac{6}{7}n$ or $\frac{7}{8}n$ is an integer.</text>
+<explanation>The solver recognizes that the critical points occur when the interval boundaries align with integers, showing sophisticated understanding of interval analysis.</explanation>
+
+<skill>Integer Constraint Analysis</skill>
+<definition>The ability to reason about constraints on integer values within continuous mathematical structures, including analyzing when intervals contain exactly a specified number of integers.</definition>
+
+<start>859</start>
+<end>1012</end>
+<text>For the interval to contain exactly one integer, its length must be greater than 0 and less than or equal to 2. However, since the endpoints are not included, the length must be strictly greater than 0.</text>
+<explanation>The solver recognizes the necessary conditions for an open interval to contain exactly one integer, showing understanding of how continuous constraints affect discrete (integer) values.</explanation>
+
+<start>1014</start>
+<end>1092</end>
+<text>If the interval contains exactly one integer, say $m$, then $\frac{6}{7}n < m < \frac{7}{8}n$.</text>
+<explanation>The solver explicitly states what it means for an integer to be contained in the interval, demonstrating clear understanding of integer constraint analysis.</explanation>
+
+<start>1094</start>
+<end>1211</end>
+<text>Consider the case where the length of the interval is slightly greater than 1. If $1 < \frac{n}{56} \le 2$, then $56 < n \le 112$.</text>
+<explanation>The solver converts the interval length constraint into a constraint on n, showing the ability to analyze how the interval properties relate to the problem parameters.</explanation>
+
+<skill>Floor and Ceiling Function Analysis</skill>
+<definition>The ability to work with and reason about floor and ceiling functions, which map real numbers to integers by rounding down or up respectively, especially in the context of counting integers in intervals.</definition>
+
+<start>1328</start>
+<end>1494</end>
+<text>If there is exactly one integer in the interval, then $\lfloor b \rfloor - \lceil a \rceil = 0$, and $\lceil a \rceil < b$.
+
+The condition for exactly one integer in the open interval $(a, b)$ is $\lfloor b \rfloor - \lceil a \rceil = 0$</text>
+<explanation>The solver formulates the condition for an interval to contain exactly one integer using floor and ceiling functions, demonstrating understanding of how these functions relate to counting integers in intervals.</explanation>
+
+<start>1686</start>
+<end>1823</end>
+<text>Let $f(n) = \frac{7}{8}n$ and $g(n) = \frac{6}{7}n$. We want $\lfloor f(n) \rfloor = \lceil g(n) \rceil$.
+Let $m = \lfloor f(n) \rfloor = \lceil g(n) \rceil$.</text>
+<explanation>The solver introduces floor and ceiling functions to formalize the condition for exactly one integer in the interval, showing sophisticated use of these functions in mathematical reasoning.</explanation>
+
+<start>4040</start>
+<end>4158</end>
+<text>We need $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.
+Let $n = 112$. $\lfloor 98 \rfloor = 98$, $\lceil 96 \rceil = 96$.</text>
+<explanation>The solver evaluates floor and ceiling functions for specific values to test the constraint, demonstrating practical application of these functions in problem-solving.</explanation>
+
+<skill>Systematic Case Analysis</skill>
+<definition>The ability to break down a complex problem into distinct cases or scenarios, and methodically analyze each case to determine which satisfy given constraints.</definition>
+
+<start>2149</start>
+<end>2329</end>
+<text>Alternatively, consider the conditions for the interval to contain exactly one integer. This happens if and only if $\lfloor b \rfloor - \lceil a \rceil = 0$, which means $\lfloor \frac{7}{8}n \rfloor = \lceil \frac{6}{7}n \rceil$.</text>
+<explanation>The solver reformulates the problem in terms of a specific condition that must be satisfied, setting up for a systematic analysis of when this condition holds.</explanation>
+
+<start>3326</start>
+<end>3452</end>
+<text>If $\frac{7}{8}n = m$, then $n = \frac{8}{7}m$.
+Interval $(\frac{48}{49}m, m)$.
+
+If $\frac{6}{7}n = m$, then $n = \frac{7}{6}m$.
+Interval $(m, \frac{49}{48}m)$.</text>
+<explanation>The solver analyzes different cases based on whether the interval boundaries are integers, showing systematic case analysis to find critical values.</explanation>
+
+<start>4160</start>
+<end>4350</end>
+<text>Let $n = 111$. $\lfloor 97.125 \rfloor = 97$, $\lceil 95.14... \rceil = 96$.
+Let $n = 110$. $\lfloor 96.25 \rfloor = 96$, $\lceil 94.28... \rceil = 95$.
+
+The condition holds for $n = 57, ..., 112$. The largest is 112.</text>
+<explanation>The solver systematically tests different values of n to determine when the condition is satisfied, ultimately identifying the range of valid values and determining the maximum value that answers the question.</explanation>
+
+<skill>Numerical Verification</skill>
+<definition>The ability to test specific numerical examples to verify mathematical claims, check conditions, or identify patterns.</definition>
+
+<start>2648</start>
+<end>2876</end>
+<text>If $n = 57$, the interval is $(\frac{6}{7} \times 57, \frac{7}{8} \times 57) = (\frac{342}{7}, \frac{399}{8}) = (48.857..., 49.875...)$. The only integer in the interval is 49. Unique $k = 49$.
+
+If $n = 112$, the interval is $(\frac{6}{7} \times 112, \frac{7}{8} \times 112) = (6 \times 16, 7 \times 14) = (96, 98)$. The integer in the interval is 97. Unique $k = 97$.</text>
+<explanation>The solver tests specific values of n by calculating the corresponding intervals and checking which integers lie within them, demonstrating numerical verification to confirm the theoretical analysis.</explanation>
+
+<start>2878</start>
+<end>3038</end>
+<text>If $n = 113$, the interval is $(\frac{6}{7} \times 113, \frac{7}{8} \times 113) = (\frac{678}{7}, \frac{791}{8}) = (96.857..., 98.875...)$. The integers in the interval are 97, 98. Two integers, so not unique.</text>
+<explanation>The solver tests n = 113 and finds that the interval contains two integers, not one, showing how numerical verification is used to identify the boundary where the condition fails.</explanation>
+
+<start>3595</start>
+<end>3792</end>
+<text>Consider $n = 112$. Interval $(96, 98)$. Unique integer 97.
+When does a second integer enter the interval?
+This happens when $\frac{6}{7}n$ crosses an integer or $\frac{7}{8}n$ crosses an integer.
+
+If $\frac{6}{7}n = 97$, $n = \frac{7}{6} \times 97$, not integer.
+If $\frac{7}{8}n = 99$, $n = \frac{8}{7} \times 99$, not integer.</text>
+<explanation>The solver verifies when the interval boundaries would align with integers, checking specific values to determine when the condition for uniqueness would break.</explanation>
+
+SUMMARY_START
+The most important cognitive skills demonstrated in this mathematical problem-solving trajectory are:
+
+1. Algebraic Manipulation - The solver skillfully transforms complex fraction inequalities into simpler forms, isolating variables and establishing the key constraint interval.
+
+2. Interval Analysis - The solver demonstrates sophisticated reasoning about interval properties, calculating interval lengths and analyzing how intervals interact with integer constraints.
+
+3. Floor and Ceiling Function Analysis - The solver effectively uses floor and ceiling functions to formalize the condition for an interval to contain exactly one integer.
+
+4. Systematic Case Analysis - The solver methodically breaks down the problem into cases, analyzing different scenarios to determine when exactly one integer lies in the constraint interval.
+
+5. Numerical Verification - The solver tests specific values to verify theoretical claims and identify boundary conditions, ultimately determining that n = 112 is the answer.
+SUMMARY_END
+
+Summary of Key Skills:
+The most important cognitive skills demonstrated in this mathematical problem-solving trajectory are:
+
+1. Algebraic Manipulation - The solver skillfully transforms complex fraction inequalities into simpler forms, isolating variables and establishing the key constraint interval.
+
+2. Interval Analysis - The solver demonstrates sophisticated reasoning about interval properties, calculating interval lengths and analyzing how intervals interact with integer constraints.
+
+3. Floor and Ceiling Function Analysis - The solver effectively uses floor and ceiling functions to formalize the condition for an interval to contain exactly one integer.
+
+4. Systematic Case Analysis - The solver methodically breaks down the problem into cases, analyzing different scenarios to determine when exactly one integer lies in the constraint interval.
+
+5. Numerical Verification - The solver tests specific values to verify theoretical claims and identify boundary conditions, ultimately determining that n = 112 is the answer.

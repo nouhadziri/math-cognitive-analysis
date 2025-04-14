@@ -1,0 +1,662 @@
+Problem:
+ $2014$  points are placed on a circumference. On each of the segments with end points on two of the  $2014$  points is written a non-negative real number. For any convex polygon with vertices on some of the  $2014$  points, the sum of the numbers written on their sides is less or equal than  $1$ . Find the maximum possible value for the sum of all the written numbers.
+
+Domain: Geometry
+
+Solution Trajectory (deepseek):
+Okay, let's try to tackle this problem. So, we have 2014 points arranged on a circumference. On each segment between any two points, we write a non-negative real number. The condition is that for any convex polygon formed by some of these points, the sum of the numbers on its sides is at most 1. We need to find the maximum possible total sum of all these numbers. Hmm.
+
+First, I need to understand the problem better. We have a circle with 2014 points on it. Then, every possible chord (segment connecting two points) has a non-negative number assigned to it. The restriction is that if we take any convex polygon (which, since the points are on a circumference, is just any polygon where all the vertices are distinct and ordered around the circle), the sum of the numbers on the edges of that polygon must be ≤ 1. And we want the maximum total sum across all chords.
+
+So, this seems like an optimization problem with constraints. The variables are the numbers on each chord, and we need to maximize their sum under the constraint that for every convex polygon (i.e., every cyclic subset of the points), the sum on its edges is ≤ 1.
+
+Alright, so this is a linear programming problem. The objective function is the sum of all variables (numbers on the chords), subject to the constraints that the sum over each polygon's edges is ≤1. The variables are all non-negative.
+
+But with 2014 points, the number of variables here is the number of chords, which is C(2014, 2) – that’s roughly 20142/2, which is around 2,028,000 and something. That’s enormous. Obviously, I can't handle each variable individually.
+
+So, there must be some symmetry or structure here that allows us to find the maximum without dealing with each variable separately. Let's think about that.
+
+Probably all edges of the same length can be treated the same? If there is rotational symmetry, maybe the maximum is achieved when all edges of the same length have the same value. Let me define variables not per edge, but per edge length. Since the points are on a circle, an edge's length corresponds to the number of points it skips. For example, adjacent points (edges of length 1) connect to their immediate neighbors, then edges of length 2 skip one point, etc. The maximum length (in terms of skips) would be floor(2014/2), beyond which they start overlapping on the other side.
+
+So, the number of different edge lengths is 1006 (since 2014 is even; each length from 1 to 1006). For each length k from 1 to 1006, there are 2014 edges of that length.
+
+Wait, let me check that: For a polygon with n points on a circle, the number of edges of length k (connecting a vertex to the k-th next vertex) is n. But if n is even, then for k=n/2, each edge of that length is only counted once? Actually, for 2014 points, since 2014 is even, the maximum chord length (in terms of skips) is 1007, but I need to be precise.
+
+Wait, actually, with 2014 points on a circle, the chord that connects a point to the one opposite it (since 2014 is even) is the diameter. But that would be a skip of 1007 points (including or excluding?), depending on how you count. Wait, if we have 2014 points labeled 0 through 2013, then the chord from 0 to 1 is skip 0, from 0 to 2 is skip 1, ..., from 0 to 1007 is skip 1006? Hmm. Wait, starting from point 0, the next point is 1, so the number of skips between 0 and k is k-1. Wait, maybe that complicates.
+
+Alternatively, maybe it's the step size or the chord length. If you have step size k, connecting to the k-th point around the circle. Then for a circle of even size 2014, the maximum distinct step size is 1007, because step size 1007 is the diameter, and then step sizes beyond that would be equivalent to smaller steps on the other side.
+
+So there are 1007 different step sizes: 1, 2, ..., 1007. Each step size k has exactly 2014 edges because each point is connected to its k-th neighbor. Wait, but if you consider step sizes up to 1007, for each step size k, there are indeed 2014 edges? Because each of the 2014 points can be connected to their k-th neighbor in one direction. However, for step sizes greater than 1007, you get chords equivalent to step sizes less than 1007 in the other direction. So, in total, step sizes 1 to 1007 give all distinct chords.
+
+So, perhaps we can model each chord by its step size. Then, for step size k in 1 to 1007, we assign a value x_k to each chord of that step size. Because of rotational symmetry, perhaps all chords of the same step size can be assigned the same weight.
+
+But in the problem statement, it's written that "on each of the segments... is written a non-negative real number." So it's possible each segment has a different number. But if we can achieve maximum sum by setting all same-length chords to the same number, then the maximum would be that common number times the number of chords.
+
+Alternatively, maybe not, maybe different edges can have different values. But given the symmetry of the problem, and all cyclic shifts being equivalent, it's reasonable to conjecture that the maximum is achieved when all edges of the same step size have the same value. So, perhaps such a symmetric solution is optimal.
+
+If that's the case, then for each step size k, we have 2014 edges each with value x_k. The total sum we want to maximize is then sum_{k=1}^{1007} 2014 * x_k.
+
+Now, the constraints are that for any polygon (i.e., a set of m points, m >=3, arranged cyclically around the circle), the sum of the numbers on its edges is at most 1. If the polygon is a triangle, quadrilateral, pentagon, etc., all must satisfy the sum of their edges' numbers <=1.
+
+In the symmetric solution, where each edge of step size k has x_k, then the sum over a polygon with edges of various step sizes would be the sum of the x_k for each edge's step size. Hmm.
+
+Wait, but if the polygons are convex, which on the circle just means that their vertices are a set of points in cyclic order. So a convex polygon is just any polygon where the vertices are ordered around the circle without crossing.
+
+Therefore, each convex polygon can be represented by a selection of vertices in cyclic order. So, for example, a triangle is just any three points in cyclic order. The edges of the triangle are the three chords connecting consecutive points in that cyclic order.
+
+But these edges can have different step sizes. For instance, a triangle could have edges of step sizes 1, 1, and 2012 (if the three points are consecutive, with two steps of 1 and then a large step back), but in our problem, they must form a convex polygon, which on the circle should just be that the edges are non-crossing and form a polygon.
+
+Wait, but on the circle, a polygon is convex if and only if it's non-intersecting. So as long as the vertices are in cyclic order, connecting them with chords along the circle (i.e., edges of step size 1), but actually, convex polygon edges can be any chords as long as they form the boundary of a convex polygon. Wait, perhaps I need to recall that in the plane, a polygon is convex if all its internal angles are less than 180 degrees, but in the context of being on a circle, how does that translate?
+
+Wait, actually, in the problem statement, it says "any convex polygon with vertices on some of the 2014 points". But since the points are on a circle, a convex polygon is exactly a polygon where the vertices lie on the circle and are connected in cyclic order without crossing. So, convex polygons in this case are just the polygons that are convex and have all vertices on the circumference, which, for points arranged on a circle, is equivalent to the polygon being non-intersecting and cyclic.
+
+Hence, a convex polygon here is determined by selecting a subset of the 2014 points in cyclic order, and connecting them with chords in that order. Such a polygon will consist of edges that "step over" some number of points. But each edge's step size is determined by the number of skips between consecutive vertices. For example, if the polygon is a quadrilateral with vertices A, B, C, D (in cyclic order), then each edge is a chord from A to B, B to C, C to D, D to A. If the points are spaced with step sizes k1, k2, k3, k4 respectively, then the edges of the polygon have those step sizes. However, in a regular polygon, all edges would have the same step size, but in general, they can vary.
+
+But in our problem, the requirement is that for any such convex polygon (any set of points in cyclic order, forming a polygon), the sum of the numbers written on its edges must be <=1.
+
+Wait, but the edges written on the polygon are the edges of the polygon itself, not the edges inside or something? Wait, the problem says: "For any convex polygon with vertices on some of the 2014 points, the sum of the numbers written on their sides is less or equal than 1." So, yes, "their sides" refers to the sides of the polygon, which are chords between consecutive vertices. So, the numbers on those chords.
+
+Therefore, for every possible convex polygon (i.e., every possible set of at least 3 points in cyclic order, forming a polygon), the sum of the numbers on the edges of that polygon must be at most 1.
+
+So, this includes all triangles, quadrilaterals, etc., up to 2014-gon. Each of these has edges which are chords between consecutive vertices. Each edge has a certain step size. Therefore, the constraint is that for any such selection of vertices in cyclic order, the sum over the numbers on their edges is <=1.
+
+Hence, in order to model this, we need that for every possible cyclic sequence of m points (3 <= m <=2014), the sum of the x_k (where k is the step size of each edge) is <=1. The variables x_k are assigned to each edge based on their step size.
+
+But this seems intractable because the number of constraints is exponential. So there must be some pattern or structure.
+
+But given the problem asks for the maximum total sum, perhaps it's related to some complementary slackness conditions where the tight constraints (those with sum equal to 1) are the ones that will limit the variables. But again, this is too vague.
+
+Alternatively, in order to maximize the total sum, given that every polygon's edges sum to <=1, one may consider how much each edge contributes to the total. Since edges are part of multiple polygons, their x values will be involved in multiple constraints. So to maximize the total, we need to set the x values as high as possible, but such that the sum in any polygon is <=1.
+
+This sounds like each edge's x value can be at most 1 divided by the number of polygons it is part of, but that might not be precise because each edge is part of multiple polygons. Wait, but it's a covering problem?
+
+Wait, no. Because the objective is to maximize the sum of x_e, with the constraint that for every polygon P, the sum over e in P of x_e <=1. This is a packing problem where we pack the polygons with x_e as weights, such that no polygon is overpacked. The goal is to maximize the total weight, with the limit that each polygon can have total weight at most 1.
+
+Alternatively, it is dual to a covering problem.
+
+But regardless, this is a linear program. Since both the objective and constraints are linear.
+
+But it's a very large one. Hence, to solve it, we probably need to find a dual solution or use some combinatorial argument.
+
+Alternatively, the answer might be related to n-1 over 2, or similar, but 2014 points.
+
+Wait, but n is 2014.
+
+Wait, perhaps a bound can be established.
+
+Let me think about the triangle case. Suppose all edges are set to 1/3. Then the sum over a triangle would be 3*(1/3) =1, satisfying the constraint. Similarly, any m-gon would have sum m*(1/3). But m could be larger, so 3*(1/3) =1, but quadrilateral would sum to 4*(1/3)≈1.333>1, which violates constraints. So that doesn't work.
+
+Alternatively, if we set the edges in such a way that for each edge, its x value is 1 divided by the number of polygons it is in. But it's unclear.
+
+Alternatively, arrange the x values such that for each edge, the maximum over all polygons that contain it of 1/#edges in the polygon. But no, that's not necessarily additive.
+
+Wait, another approach: for each edge, set its value x_e equal to the reciprocal of the number of polygons that include it. Then, the sum over any polygon would be Σ (1/(number of polygons containing e)), summed over e in the polygon. This might limit each sum to something, but since each edge is in many polygons, the value x_e would be very small, and then we could sum them up. But I have no idea.
+
+Alternatively, maybe the maximum total is 1007. Wait, 2014/2 is 1007. But does that make sense? Wait, 2014 points on the circle, with maximum sum per edge.
+
+Wait, in this problem: "For any convex polygon... the sum of numbers on their sides is <=1". If all edges can be set to some value such that each edge is only used in one polygon. But in reality, edges are part of many polygons. For example, each edge is part of infinitely many polygons (if considering all sizes), but here we have polygons of finite size (up to 2014-gon).
+
+But edges are shared between many polygons. So the problem is similar to placing weights on edges such that in every possible cycle (polygon), the sum is <=1. The goal is to maximize the total weights.
+
+This is similar to the problem in graph theory where you have to assign weights to edges such that every cycle has total weight at most 1, and you want the maximum total weight. In that problem, the answer is related to the minimum feedback arc set or something else, but I might need to recall.
+
+Alternatively, in our problem, the constraint is for all cycles (polygons) that the sum of their edges <=1, so this is equivalent to in the graph where each edge has weight x_e, the maximum flow (or something else) but not exactly.
+
+Alternatively, if we see it as a hypergraph where each hyperedge corresponds to a cycle (a polygon), and the constraint is that the sum over each hyperedge is <=1. Then, we're to maximize the sum of all x_e. So, this is a hypergraph covering problem.
+
+It might be related to the problem of edge colouring or something else.
+
+Wait, perhaps inspired by Turán's theorem or some combinatorial design.
+
+Alternatively, perhaps the answer is half the number of edges? Because if each edge can be in up to two polygons (but not really).
+
+Alternatively, perhaps arranging all edges with value 1/2, so that the sum over any cycle is (length)*(1/2). Then to ensure that for any polygon of length m, m*(1/2) <=1, which would require m <=2. But polygons must have at least 3 edges. So, this would satisfy the condition only for m=2, but for m>=3, it fails. Thus, that is incorrect.
+
+Alternatively, if all edges are set to 1/(m_max), where m_max is maximum polygon size. But maximum polygon size is 2014, so 1/2014. Then the sum over any polygon with m edges is m*(1/2014). The maximum sum over the largest polygon would be 2014*(1/2014)=1, which works, but smaller polygons would sum to m/2014 <1. So that meets the constraints, but the total would be C(2014,2)/2014 = (2013)/2 ≈ 1006.5. Which is a number pretty close to 1007, which is 2014/2.
+
+Is this the answer? 1007?
+
+Wait, wait, let's consider that. If I can assign each edge a value of 1/2014, then the sum over any m-gon is m*(1/2014). For a 2014-gon (the full circle), that's 2014*(1/2014)=1. For triangles, sum=3/2014 ≈0.0015<=1. So all constraints are satisfied.
+
+But the total sum is C(2014,2)/2014 = (2014*2013)/2 /2014=2013/2≈1006.5, which is 1006.5.
+
+But if we can assign even bigger to the edges? For example, assign 1/m for edges in m-gons.
+
+But since edges are in multiple m-gons, that's not straightforward. The problem is that edges are part of many different polygons.
+
+But, here's another idea: Since every polygon constraint imposes a limit on the sum of its edges. The biggest "overlap" of constraints comes from the largest polygons (ie the ones with the most edges), so maybe the tightest constraint is the entire circle (the 2014-gon). However, in that case, assigning each edge 1/2014 means the total sum is as above, but maybe we can assign higher weights to edges that are in fewer polygons.
+
+Alternatively, to maximize the total, we need to set weights as high as possible on edges that are not involved in too many polygon constraints.
+
+But edges with small step sizes (adjacent vertices) are in more polygons. For example, a step size 1 edge (connecting consecutive points) is part of many convex polygons. Whereas a step size 1007 edge (the diameter) is part of fewer convex polygons. Wait, maybe each edge of step size k is part of the same number of polygons?
+
+Wait, actually, the diameter edge is part of a lot of convex polygons as well. For example, any polygon containing both endpoints of the diameter and other points on either semicircle.
+
+But perhaps edges of larger step sizes are included in less polygons? Not necessarily. For example, a chord of step size k spans a certain arc. The number of convex polygons that include this edge would depend on the number of ways to choose points on the remaining arcs. So perhaps, for a chord of length k, the number of convex polygons including it is equal to some function of k and n=2014. So maybe edges with larger k can be part of more convex polygons?
+
+Wait, this is getting complicated. Perhaps another approach is needed.
+
+Let me consider the dual linear program.
+
+Primal problem:
+
+Variables: x_e for each edge e (C(2014, 2) variables).
+
+Objective: Maximize sum_e x_e.
+
+Constraints: For every convex polygon P, sum_{e ∈ edges(P)} x_e ≤ 1.
+
+Dual problem:
+
+Variables: y_P for each convex polygon P (an exponential number of variables).
+
+Objective: Minimize sum_P y_P.
+
+Constraints: For each edge e, sum_{P: e ∈ edges(P)} y_P ≥1.
+
+This is because in duality, the primal constraints (each polygon sum <=1) become dual variables y_P, and the primal objective coefficients (all 1's) become the dual constraints.
+
+By strong duality, the optimal value of the primal (maximum total x_e) is equal to the optimal value of the dual (minimum total y_P over all dual solutions).
+
+But even so, solving the dual is impossible because we have an exponential number of variables. However, perhaps there's a pattern.
+
+If there's a uniform dual solution where each polygon is assigned the same dual variable y_P, but I don't think so, since edges are part of different numbers of polygons.
+
+Alternatively, if all dual variables y_P corresponding to polygons that include edge e sum up to 1 for each e. Then, each edge is covered by exactly sum_{P: e ∈ P} y_P =1. The dual objective is to minimize sum_P y_P.
+
+But given the problem is symmetric, perhaps each edge is in the same number of convex polygons. Then the uniform dual assignment y_P = t for each polygon P, where t is a number such that sum_{P: e ∈ P} t =1 for each edge e. Then t would have to be 1 divided by the number of convex polygons containing any given edge. However, this is again not possible because different edges will be in different numbers of convex polygons.
+
+But wait, if we assume symmetry, maybe all edges are in the same number of polygons. Wait, but given that edges have different step sizes, that's not the case. For example, edges with smaller step sizes (adjacent points) are in many more convex polygons than edges with larger step sizes. Because, for instance, the edge between two adjacent points can be part of polygons that pass through those two points and any subset of the remaining points on either side, whereas an edge that's, say, 500 steps apart can only be part of polygons that include points from either side of the long edge.
+
+Thus, indeed, edges with smaller step sizes are in more convex polygons. Hence, if we have to assign more dual variables (y_P) to "cover" these edges, but with symmetry, it's not straightforward.
+
+An alternative approach is inspired by graph theory, considering that the problem resembles fractional edge coloring or something like that. In fractional edge coloring, we assign weights to matchings such that each edge is in total weight 1. The objective is to minimize the total weight. Here, it's dual: assign weights to edges such that over all polygons covering any edge, their total is ≥1, and minimize the total. Wait, but the dual here is a covering problem.
+
+Alternatively, returning to the primal problem. Suppose that instead of considering all convex polygons, which is the same as all cyclically ordered subsets of the points, perhaps the only important constraints are those for the polygons with the minimum number of edges – triangles. If the triangle constraints are satisfied, maybe the others are automatically satisfied. Let's check.
+
+Suppose we set x_e such that the sum over any triangle is ≤1. Then, for a quadrilateral, the sum over its edges is the sum of four x_e. But since the quadrilateral can be divided into two triangles (if non-convex?), but not necessarily. Alternatively, the quadrilateral requires its own constraint because when the quadrilateral is convex, we can't use triangle inequalities to bound its sum.
+
+Wait, for example, if in the primal problem we only have triangle constraints, that may not be sufficient. Let's say we set x_e such that any three consecutive points have sum ≤1 on their edges. Then, the edges between adjacent points could be 1/2 each, because (1/2 +1/2 +1/2) = 1.5>1. No, even three adjacent edges: if the triangle is made by three consecutive points, then each edge has a step size of 1. If adjacent edges are set to x_1, then the sum for the triangle would be 3x_1 ≤1 => x_1 ≤1/3. If we set x_1=1/3, then quadrilaterals made of four consecutive points would have sum 4*(1/3) ≈1.333>1, which violates their constraint. So indeed, we need constraints for all polygon sizes.
+
+Hence, the key is to find a weight assignment on edges such that for every polygon of any size (from 3 to 2014), the sum of its edges' weights is <=1. Then, we want the maximum total weight.
+
+But we need a clever way to set the weights. Since edges of large step sizes can appear in many polygons. But given the 1 constraint per polygon, the maximum will have to strike a balance between the number of polygons each edge is part of and their contribution to the total.
+
+Hmm. Let's consider that for each edge, how many polygons does it belong to? Let me define f(k) as the number of convex polygons that contain a given edge of step size k. If we can compute f(k), then in order to cover each edge in f(k) constraints, we could potentially spread the 1 unit weight across those polygons. Wait, but in the dual problem, each edge needs to be covered by dual variables with sum ≥1, so if each dual variable is a weight on a polygon, then the more polygons an edge is in, the more split the coverage.
+
+Alternatively, suppose that for each edge, we need to spread 1 unit of dual variables across all polygons that contain it. Then, for an edge e, if it's in f(e) polygons, assigning a dual variable of y_P=1/f(e) for each polygon P containing e would give sum y_P =1.
+
+But in the dual problem, the goal is to minimize the total sum of y_P. For this particular dual assignment, the total sum would be sum_{P} y_P = sum_{P} sum_{e ∈ P} (1/f(e)) / something. Hmm, maybe I need to think differently.
+
+Wait, perhaps if each polygon has the same dual variable, y_P = y for all P, then each edge would be covered by y multiplied by the number of polygons it is in. Hence, to satisfy the dual constraint sum_{P: e ∈ P} y_P >=1, we need that y * f(e) >=1 for each edge e. Therefore, the minimum such y is 1/max_e f(e), and so the total dual objective is y * number of polygons. But again, depends on f(e).
+
+This is perhaps not useful.
+
+Alternatively, consider specific types of polygons. For example, for the tightest constraint, i.e., the polygon with the most edges, the 2014-gon, which includes all edges, and the same for other polygons.
+
+Wait, perhaps it's key to note that if we focus on the edges of each step size. Suppose we set all edges of step size k to the value x_k. We need that for any polygon, the sum over its edges (which have various step sizes) x_{k_i} <=1. But these can all vary.
+
+Alternatively, setting the x_k in such a way that each x_k is at most 1/m, where m is the number of edges in the longest polygon that the edge is part of.
+
+Wait, perhaps for an edge of step size k, what's the maximum number of edges in a polygon that includes it. If an edge is part of a polygon with up to 2014 edges, then set x_k <=1/2014. But then the total sum would be C(2014,2)/2014=2013/2≈1006.5.
+
+But is this enough? If all edges are set to 1/2014, then any polygon with m edges has sum m/2014. For m=3: 3/2014 <1, which is OK. For m=2014, sum=1. So that is edge on the constraint.
+
+But could we set some edges higher if we set others lower? For example, edges that are not in any large polygon. But every edge is in some large polygon (the entire 2014-gon, if included). Hence, all edges must be <=1/2014? So setting them all to 1/2014 would work, but then total is about 1006.5.
+
+But maybe there is a better assignment where some edges can have higher weights.
+
+Wait, if we manage the assignments such that for all edges, the sum over all polygons that contain them multiplied by x_e is at most 1. Wait, maybe not.
+
+Alternatively, note that if we set the weight of all edges in a polygon to be 1/m where m is the polygon size. But this is confused.
+
+Wait, thinking in terms of the original problem, maybe the optimal assignment is such that every polygon has exactly sum=1. This would be the case if the solution is tight for each polygon. However, that's impossible unless overlapping polygons don't share edges. But polygons share edges a lot.
+
+Alternatively, a possible approach can be derived from the concept of “maximal edge-dis convex polygons”. But since convex polygons can share edges, and there are unlimited numbers of them, that's not applicable.
+
+Wait, another thought inspired by Tammes problem or circle packing, but it is not the case here.
+
+Alternatively, instead of assigning the same value to all edges, since the maximum possible sum involves balancing each edge's contribution across all polygons that include it.
+
+Maybe the x_e can be set as x_e =1 divided by the number of convex polygons that include e. Then the sum over any polygon would be Σ_{e in edges(P)} 1/f(e), where f(e) is the number of convex polygons including edge e. However, this sum would be different for each polygon. But perhaps if for all edges in a polygon, their f(e)'s are the same, then the sum would be m/f(e). If we set the sum to be <=1, we need m/f(e) <=1. However, edges in different polygons have different f(e)'s, so this is too vague.
+
+Alternatively, considering that in each convex polygon, all edges are steps between consecutive vertices, which can be different step sizes. But maybe we can decompose the polygon into edges of step 1. For example, if we only assign non-zero weights to edges of step 1, which are the adjacent edges on the circle.
+
+If we set x_1=1/m, where m is the number of edges in the polygon, but since a polygon can have arbitrary size, we need x_1 <=1/m for all m>=3, but 1/m approaches zero as m increases, meaning x_1=0, which is not helpful.
+
+But perhaps focus on the largest polygon (the 2014-gon). If we set all edges of step sizes 1 to 1007 (since those are all distinct), each assigned to 1/2014. Then the total is 2014*1007*(1/2014) = 1007. Wait, but there are 1007 different step sizes, each with 2014 edges.
+
+Wait, no: step sizes from 1 to 1007, each with 2014 edges. So the total number of edges is 2014*1007. Hmm, but actually, when step size is k, you have 2014 edges for each k. Therefore, total number of edges is 2014*1007. Wait, unless the chord is counted twice: from A to B and from B to A. But in our case, each chord is unique once. So, for step size k from 1 to 1007, with each step size having 2014 chords, total edges would be 2014*1007. But C(2014,2) =2014*2013/2=approx 2014*1006.5, but 2014*1007=2014*(1006.5 +0.5)=2014*1006.5 +2014*0.5, which is half of 2014*2013 +2014, which adds more, so the total is different.
+
+Wait, this is confusing. Maybe there is a misunderstanding.
+
+No, actually: with 2014 points on a circle, each step size from 1 to 1007 (since 2014 is even, step size 1007 is the diameter). For each step size k in 1 to 1007, there are exactly 2014 edges, because each of the 2014 points has a unique point at step size k. Therefore, step size k connects point i to point i +k mod 2014. Thus, for each step size from 1 to 1007, there are 2014 edges. However, step sizes beyond 1007 would duplicate the original edges because connecting from i to i+k is the same as connecting from i to i - (2014 -k). Therefore, total number of edges is 2014*1007, which is equal to C(2014,2) since 2014*1007 =2014*(2014/2)= (2014^2)/2, and C(n,2)=n(n-1)/2. Wait, no, different.
+
+Wait, 2014*1007=2014*(2014/2)= (2014^2)/2= approx n^2 /2, which matches C(n,2) if n were even, but n is 2014. Wait, but 2014*2013/2 is (2014*1006.5) which is approx 2014*1006.5, which is less than 2014*1007.
+
+Hence, there is a contradiction here. Therefore, my previous assertion is wrong. For step size k=1, we have 2014 edges: (0,1),(1,2)...(2013,0). Step size k=2: (0,2),(1,3), ..., same number. Therefore, step size k from 1 to 1006 would each have 2014 edges. However, step size k=1007: each edge is a diameter (since 2014 is even), connecting i to i+1007. Since there are 2014 points, the number of such edges is also 2014, but actually, each diameter is counted twice in 2014: connecting i to i+1007 is same as connecting i+1007 to i, but since edges are unordered, perhaps we need to divide by 2. Actually, C(2014,2) counts each edge once, so step sizes from 1 to 1006 are each represented 2014 times, while step size 1007 is only 1007 edges. Wait, but I'm getting confused.
+
+Wait, the number of distinct edges for step size k is actually n for k=1 to n/2 -1, and n/2 for k =n/2 when n is even. Therefore, with n=2014, the edge step sizes k=1 to 1006 (since 2014/2 -1=1006) each have 2014 edges, and k=1007 has 1007 edges. Hmm, so total edges would be 2014*(1006) +1007=which is 2014*1006 +1007 =let's compute: 2000*1006 +14*1006 +1007=2,012,000 +14,084 +1007=2,012,000 +15,091=2,027,091. But C(2014,2)=2014*2013 /2=1007*2013= since 2014/2=1007, so 1007*2013=1007*(2000 +13)=1007*2000 +1007*13=2,014,000 +13,091=2,027,091, which matches. Yes, so step sizes k=1 to 1006 inclusive, each have 2014 edges, and step size k=1007 has 1007 edges. Therefore, the symmetric variables per step size approach would need to set variables for k=1 to 1006 with 2014 edges each, and k=1007 with 1007 edges. But in the problem statement, edges are non-directional and they count each chord once.
+
+Okay, but getting back, perhaps this is overcomplicating. If we think of each edge of step size k (k=1 to 1007) having weight x_k, then the total sum we need is sum_{k=1}^{1006} 2014 *x_k +1007 *x_{1007}. And our aim is to maximize this sum subject to the constraint that for any convex polygon, which would have edges with various step sizes, sum x_{k_i} over edges <=1.
+
+But given that convex polygons can be of any size, for any combination of step sizes, even this breaks if you have polygons that have different step sizes on their edges.
+
+But maybe the key idea here comes from graph theory: if you have this constraints on any cycle (polygon), such that their sum x_e <=1. Then, in graph theory, the total maximum sum is called the fractional cycle packing number. Alternatively, but I might not recall.
+
+Alternatively, here's an observation: suppose that for each edge, the maximum number of convex polygons that inc lude it is N. Then, in order to satisfy the constraints for each polygon, if every polygon "consumes" an x_e from each edge, so sum of x_e over polygons must be >= x_e *N >= sum over p containing e of x_p, but perhaps not. Maybe difficult.
+
+Alternatively, considering that the largest polygon is the entire set of 2014 points, which cycles through all edges. Wait, but a polygon cycles only through edges adjacent in the polygon. So, the entire 2014-gon would only use the edges of step size 1 (connecting consecutive points), but 2014 edges total. But, no, in the problem, for a convex polygon, the edges are the consecutive chords. So, in the 2014-gon, we use edges that are all step size 1. But how does the full polygon relate to larger step sizes? No, smaller polygons can have steps.
+
+Ah, okay, the key realizations:
+
+1. Any convex polygon is defined by selecting any subset of the points in cyclic order and connecting them with chords in that order. The edges of the polygon are the consecutive chords between these selected points. The step size for each edge is the number of original points skipped along the circle between consecutive vertices.
+
+2. The problem requires that the sum of the numbers written on the edges of each such polygon is <=1.
+
+3. Our aim is to maximize the sum of all numbers written on every chord.
+
+Now, given that any two points define a chord, and each chord can be part of infinitely many polygons (but with vertices limited to the finite 2014 points). But actually, it's countably many polygons.
+
+But since the problem doesn't restrict to simple polygons, but convex polygon is equivalent to a cyclically ordered subset, so a polygon must choose a subset in order; hence, for a given chord, the number of convex polygons that include it depends on how many ways we can choose other vertices such that the chord is part of the cyclically ordered sequence.
+
+Therefore, for each chord between two points A and B, the number of convex polygons that include chord AB as an edge is equal to the number of subsets of the remaining points that lie on one side of AB or the other. Wait, no. Since a convex polygon must have all vertices in a cyclic order, once AB is fixed as an edge of the polygon, the next vertex must be on one side or the other? Actually, since it's a convex polygon, once we have AB as an edge, the polygon must proceed either clockwise or counterclockwise around the circle. Therefore, for any chord AB, the number of convex polygons that include AB as an edge is equal to 2^(n-2) -1, where n-2 are the remaining points. But because on one side of AB, there are k points, and on the other side, there are (2014 -2 -k) points. Wait, so depending on the chord AB's length, the number of points on each side differs. Ah.
+
+If AB is a chord dividing the circle into two arcs with k and 2014 -k -2 points. Then, the number of convex polygons including AB as an edge would be:
+
+For the k points on one side, we can choose any subset (non-empty to form a polygon) of the arc, combined with any subset (including empty) of the other arc, but ordered cyclically. Wait, no.
+
+Actually, to form a polygon that includes AB as an edge, the rest of the vertices must be on one side of AB. Let's fix chord AB. The polygon must progress from A to B to the next vertex, which must be adjacent in the polygon. Wait, no. Once AB is fixed, depending on whether the polygon is on one side or the other. Actually, since it's a convex polygon on the circle, after AB, the polygon can go through points on one side of AB or the other. So, each convex polygon that includes AB consists of AB plus vertices all from one of the two arcs defined by AB. Therefore, for a chord AB splitting the circle into two arcs with m and n points respectively (m +n =2014 -2), the number of convex polygons that include AB is 2^(m) -1 (subsets of the m points, non-empty) plus 2^(n) -1 (subsets of the n points, non-empty). Therefore, number of convex polygons containing AB is 2^m +2^n -2.
+
+Therefore, the numbers vary according to the chord AB’s division of the remaining points. So, if AB is split into two equal arcs (if possible), which is the case for diameters when n is even. For 2014 points, a diameter divides the circle into two arcs of 1006 points each. Therefore, m =n =1006. So, the number of polygons including diameter AB is 2^(1006) +2^(1006) -2= 2^(1007)-2≈ astronomical numbers. For smaller chords, m and n differ.
+
+Therefore, chords that are diameters (step size 1007) split the remaining points evenly, so have the largest number of convex polygons containing them.
+
+Opposite, chords that are adjacent edges (step size1) have the most unbalanced split: one arc contains 0 points, and the other contains 2012 points. Therefore, the number of convex polygons containing and adjacent edge AB is 2^(0) +2^(2012) -2=1 +2^2012 -2=2^2012 -1≈ huge, but in such a case, almost all convex polygons include edge AB.
+
+Wait, that can’t be, since edge AB is between two adjacent points. Any convex polygon that contains both A and B with some other points ordered around would pass through AB. For example, if we have points A, B, C, then a polygon A-B-C, includes edges AB and BC. Wait, more precisely, the chord AB can be part of any polygon that has consecutive points A and B. There are a vast number of such polygons.
+
+ For example, to count the number of convex polygons that include edge AB (two adjacent points), suppose points are labeled sequentially A0, A1, A2,..., A2013. If we’re talking about edge A0A1, how many convex polygons include this edge. Such polygons must include A0 and A1 as consecutive vertices. The rest of the polygon can proceed from A1 to the next point either along the arc from A1 to A2013 or from A1 to A2. But in the latter case, it would be moving to A2, which is opposite on the circle. Wait, no. Since polygons need not have edges of step 1.
+
+Hold on. If the polygon includes edge A0A1, then they can have edges of varying step sizes.
+
+Actually, polygons including edge A0A1 must start or end at A0A1 but how? Since a convex polygon on the circle is defined as a cyclically ordered sequence of vertices, edge A0A1 is part of the polygon, so the next vertex after A1 must be some point on either the smaller arc (A1 to A2013) or the larger arc (A1 to A2013). But, since the polygon needs to be convex, it cannot 'jump' around the circle. So if you have an edge A0A1, then the next vertex needs to be after A1 or before A0. Wait, if the vertices are cyclic, A0, A1,...A2013, then after A1 comes A2, etc. So, if after A1, the next vertex could be any point you want, as long as when you proceed, the polygon remains convex. Which would impose that each subsequent vertex must lie on the arc from A1 to somewhere in the order.
+
+Actually, this is getting too convoluted. Let me take a step back.
+
+The chord AB (adjacent points) can be considered as a part of polygons that "start" at A, go to B, then proceed in one direction around the circle. So after B, you can have consecutive points or skip some. Similarly, before A. However, since the polygon is convex (non-intersecting), once you go from A to B, you can either continue along the arc from B away from A, or from A back to B. But once exiting A to B, to remain convex, can you wrap around? Wait, no. The key point is that a polygon is convex if when traversed in order, all the interior angles are less than 180 degrees, which on the circle would require that consecutive vertices step in the same direction (clockwise or counterclockwise). Therefore, once moving from A0 to A1, the polygon must continue in the direction of A1 to A2, or backtrack. But polygons on the circle that are convex require that the vertices go in a single circular direction (otherwise, if you backtrack, you would create a "dent" and the polygon would not be convex.)
+
+Wait, actually, convexity in our case is determined by the fact that the polygon, when drawn on the circle, has vertices in cyclic order and the edges don't cross. So, a convex polygon on the circle can be thought of as a polygonal chain that does not turn back on itself. So, once a edge goes from A to B (say clockwise), the next edge must go from B to a point C further in the clockwise direction. Otherwise, if we stepped back from B to A, it would cross edges or create reflex angles.
+
+With that in mind, a convex polygon with vertices on the circle is equivalent to a sequence of points visited in either clockwise or counter-clockwise order, such that between any two consecutive points in the sequence, you move along the circle in that fixed direction (without reversing). So, if you start at A0, go to A1 (clockwise), you must then go to a subsequent point clockwise from A1. Similarly, in a convex polygon, vertices are ordered around the circle in one direction.
+
+Therefore, in this case, a convex polygon (v1, v2, ..., vm) must traverse the circle in a single direction, either all clockwise or all counter-clockwise, with edges corresponding to steps of varying lengths (but all in the same direction).
+
+With this realization, we can model convex polygons as sequences of points that are ordered cyclically in one direction, spanning different step sizes.
+
+Additionally, for a given edge AB (connecting A_i to A_j, where i and j are adjacent in the polygon sequence), AB must be a step in the direction of traversal. Therefore, each convex polygon has an overall orientation (clockwise or counter-clockwise), and its edges are steps along that orientation.
+
+But, since the circle is undirected, but when you consider traversal direction, each edge can be part of two different types of polygons: those that traverse it clockwise and those counter-clockwise. But maybe all edges can be oriented either way.
+
+However, in this analysis, key is that for a chord AB (ignoring direction), the number of polygons including AB as an edge would correspond to the number of sequences starting at A, moving in clockwise direction and including AB as a step, plus the number starting at B and moving counter-clockwise, etc. However, given the convex polygons should have all edges stepping in the same direction.
+
+Now, as per the result from before, suppose you have chord AB dividing the circle into two arcs. Let’s say the chord AB leaves m points on one arc and n points on the other. For edges on the circle, that step size determines how many points are on each arc.
+
+For a chord joining A and B with k steps from A to B (i.e., a step size k), the remaining circle is split into arcs of size k-1 and 2014 - k -1 points.
+
+Wait, I'm getting confused.
+
+If we label the points on the circle as A0, A1, A2,..., A2013 around the circle. The step size k from A0 connects to A_k.
+
+So, if step size k is the number of steps around the circle from A0 to A_k. Then, the arc from A0 to A_k skips k points (if defined as steps between points). Hence, if points are labeled in consecutive order, the arc from A0 to Ak contains k intervals between points. Therefore, the number of points in the arc is k+1,Wait this may vary according to the definition.
+
+Alternatively, if step size k is the minimum number of steps required to go from one point to another, then in a circle of 2014 points, step size from A0 to A_k is the minimum between k and 2014 -k.
+
+But perhaps the easiest is to consider for chord of step size k (as before), connecting points separated by k-1 points. Hence, step size1 connects adjacent points, and step size k connects two points with k-1 points between them.
+
+So total number of different step sizes is 1 to 1007.
+
+Therefore, for a chord of step size k, the two arcs it creates have k-1 and 2014 - k-1 points.
+
+Hence, after connecting A0 to A_k, the two arcs have m =k-1 points and n =2014 -k -1 points.
+
+Therefore, the edges with step size k have m=k-1,n=2014 -k -1.
+
+The number of convex polygons including edge A0A_k is (as we thought earlier) 2^{m} -1 + 2^{n} -1=2^{m} +2^{n} -2.
+
+Hence, this the number of subsets of each arc (excluding the empty sets) summed together.
+
+But since for each convex polygon containing edge A_0A_k, the polygon must start at A0, traverse A_k, and then continue from A_k towards the other arc. Wait no. Let me correct:
+
+Since the polygon must have consecutive vertices in cyclic order, let's assume you have a polygon that includes edge A0A_k. Then, if the polygon is being traversed clockwise, after A0, you have A_k. From A_k, you can add vertices to extend in one direction (clockwise or "counter to"). But since you need to return to A0 eventually. Only by spanning the arc.
+
+However, with the earlier idea, the number of convex polygons including edge A0A_k is equal to the number of ways to choose non-empty subsets either from the arc on one side of the chord or the other, with the chord, and those subsets must form a path in the same direction. Hence, resulting in 2^{m} + 2^{n} -2.
+
+Therefore, given the chords split the remaining points into m and n, the number of polygons containing any chord is 2^{m} +2^{n} -2.
+
+Given the step size k, then m= k -1, n=2014 -k -1. So 2^{k-1} +2^{2014 -k -1} - number of subsets. Therefore, for a chord with split m= k-1, n= 2014 -k -1. Hence, the number of polygons containing it is 2^{m}+2^{n} -2.
+
+This value is symmetruc with respect to m and n, so for a diametral chord (k=1007), m =n= 1006, so 2^{1006}+2^{1006} -2=2^{1007}-2.Which is very big. For chords near and adjacent (k=1), m =0, n=2012. So the the number of polygons containing is 2^0 + 2^{2012} -2= 1+ a huge number -2≈2^{2012}-1. Which is astronomically large.
+
+Therefore, edges with smaller step sizes are included in exponentially more polygons than those with step sizes closer to the diameter.
+
+Hence, each edge near adjacency is involved in a huge number of constraints (polygons), limiting their upper x_e, while those edges that are near the are diameters involved in many fewer polygons and hence have a higher ceiling.
+
+This suggests that in the optimal solution, edges with larger step sizes can be given higher weights, because they are included in fewer polygons. Whereas edges with small step sizes (even more so step size of1, included in polygons exponentially in n) can have only extremely low weights.
+
+Thus, to maximize the total sum, one may focus on assigning higher weights to edges with larger step sizes, as they aren't constrained as much by the polygons.
+
+But how to make this precise.
+
+Let me attempt to estimate this.
+
+Suppose, as a candidate solution, the edges of step size k=1007 (diameters) are assigned to x, others to 0. Then each polygon constraint is either (uses no diameters, sum(x_e)=0) or (uses one diameter, and sum x_e=x). Since, a polygon using a diameter must consist of two points connected by the diameter. Wait, no polygon with two points can exist. A polygon must have at least 3 edgs. Hmm.
+
+Hence, using the diameter edge in a polygon requires at least a triangle. For example, pick points A, their diametral opposite B, and another point C. The polygon ABC would involve AB (a diameter) and the edges BC and CA.
+
+Therefore, if we set x for all 1007 diameters, then the sum over edge weights for a triangle including a diametral edge is x + x_{BC} + x_{CA}. So if we want to set x, we also need to account for edges adjacent to the diameter. So it's tricky.
+
+If we set x as 1 for all diameters, then a triangle ABC (A and B diametrically opposite) will have sum x_AB +x_BC +x_CA =1 + x_BC +x_CA. This must be <=1, thus requiring x_BC +x_CA <=0. But x is non-negative, so this means x_BC= +x_CA=0. Thus only allowing diametral edges. But then any polygon including diametral edges would have to include only diametral edges, but polygons use consecutive edges, so the sum is equal to the number of diametral edges used.
+
+Hence, to prevent exceeding the 1 limit, only allow, per polygon, a single diametral edge only. But since the maximum allowed sum for a polygon is 1, so per polygon containing a diametral edge, you must set x so that x number_of_diametral_edges_used <=1.
+
+But how many diametral edges can a polygon have? Let me consider a polygon with vertices where many diametral edges are used. For example, each vertex is paired with its diametral opposite. But in order to form a polygon, consecutive Edges must share a common vertex. So for instance, starting at point A, going to diametral point A', then next diametral edge would have to go from A' to some point, but then again, to make sure it's consecutive, but actually, if you alternate between A and its opposite, but you can't form a polygon  with more than two vertices, since repeated edges.
+
+Wait, no. Let me make an example. For n=2014 even, a polygon including multiple diametral edges would require vertices {A_1, A_1', A_2, A_2',...} where each primed vertex is the diametral opposite. But in order for the polygon to be convex (i.e., the vertices ordered cyclically around the circle), you cannot jump back and forth. Hence, possibly, a polygon using multiple diametral edges must consist of pairs of diametral points arranged sequentially, but given the order restriction, this isn't possible without overlapping.
+
+Alternatively, a convex polygon can include at most one diametral edge. Wait, in order to have a convex polygon, each subsequent edge needs to progress around the circle. Once you traverse a diametral edge, moving from A to A', then the next edge must start from A', and progress either clockwise or counter-clockwise. However, since the polygon is convex (non-crossing), after A', you need to go in a direction such that the polygon does not cross the previous edges. However, A' is diametrically opposite A, so moving from A' can only progress in one direction, but unless you return to A, which creates a crossing polygon.
+
+Hence, it's difficult to see how a convex polygon can include more than one diametral edge without crossing.
+
+Assuming that maximal. So assuming that each convex polygon can have at most one diametral edge. Then, setting the diametral edges to x_e=1, and other edges to zero. Then any polygon that includes a diametral edge can sum to 1, and others sum to zero. This would satisfy all constraints. Then, the total sum of diametral edges is 1007, because there are 1007 diameters (since each diameter connects i to i+1007, and there are 1007 pairs as 2014 is even: edges (0,1007),(1,1008),...,(1006,2013)).
+
+In this case, total sum becomes 1007.
+
+But this might be a valid solution, but we just need to confirm whether any convex polygon actually uses more than one diametral edge. For example, if you take six points on a circle, and try to create a hexagon with three diameters. For example, in six points labeled 0-5, and diameters 0-3, 1-4, 2-5. But connecting these in a polygon would result in crossing edges, thus invalid for a convex polygon. Hence, convex polygon can have at most one diametral edge.
+
+Thus, the conjecture is that no convex polygon can have more than one diametral edge, hence setting all diametral edges to x_e=1, and others to zero, then the sum across each polygon is either 1 (contains one diametral edge) or 0 (no diametral edges). This satisfies the constraints. However, the total sum is 1007.
+
+Wait, but is there a polygon which uses more than one diametral edge?
+
+Suppose 2014 points on a circle. If I pick two diameters that are adjacent, i.e., diameters AB and BC, where B is a common endpoint. However, a polygon cannot have two edges AB and BC without other vertices. So using two adjacent diameters to form a polygon。 But for example, the four-point convex polygon A,B,B',A', where AB and A'B' diameters. But this would form a rectangle or similar. Wait. However, on a circle, connecting A to B to B' to A' and back to A is a quadrilateral, but BB' is just a point diametral to B? Wait, need to ensure consistency.
+
+Wait, suppose diameters AB and CD. In order to connect them into a polygon, one would have to connect B to C, but BC would be a separate edge, hence creating polygon A-B-C-D with edges AB, BC, CD, DA. But BC would not be a diameter unless B and C are separated by 1007 steps. However, if you have two diameters in a polygon, they either intersect, which would render the polygon non-convex, or they don't, but connected through other edges.
+
+But I struggle to form such a polygon. For example, if diameters are AB and CD, then to form a polygon, you need AB and CD to be consecutive edges or not. If AB and CD are not overlapping or intersecting, then maybe.
+
+Take points A, B, C, D on a circle where AB and CD are diameters. Then a polygon can be A-B-C-D with edges AB, BC, CD, DA. But BC is an edge step size one when diameters are opposite. Well, unless positioned as.
+
+In a case with 6 points:
+
+A0, A1, ..., A5.
+
+Diameters: A0-A3, A1-A4, A2-A5. Convex polygon A0-A1-A4-A3 with edges A0A1, A1A4, A4A3, A3A0. The diameters here are A0A3 and A1A4. The edges A0A1 and A4A3. But the edges A1A4 and A4A3 are not diameters. Thus, such a polygon has two diameters: A0A3 and implicitly others.
+
+No, in this case, the diameters would be among the edges if polygons are formed. Therefore, it's complicated. So perhaps indeed, no polygon can include more than one diameter. Therefore, setting each diameter edge to 1, sum total 1007, and other edges to zero.
+
+But in this case, the total is 1007. Then, this may be a candidate for maximum possible sum.
+
+But wait, polygons that include none of the diameter would have sum zero sum in their edges, satisfying sum <=1.
+
+Polygons that include a diameter would have sum 1, and edge with non-diameters would need to have sum <=1. But in our current assignment, non-diameter edges were set to zero, so other polygons with non-diameters sum to x_e of their edges.
+
+Wait, no. In our assignment only diameter edges are set to 1. So polygons using both diameter and normal edges would sum 1 + sum of other edges. But since non-diameter edges were set to zero, such polygons would sum to 1. Hence okay. So if the non-diameter edges are set to zero, then any polygon that includes a diameter sums to 1, else 0. Which meets the constraints.
+
+But that might actually require that no polygon has two diameters. If, in fact,  any polygon can have only 0 or 1 diameter edges.
+
+If that's case,then  setting all diameters to 1 and others to 0 would give total 1007 and satisfying all constraints.
+
+But then wait, hmm, is that a valid answer? 1007. The maximum possible total for sum of all written numbers is 1007. However, according to previous thinking with assigning 1/2014 to all edges gave total around 1006.5, but then setting diameters to 1 and total sum 1007 is slightly higher, but the earlier approach assigned all edges to 1/2014 but maybe couldn't.
+
+But how do we definitely conclude that no convex polygon can't contain two diamente edges.
+
+Wait, considering the original problem says "convex polygon", which on the circle needs to be simple, non-intersecting, all vertices on the circumference.
+
+If we imagine two diameters in a convex polygon, but these diameters intersect at the center. So, two diameters cross each other, but this polygon would have intersecting edges, hence no longer convex.
+
+Wait, in order to have a convex polygon with multiple diameters endpoints must be arranged so that no edges cross. For example, if we have four points in order A, B, C, D on the circle, with diameters AC and BD (intersecting). Then a polygon A,B,C,D would be a convex quadrilateral but with intersecting edges. Hence, that's not a convex polygon. If instead we make a polygon with diameters non-crossing, you would need the diameters not to intersect. But non-crossing diameters would need to be arranged with their endpoints alternating, such that they don't cross.
+
+But on a 2014-point circle, two diameters intersect if and only if their connecting arcs overlap.
+
+Therefore, in order to have two non-crossing diameters, the four endpoints would need to be arranged such that each diameter connects points in order. However, considering 2014 is an even number, if you have two non-crossing diameters, e.g., AB and CD, then the points must be arranged as A, some points, C, B, some points, D. Wait, but then diameters AB and CD do not cross.
+
+But for example, in points ordered A, C, B, D, then the diameters AB and CD wouldn't cross, but you have an issue if you want to make a polygon including them. However, connecting diameters AB and CD with other edges, like BC or CB etc., but since polygons need consecutive edges.
+
+Wait, if you have points ordered A, C, B, D, then diameters AB and CD are non-crossing, but edges needed for the polygon. But then connecting A to B (diameter), B to D (edge BD), but then BD may cross diameter AC? Hmm.
+
+Alternatively, arrange the points so that AB and CD are adjacent diameters. For example, points in order A, B, C, D with diameters AB and CD (but this implies that in AB is a diameter step size 1, and CD is a diameter step size 1 again, but this conflicts.
+
+In any case, the notion that the diameters must be arranged around the circle without crossings is the key. But given that all diameters pass through the center, any two diameters intersect at the center. Hence, to have a polygon include two diameters, the polygon must essentially cross at the center, but a convex polygon cannot have intersecting edges.
+
+Therefore, any convex polygon cannot have two diameters. Therefore, our initial assumption holds, that a convex polygon can include at maximum one diameter edge. Hence, having diameter edges set to 1, and others to 0, allowed as the diamonds sum 1, and others sum 0. Hence, this assignment is possible. Therefore, Total sum is the number of diameters:1007.
+
+But in this case, what about larger polygons, like a polygon with three diameters? Indeed, impossible as diameters intersect.
+
+Therefore, if the answer is 1007, I need to check.
+
+But hang on, consider a polygon consisting of just the diameter. But a polygon must have at least three edges. Therefore, a diameter alone is not a polygon. A polygon must have three edges. Including one diameter and two other edges. Wait, but a convex polygon requires three edges. Hence, if three consecutive edges include one diameter. For example, suppose a polygon with vertices A, B, C, with edge AB diameter, and edges BC, CA. In such a case, the sum is AB=1 x_AB=1, and x_BC, x_CA=0. Therefore, total sum=1, which is acceptable. So this still matches.
+
+With this assignment, any polygon including a diameter will x_e=1 for the diameter and zero for other edges. Hence sum <=1 okay. All other polygons (without diameters) have sum 0. Therefore, this works.
+
+Is there a way to have more than one edge set to non-zero without violating constraints?
+
+For example, suppose we set the diameters to 1 and also set step size 2 edges to 0.5. Wait, but polygons that include a diameter and a step size 2 edge would sum to 1 +0.5=1.5>1. Hence, violating constraints. Thus, this would not work. If we set diameters to 1 and another edge set to 0.5s but only in such a way that the polygons including them don't overlap.
+
+But given how edges are interconnected and appear in multiple polygons, it's challenging to see how to set other edges any higher than zero.
+
+Alternatively,, distributing equally weight among a edges that are pairwise non-adjacent. But in the circle with 2014 points, it's challenging for two edges to be non-adjacent.
+
+Alternatively, forming a matching set of edges. A matching where no deux edges share a common vertex. Since in such way, each edge's use is disjoint. Then, the matchings could then have weights. For example, each matching could be assigned 1/2.
+
+But in this case, one matching has no conflicts. If you do multiple matchings, but being a fraction.
+
+However, this may not relate to our problem directly. Let's think.
+
+Wait, in our problem, if we pick matching  edges (non-adjacent), these edges are pairwise disjoint. Therefore, a polygon may include at most one edge from the matching. Then, setting each edge in the matching to 1 would cause Sum=1 for any polygon including a matching edge, OK. The total sum would be the size of the maching.
+
+But in a circle, a max matching size is floor(2014/2)=1007 edges (since a circular matching would be like diameters if possible). Therefore, maximum matching is 1007 edges. Hence, setting all edge in the matching to 1, a total sum 1007. Which matches our previous result.
+
+Thus, in either case, the matching of diameters gives total sum 1007.
+
+If there exists another maximal matching set of edges achieving higher total, but on a circle it's not possible – the maximum matching is 1007 edges. Therefore, it's theoretical Upper bound.
+
+Wait, but in a circle (cycle graph), the maximum matching for even nodes s is n/2, which is 1007 here. So if your problem is equivalent to such matching.
+
+Hmm, but why?
+
+Actually, in our problem, edges have non-negative numbers assigned such that any convex polygon (i.e., any cycle) sums to at most 1. Maximum total sum is desired. Such problem is like a graph where each edge has weight subject to cycle constraints. It resembles the problem of edge weights such that the weight of each cycle is <=1, and maximizing total weight. If the graph is arbitrary), which is knownto be equivalent to finding a decomposition into feedback edges with certain packing. However, in thisproblem, weights are not for the entire cycle but individually.
+
+But specifically, the maximum total sum would be equal to the inverse of the minimum fractional edge overlay or something else.
+
+Alternatively, seeing that the maximum total sum is equal tothe maximum number of edges that can be selected such that no cyclic overlap. But I'm not sure.
+
+However, in our case, the maximal assignment corresponds to a set of edges where each polygon (even triangles) can take at most 1. Hence, thinking about matchings: if you select a set of edges, each connected to non-overlapping polygon segments (no two edges share a common polygon.  then, each edge can be included once.
+
+But in a circle, matching is such that no two edges are adjacent—but actually, in such case, matching on a cycle graph gives maximum n/2 edges, as in our previous.
+
+But given howconvex polygons are defined on the circle, theseedges can be part of several polygons, thus the overlap. So a matching set of edges can be included in 1007, since no polygon can include two matching edges. Because, (if two matching edges arespon different endpoints) but polygons Can include non-shared edges.
+
+Wait, confusing.
+
+But let's recognize that known solution in such cycling problem is maximum, the matching size.
+
+So I think this problem's answer is 1007, i.e., \boxed{1007}
+
+**Final Answer**
+\boxed{1007}
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Problem Representation</skill>
+<definition>The ability to translate a mathematical problem into an appropriate mental model, identifying key variables, constraints, and objectives.</definition>
+
+<start>191</start>
+<end>759</end>
+<text>First, I need to understand the problem better. We have a circle with 2014 points on it. Then, every possible chord (segment connecting two points) has a non-negative number assigned to it. The restriction is that if we take any convex polygon (which, since the points are on a circumference, is just any polygon where all the vertices are distinct and ordered around the circle), the sum of the numbers on the edges of that polygon must be ≤ 1. And we want the maximum total sum across all chords.</text>
+<explanation>The solver is translating the problem statement into a clear mental model, identifying the key elements (points on a circle, chords with assigned numbers), constraints (sum of numbers on polygon edges ≤ 1), and the objective (maximize total sum).</explanation>
+
+<start>759</start>
+<end>1010</end>
+<text>So, this seems like an optimization problem with constraints. The variables are the numbers on each chord, and we need to maximize their sum under the constraint that for every convex polygon (i.e., every cyclic subset of the points), the sum on its edges is ≤ 1.
+
+Alright, so this is a linear programming problem. The objective function is the sum of all variables (numbers on the chords), subject to the constraints that the sum over each polygon's edges is ≤1. The variables are all non-negative.</text>
+<explanation>The solver further refines the problem representation, recognizing it as a linear programming problem with specific variables, objective function, and constraints.</explanation>
+
+<start>9483</start>
+<end>9915</end>
+<text>Okay, but getting back, perhaps this is overcomplicating. If we think of each edge of step size k (k=1 to 1007) having weight x_k, then the total sum we need is sum_{k=1}^{1006} 2014 *x_k +1007 *x_{1007}. And our aim is to maximize this sum subject to the constraint that for any convex polygon, which would have edges with various step sizes, sum x_{k_i} over edges <=1.
+
+But given that convex polygons can be of any size, for any combination of step sizes, even this breaks if you have polygons that have different step sizes on their edges.</text>
+<explanation>The solver refines the problem representation by introducing variables for edge weights based on step size and expressing the objective function and constraints in terms of these variables.</explanation>
+
+<skill>Mathematical Reformulation</skill>
+<definition>The ability to restate a problem in equivalent but potentially more tractable mathematical terms, often involving changing variables or perspective.</definition>
+
+<start>2713</start>
+<end>3239</end>
+<text>Probably all edges of the same length can be treated the same? If there is rotational symmetry, maybe the maximum is achieved when all edges of the same length have the same value. Let me define variables not per edge, but per edge length. Since the points are on a circle, an edge's length corresponds to the number of points it skips. For example, adjacent points (edges of length 1) connect to their immediate neighbors, then edges of length 2 skip one point, etc. The maximum length (in terms of skips) would be floor(2014/2), beyond which they start overlapping on the other side.</text>
+<explanation>The solver reformulates the problem by introducing the concept of edge length (step size) as a key variable, exploiting the rotational symmetry of the problem to reduce the number of variables from individual edges to classes of edges based on their length.</explanation>
+
+<start>14083</start>
+<end>14732</end>
+<text>Primal problem:
+
+Variables: x_e for each edge e (C(2014, 2) variables).
+
+Objective: Maximize sum_e x_e.
+
+Constraints: For every convex polygon P, sum_{e ∈ edges(P)} x_e ≤ 1.
+
+Dual problem:
+
+Variables: y_P for each convex polygon P (an exponential number of variables).
+
+Objective: Minimize sum_P y_P.
+
+Constraints: For each edge e, sum_{P: e ∈ edges(P)} y_P ≥1.
+
+This is because in duality, the primal constraints (each polygon sum <=1) become dual variables y_P, and the primal objective coefficients (all 1's) become the dual constraints.</text>
+<explanation>The solver reformulates the problem in terms of its dual linear program, showing a sophisticated understanding of linear programming duality theory to gain new insights into the problem structure.</explanation>
+
+<start>17835</start>
+<end>18256</end>
+<text>If we imagine two diameters in a convex polygon, but these diameters intersect at the center. So, two diameters cross each other, but this polygon would have intersecting edges, hence no longer convex.
+
+Wait, in order to have a convex polygon with multiple diameters endpoints must be arranged so that no edges cross. For example, if we have four points in order A, B, C, D on the circle, with diameters AC and BD (intersecting). Then a polygon A,B,C,D would be a convex quadrilateral but with intersecting edges.</text>
+<explanation>The solver reformulates the problem by focusing on the geometric properties of convex polygons with diameter edges, using this to establish key constraints on the possible configurations.</explanation>
+
+<skill>Geometric Reasoning</skill>
+<definition>The ability to reason about spatial relationships, shapes, and configurations in geometric contexts.</definition>
+
+<start>5955</start>
+<end>6464</end>
+<text>Wait, but on the circle, a polygon is convex if and only if it's non-intersecting. So as long as the vertices are in cyclic order, connecting them with chords along the circle (i.e., edges of step size 1), but actually, convex polygon edges can be any chords as long as they form the boundary of a convex polygon. Wait, perhaps I need to recall that in the plane, a polygon is convex if all its internal angles are less than 180 degrees, but in the context of being on a circle, how does that translate?</text>
+<explanation>The solver is reasoning about the geometric concept of convexity in the specific context of polygons on a circle, trying to translate the general definition of convexity to this specific geometric setting.</explanation>
+
+<start>6464</start>
+<end>6881</end>
+<text>Wait, actually, in the problem statement, it says "any convex polygon with vertices on some of the 2014 points". But since the points are on a circle, a convex polygon is exactly a polygon where the vertices lie on the circle and are connected in cyclic order without crossing. So, convex polygons in this case are just the polygons that are convex and have all vertices on the circumference, which, for points arranged on a circle, is equivalent to the polygon being non-intersecting and cyclic.</text>
+<explanation>The solver clarifies the geometric concept of convex polygons with vertices on a circle, recognizing that in this context, convexity is equivalent to having vertices in cyclic order without crossing edges.</explanation>
+
+<start>18256</start>
+<end>18969</end>
+<text>Hence, that's not a convex polygon. If instead we make a polygon with diameters non-crossing, you would need the diameters not to intersect. But non-crossing diameters would need to be arranged with their endpoints alternating, such that they don't cross.
+
+But on a 2014-point circle, two diameters intersect if and only if their connecting arcs overlap.
+
+Therefore, in order to have two non-crossing diameters, the four endpoints would need to be arranged such that each diameter connects points in order. However, considering 2014 is an even number, if you have two non-crossing diameters, e.g., AB and CD, then the points must be arranged as A, some points, C, B, some points, D. Wait, but then diameters AB and CD do not cross.</text>
+<explanation>The solver is using geometric reasoning to analyze the conditions under which diameters of a circle would cross, and how points would need to be arranged to have non-crossing diameters, which is crucial for determining whether a convex polygon can contain multiple diameters.</explanation>
+
+<skill>Combinatorial Analysis</skill>
+<definition>The ability to analyze problems involving counting, arrangement, and selection of discrete objects, often using principles of combinatorics.</definition>
+
+<start>11818</start>
+<end>12599</end>
+<text>Therefore, for a chord AB (ignoring direction), the number of polygons including AB as an edge would correspond to the number of sequences starting at A, moving in clockwise direction and including AB as a step, plus the number starting at B and moving counter-clockwise, etc. However, given the convex polygons should have all edges stepping in the same direction.
+
+Now, as per the result from before, suppose you have chord AB dividing the circle into two arcs. Let's say the chord AB leaves m points on one arc and n points on the other. For edges on the circle, that step size determines how many points are on each arc.
+
+For a chord joining A and B with k steps from A to B (i.e., a step size k), the remaining circle is split into arcs of size k-1 and 2014 - k -1 points.</text>
+<explanation>The solver is performing combinatorial analysis to count the number of convex polygons that include a particular chord, considering how the chord divides the circle into arcs and how many points are on each arc.</explanation>
+
+<start>13119</start>
+<end>13782</end>
+<text>Hence, after connecting A0 to A_k, the two arcs have m =k-1 points and n =2014 -k -1 points.
+
+Therefore, the edges with step size k have m=k-1,n=2014 -k -1.
+
+The number of convex polygons including edge A0A_k is (as we thought earlier) 2^{m} -1 + 2^{n} -1=2^{m} +2^{n} -2.
+
+Hence, this the number of subsets of each arc (excluding the empty sets) summed together.
+
+But since for each convex polygon containing edge A_0A_k, the polygon must start at A0, traverse A_k, and then continue from A_k towards the other arc. Wait no. Let me correct:
+
+Since the polygon must have consecutive vertices in cyclic order, let's assume you have a polygon that includes edge A0A_k. Then, if the polygon is being traversed clockwise, after A0, you have A_k.</text>
+<explanation>The solver is using combinatorial analysis to determine the number of convex polygons that include a specific edge, expressing this in terms of the number of possible subsets of points on the two arcs formed by the chord.</explanation>
+
+<start>14732</start>
+<end>15170</end>
+<text>By strong duality, the optimal value of the primal (maximum total x_e) is equal to the optimal value of the dual (minimum total y_P over all dual solutions).
+
+But even so, solving the dual is impossible because we have an exponential number of variables. However, perhaps there's a pattern.
+
+If there's a uniform dual solution where each polygon is assigned the same dual variable y_P, but I don't think so, since edges are part of different numbers of polygons.</text>
+<explanation>The solver is using combinatorial analysis in the context of linear programming duality, considering the number of variables in the dual problem and the pattern of how edges are distributed across polygons.</explanation>
+
+<skill>Pattern Recognition</skill>
+<definition>The ability to identify regularities, structures, or relationships in mathematical objects or processes.</definition>
+
+<start>15170</start>
+<end>15699</end>
+<text>Alternatively, if all dual variables y_P corresponding to polygons that include edge e sum up to 1 for each e. Then, each edge is covered by exactly sum_{P: e ∈ P} y_P =1. The dual objective is to minimize sum_P y_P.
+
+But given the problem is symmetric, perhaps each edge is in the same number of convex polygons. Then the uniform dual assignment y_P = t for each polygon P, where t is a number such that sum_{P: e ∈ P} t =1 for each edge e. Then t would have to be 1 divided by the number of convex polygons containing any given edge. However, this is again not possible because different edges will be in different numbers of convex polygons.</text>
+<explanation>The solver is recognizing patterns related to the symmetry of the problem and how edges are distributed across polygons, attempting to find a uniform assignment of dual variables that would exploit this pattern.</explanation>
+
+<start>16285</start>
+<end>16862</end>
+<text>This value is symmetruc with respect to m and n, so for a diametral chord (k=1007), m =n= 1006, so 2^{1006}+2^{1006} -2=2^{1007}-2.Which is very big. For chords near and adjacent (k=1), m =0, n=2012. So the the number of polygons containing is 2^0 + 2^{2012} -2= 1+ a huge number -2≈2^{2012}-1. Which is astronomically large.
+
+Therefore, edges with smaller step sizes are included in exponentially more polygons than those with step sizes closer to the diameter.
+
+Hence, each edge near adjacency is involved in a huge number of constraints (polygons), limiting their upper x_e, while those edges that are near the are diameters involved in many fewer polygons and hence have a higher ceiling.</text>
+<explanation>The solver recognizes a pattern in how the number of polygons containing an edge varies with the step size of the edge, identifying that edges with smaller step sizes appear in exponentially more polygons than edges with larger step sizes.</explanation>
+
+<start>19865</start>
+<end>20297</end>
+<text>In any case, the notion that the diameters must be arranged around the circle without crossings is the key. But given that all diameters pass through the center, any two diameters intersect at the center. Hence, to have a polygon include two diameters, the polygon must essentially cross at the center, but a convex polygon cannot have intersecting edges.
+
+Therefore, any convex polygon cannot have two diameters. Therefore, our initial assumption holds, that a convex polygon can include at maximum one diameter edge.</text>
+<explanation>The solver recognizes a critical pattern about the geometric arrangement of diameters in a circle - that all diameters pass through the center and therefore any two diameters must intersect, which leads to the key insight that a convex polygon can contain at most one diameter.</explanation>
+
+<skill>Strategic Optimization</skill>
+<definition>The ability to devise and implement strategies to maximize or minimize quantities subject to constraints, often involving choosing which variables to prioritize or which approach will be most efficient.</definition>
+
+<start>16862</start>
+<end>17122</end>
+<text>This suggests that in the optimal solution, edges with larger step sizes can be given higher weights, because they are included in fewer polygons. Whereas edges with small step sizes (even more so step size of1, included in polygons exponentially in n) can have only extremely low weights.
+
+Thus, to maximize the total sum, one may focus on assigning higher weights to edges with larger step sizes, as they aren't constrained as much by the polygons.</text>
+<explanation>The solver is developing a strategic approach to optimization, recognizing that edges with larger step sizes should be given higher weights because they appear in fewer polygons and therefore have fewer constraints limiting their values.</explanation>
+
+<start>20297</start>
+<end>20745</end>
+<text>Hence, having diameter edges set to 1, and others to 0, allowed as the diamonds sum 1, and others sum 0. Hence, this assignment is possible. Therefore, Total sum is the number of diameters:1007.
+
+But in this case, what about larger polygons, like a polygon with three diameters? Indeed, impossible as diameters intersect.
+
+Therefore, if the answer is 1007, I need to check.
+
+But hang on, consider a polygon consisting of just the diameter. But a polygon must have at least three edges. Therefore, a diameter alone is not a polygon. A polygon must have three edges.</text>
+<explanation>The solver is strategically optimizing by setting the weights of diameters to 1 and all other edges to 0, then checking whether this assignment satisfies all constraints, particularly for polygons that might include multiple diameters or just a single diameter.</explanation>
+
+<start>21328</start>
+<end>21921</end>
+<text>Is there a way to have more than one edge set to non-zero without violating constraints?
+
+For example, suppose we set the diameters to 1 and also set step size 2 edges to 0.5. Wait, but polygons that include a diameter and a step size 2 edge would sum to
+
+Summary of Key Skills:
+Not found

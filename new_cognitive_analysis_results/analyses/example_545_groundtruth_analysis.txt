@@ -1,0 +1,206 @@
+Problem:
+A child attaches a small rock of mass $M=0.800 \mathrm{~kg}$ to one end of a uniform elastic string of mass $m=0.100 \mathrm{~kg}$ and natural length $L=0.650 \mathrm{~m}$. He grabs the other end and swings the rock in uniform circular motion around his hand, with angular velocity $\omega=6.30 \mathrm{rad} / \mathrm{s}$. Assume his hand is stationary, and that the elastic string behaves like a spring with spring constant $k=40.0 \mathrm{~N} / \mathrm{m}$. After that, at time $t=0$, a small longitudinal perturbation starts from the child's hand, traveling towards the rock. At time $t=T_{0}$, the perturbation reaches the rock. How far was the perturbation from the child's hand at time $t=\frac{T_{0}}{2}$ ? Ignore gravity.
+
+Domain: Algebraic systems
+
+Solution Trajectory (groundtruth):
+Let $x$ be the distance from a point on the unstretched elastic string to the center of rotation (child's hand). Note that $x$ varies from 0 to $L$. However, the string stretches, so let $r$ be the distance from a point on the stretched string (in steady state) to the center of rotation. Let $T$ be the tension in the string as a function of position. Let $\lambda=\frac{m}{L}$. Consider a portion of the string $d x$. We know that the portion as spring constant $k \frac{L}{d x}$ and it is stretched by $d r-d x$, so by Hooke's Law, we have $T=k \frac{L}{d x}(d r-d x)=k L\left(\frac{d r}{d x}-1\right)$. Also, by applying Newton's Second Law on the portion, we get $d T=-\lambda d x \cdot \omega^{2} r$, which implies $\frac{d T}{d x}=-\lambda \omega^{2} r$. Combining the two equations, we obtain
+$$
+T=-k L\left(\frac{1}{\lambda \omega^{2}} T^{\prime \prime}+1\right)
+$$
+We know that
+$$
+T^{\prime}(x=0)=0,
+$$
+since $r=0$ when $x=0$. The general solution is
+$$
+T=A \cos \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)-k L
+$$
+for some constant $A$. Thus, we have
+$$
+r=-\frac{1}{\lambda \omega^{2}} T^{\prime}=\frac{A}{\omega \sqrt{k m}} \sin \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)
+$$
+Also, we have that
+$$
+T(x=L)=M \omega^{2} \int_{0}^{L} r x d x=M \omega^{2} \int_{0}^{L}\left(\frac{T}{k L}+1\right) x .
+$$
+Plugging in our general solution, we can get $A \cos \left(\omega \sqrt{\frac{m}{k}}\right)-k L=M \omega^{2} \cdot \frac{A}{k L} \frac{L}{\omega} \sqrt{\frac{k}{m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)$. Solving for $A$, we obtain
+$$
+A=\frac{k L}{\cos \left(\omega \sqrt{\frac{m}{k}}\right)-\frac{M \omega}{\sqrt{k m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)}
+$$
+We now introduce a claim:
+
+
+
+Claim. The speed of a longitudinal wave on a spring with spring constant $k$, length $L$, and mass $m$ is given by $v=L \sqrt{\frac{k}{m}}$
+
+Proof. Let a spring with spring constant $k$ and mass $m$ be stretched to length $L$. The spring constant of a small portion $d x$ of the spring is $k \frac{L}{d x}$, and the excess tension is $\delta T=k \frac{L}{d x} d s=k L \frac{d s}{d x}$, where $s$ is the displacement from equilibrium. By Newton's second law on the portion, we get $d T=\frac{m}{L} d x \cdot \frac{d^{2} s}{d t^{2}}$, or $\frac{d T}{d x}=\frac{m}{L} \frac{d^{2} s}{d t^{2}}$. Thus, $L^{2} \frac{k}{m} \frac{d^{2} s}{d x^{2}}=\frac{d^{2} s}{d t^{2}}$, which we recognize as the wave equation with speed $v=L \sqrt{\frac{k}{m}}$ and the time it takes to traverse the spring is $\sqrt{\frac{m}{k}}$.
+
+Thus, we have
+$$
+t=\int d t=\int_{0}^{x} \sqrt{\frac{\lambda d x}{k \cdot \frac{L}{d x}}}=\int_{0}^{x} \sqrt{\frac{\lambda}{k L}} d x=\sqrt{\frac{m}{k}} \frac{x}{L}
+$$
+Since we know $x=L$ when $t=T_{0}$, we have $x=\frac{L}{2}$ when $t=\frac{T_{0}}{2}$. Therefore, our answer is
+$$
+r=\frac{A}{\omega \sqrt{k m}} \sin \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)=\frac{1}{\omega} \sqrt{\frac{k}{m}} \frac{L \sin \left(\frac{1}{2} \omega \sqrt{\frac{m}{k}}\right)}{\cos \left(\omega \sqrt{\frac{m}{k}}\right)-\frac{M \omega}{\sqrt{k m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)}=1.903 \mathrm{~m}
+$$
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Mathematical Modeling</skill>
+<definition>The process of translating a physical problem into mathematical language using variables, equations, and mathematical structures to represent real-world phenomena.</definition>
+
+<start>0</start>
+<end>262</end>
+<text>Let $x$ be the distance from a point on the unstretched elastic string to the center of rotation (child's hand). Note that $x$ varies from 0 to $L$. However, the string stretches, so let $r$ be the distance from a point on the stretched string (in steady state) to the center of rotation. Let $T$ be the tension in the string as a function of position. Let $\lambda=\frac{m}{L}$.</text>
+<explanation>The solver begins by defining variables to represent physical quantities in the problem. They establish a coordinate system and define variables for distances, tension, and linear mass density. This is a fundamental step in mathematical modeling where physical concepts are translated into mathematical variables.</explanation>
+
+<start>262</start>
+<end>481</end>
+<text>Consider a portion of the string $d x$. We know that the portion as spring constant $k \frac{L}{d x}$ and it is stretched by $d r-d x$, so by Hooke's Law, we have $T=k \frac{L}{d x}(d r-d x)=k L\left(\frac{d r}{d x}-1\right)$.</text>
+<explanation>The solver applies Hooke's Law to model the elastic behavior of the string, showing how physical laws are translated into mathematical equations. They consider an infinitesimal portion of the string and derive the tension based on the spring properties.</explanation>
+
+<start>481</start>
+<end>650</end>
+<text>Also, by applying Newton's Second Law on the portion, we get $d T=-\lambda d x \cdot \omega^{2} r$, which implies $\frac{d T}{d x}=-\lambda \omega^{2} r$. Combining the two equations, we obtain
+$$
+T=-k L\left(\frac{1}{\lambda \omega^{2}} T^{\prime \prime}+1\right)
+$$</text>
+<explanation>The solver applies Newton's Second Law to the same portion of string, further developing the mathematical model by incorporating dynamics. This demonstrates how multiple physical principles are integrated into a cohesive mathematical framework.</explanation>
+
+<skill>Differential Equation Formulation</skill>
+<definition>The ability to express relationships between variables and their derivatives to model how quantities change with respect to each other, particularly in physical systems.</definition>
+
+<start>481</start>
+<end>650</end>
+<text>Also, by applying Newton's Second Law on the portion, we get $d T=-\lambda d x \cdot \omega^{2} r$, which implies $\frac{d T}{d x}=-\lambda \omega^{2} r$. Combining the two equations, we obtain
+$$
+T=-k L\left(\frac{1}{\lambda \omega^{2}} T^{\prime \prime}+1\right)
+$$</text>
+<explanation>The solver formulates a differential equation by relating the tension T to its second derivative T'', creating a mathematical structure that captures how tension varies along the string. This shows the ability to express physical relationships through differential equations.</explanation>
+
+<start>1478</start>
+<end>1729</end>
+<text>By Newton's second law on the portion, we get $d T=\frac{m}{L} d x \cdot \frac{d^{2} s}{d t^{2}}$, or $\frac{d T}{d x}=\frac{m}{L} \frac{d^{2} s}{d t^{2}}$. Thus, $L^{2} \frac{k}{m} \frac{d^{2} s}{d x^{2}}=\frac{d^{2} s}{d t^{2}}$, which we recognize as the wave equation with speed $v=L \sqrt{\frac{k}{m}}$</text>
+<explanation>The solver derives the wave equation, a partial differential equation, by applying physical principles to the system. This demonstrates sophisticated differential equation formulation skills by connecting spatial and temporal derivatives to describe wave propagation.</explanation>
+
+<skill>Boundary Condition Analysis</skill>
+<definition>The process of identifying and applying constraints at specific points or boundaries of a system to find unique solutions to differential equations.</definition>
+
+<start>650</start>
+<end>715</end>
+<text>We know that
+$$
+T^{\prime}(x=0)=0,
+$$
+since $r=0$ when $x=0$.</text>
+<explanation>The solver identifies a boundary condition at x=0 (the child's hand), recognizing that the derivative of tension must be zero at this point. This demonstrates the ability to translate physical constraints into mathematical boundary conditions.</explanation>
+
+<start>891</start>
+<end>1043</end>
+<text>Also, we have that
+$$
+T(x=L)=M \omega^{2} \int_{0}^{L} r x d x=M \omega^{2} \int_{0}^{L}\left(\frac{T}{k L}+1\right) x .
+$$</text>
+<explanation>The solver establishes another boundary condition at x=L (the rock's position), relating the tension at this point to the centripetal force required for circular motion. This shows understanding of how physical constraints at boundaries determine mathematical solutions.</explanation>
+
+<skill>Differential Equation Solving</skill>
+<definition>The ability to find general or particular solutions to differential equations using various mathematical techniques such as separation of variables, integrating factors, or recognizing standard forms.</definition>
+
+<start>715</start>
+<end>791</end>
+<text>The general solution is
+$$
+T=A \cos \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)-k L
+$$</text>
+<explanation>The solver presents the general solution to the differential equation for tension, showing the ability to solve second-order differential equations with constant coefficients. The solution includes a parameter A that will be determined using boundary conditions.</explanation>
+
+<start>791</start>
+<end>891</end>
+<text>for some constant $A$. Thus, we have
+$$
+r=-\frac{1}{\lambda \omega^{2}} T^{\prime}=\frac{A}{\omega \sqrt{k m}} \sin \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)
+$$</text>
+<explanation>The solver uses the relationship between tension and position to derive the expression for r (the radial distance). This demonstrates the ability to find related variables from the solution of the differential equation by applying differentiation and algebraic manipulation.</explanation>
+
+<skill>Physical Insight and Theoretical Deduction</skill>
+<definition>The ability to apply physical principles and theories to derive new insights, make predictions, or establish theoretical relationships in a system.</definition>
+
+<start>1231</start>
+<end>1478</end>
+<text>Claim. The speed of a longitudinal wave on a spring with spring constant $k$, length $L$, and mass $m$ is given by $v=L \sqrt{\frac{k}{m}}$
+
+Proof. Let a spring with spring constant $k$ and mass $m$ be stretched to length $L$. The spring constant of a small portion $d x$ of the spring is $k \frac{L}{d x}$, and the excess tension is $\delta T=k \frac{L}{d x} d s=k L \frac{d s}{d x}$, where $s$ is the displacement from equilibrium.</text>
+<explanation>The solver makes a theoretical claim about wave speed and begins proving it from first principles. This demonstrates the ability to formulate and prove theoretical relationships based on physical understanding, showing deep physical insight.</explanation>
+
+<start>1729</start>
+<end>1850</end>
+<text>and the time it takes to traverse the spring is $\sqrt{\frac{m}{k}}$.
+
+Thus, we have
+$$
+t=\int d t=\int_{0}^{x} \sqrt{\frac{\lambda d x}{k \cdot \frac{L}{d x}}}=\int_{0}^{x} \sqrt{\frac{\lambda}{k L}} d x=\sqrt{\frac{m}{k}} \frac{x}{L}
+$$</text>
+<explanation>The solver deduces the time it takes for a wave to traverse the spring and derives a relationship between position and time. This shows physical insight by connecting wave propagation theory to the specific problem context.</explanation>
+
+<skill>Integration of Multiple Concepts</skill>
+<definition>The ability to synthesize and apply multiple mathematical and physical concepts to solve complex problems, often requiring connections across different domains of knowledge.</definition>
+
+<start>1043</start>
+<end>1231</end>
+<text>Plugging in our general solution, we can get $A \cos \left(\omega \sqrt{\frac{m}{k}}\right)-k L=M \omega^{2} \cdot \frac{A}{k L} \frac{L}{\omega} \sqrt{\frac{k}{m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)$. Solving for $A$, we obtain
+$$
+A=\frac{k L}{\cos \left(\omega \sqrt{\frac{m}{k}}\right)-\frac{M \omega}{\sqrt{k m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)}
+$$</text>
+<explanation>The solver integrates the boundary conditions with the general solution to determine the constant A. This requires synthesizing concepts from differential equations, mechanics of circular motion, and elastic properties of materials, demonstrating the ability to connect multiple mathematical and physical concepts.</explanation>
+
+<start>1850</start>
+<end>2172</end>
+<text>Since we know $x=L$ when $t=T_{0}$, we have $x=\frac{L}{2}$ when $t=\frac{T_{0}}{2}$. Therefore, our answer is
+$$
+r=\frac{A}{\omega \sqrt{k m}} \sin \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)=\frac{1}{\omega} \sqrt{\frac{k}{m}} \frac{L \sin \left(\frac{1}{2} \omega \sqrt{\frac{m}{k}}\right)}{\cos \left(\omega \sqrt{\frac{m}{k}}\right)-\frac{M \omega}{\sqrt{k m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)}=1.903 \mathrm{~m}
+$$</text>
+<explanation>The solver brings together all previous work to calculate the final answer. This requires integrating the wave propagation theory, the stretched string model, and the boundary conditions. The solver substitutes x=L/2 into the equation for r and performs algebraic manipulations to reach the numerical result, demonstrating the integration of multiple concepts to solve the problem.</explanation>
+
+<skill>Algebraic Manipulation</skill>
+<definition>The ability to transform and rearrange mathematical expressions to simplify them, solve for variables, or express relationships in more useful forms.</definition>
+
+<start>1043</start>
+<end>1231</end>
+<text>Plugging in our general solution, we can get $A \cos \left(\omega \sqrt{\frac{m}{k}}\right)-k L=M \omega^{2} \cdot \frac{A}{k L} \frac{L}{\omega} \sqrt{\frac{k}{m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)$. Solving for $A$, we obtain
+$$
+A=\frac{k L}{\cos \left(\omega \sqrt{\frac{m}{k}}\right)-\frac{M \omega}{\sqrt{k m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)}
+$$</text>
+<explanation>The solver rearranges a complex equation to solve for the constant A. This demonstrates sophisticated algebraic manipulation skills, including working with trigonometric functions and complex fractions.</explanation>
+
+<start>1850</start>
+<end>2172</end>
+<text>Since we know $x=L$ when $t=T_{0}$, we have $x=\frac{L}{2}$ when $t=\frac{T_{0}}{2}$. Therefore, our answer is
+$$
+r=\frac{A}{\omega \sqrt{k m}} \sin \left(\frac{\omega}{L} \sqrt{\frac{m}{k}} x\right)=\frac{1}{\omega} \sqrt{\frac{k}{m}} \frac{L \sin \left(\frac{1}{2} \omega \sqrt{\frac{m}{k}}\right)}{\cos \left(\omega \sqrt{\frac{m}{k}}\right)-\frac{M \omega}{\sqrt{k m}} \sin \left(\omega \sqrt{\frac{m}{k}}\right)}=1.903 \mathrm{~m}
+$$</text>
+<explanation>The solver substitutes the value of A and x=L/2 into the equation for r, and performs several steps of algebraic manipulation to simplify the expression to a numerical result. This demonstrates advanced algebraic manipulation skills involving complex fractions, trigonometric functions, and substitution.</explanation>
+
+SUMMARY_START
+1. Mathematical Modeling - The ability to translate physical phenomena into mathematical language, demonstrated throughout the solution as the solver converts the elastic string problem into variables, equations, and boundary conditions.
+
+2. Differential Equation Formulation and Solving - The solver formulates and solves differential equations that describe the tension and displacement in the string, showing advanced mathematical skills in working with differential operators.
+
+3. Physical Insight and Theoretical Deduction - The solver demonstrates deep physical understanding by deriving the wave speed formula from first principles and applying it to solve the problem.
+
+4. Integration of Multiple Concepts - The solution integrates concepts from mechanics, wave theory, and elastic properties, showing the ability to synthesize knowledge across different physics domains.
+
+5. Boundary Condition Analysis - The solver identifies and applies appropriate boundary conditions at key points to find the unique solution to the differential equations.
+SUMMARY_END
+
+Summary of Key Skills:
+1. Mathematical Modeling - The ability to translate physical phenomena into mathematical language, demonstrated throughout the solution as the solver converts the elastic string problem into variables, equations, and boundary conditions.
+
+2. Differential Equation Formulation and Solving - The solver formulates and solves differential equations that describe the tension and displacement in the string, showing advanced mathematical skills in working with differential operators.
+
+3. Physical Insight and Theoretical Deduction - The solver demonstrates deep physical understanding by deriving the wave speed formula from first principles and applying it to solve the problem.
+
+4. Integration of Multiple Concepts - The solution integrates concepts from mechanics, wave theory, and elastic properties, showing the ability to synthesize knowledge across different physics domains.
+
+5. Boundary Condition Analysis - The solver identifies and applies appropriate boundary conditions at key points to find the unique solution to the differential equations.

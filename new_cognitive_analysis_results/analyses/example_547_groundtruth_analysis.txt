@@ -1,0 +1,187 @@
+Problem:
+Let $S=\{1,2, \ldots, 20\}$, and let $f$ be a function from $S$ to $S$; that is, for all $s \in S, f(s) \in S$. Define the sequence $s_{1}, s_{2}, s_{3}, \ldots$ by setting $s_{n}=\sum_{k=1}^{20} \underbrace{(f \circ \cdots \circ f)}_{n}(k)$. That is, $s_{1}=f(1)+$ $\cdots+f(20), s_{2}=f(f(1))+\cdots+f(f(20)), s_{3}=f(f(f(1)))+f(f(f(2)))+\cdots+f(f(f(20)))$, etc. Compute the smallest integer $p$ such that the following statement is true: The sequence $s_{1}, s_{2}, s_{3}, \ldots$ must be periodic after a certain point, and its period is at most $p$. (If the sequence is never periodic, then write $\infty$ as your answer.)
+
+Domain: Number theory
+
+Solution Trajectory (groundtruth):
+If $f$ is simply a permutation of $S$, then $\left\{s_{n}\right\}$ is periodic. To understand why, consider a smaller set $T=\{1,2,3,4,5,6,7,8,9,10\}$. If $f:[1,2,3,4,5,6,7,8,9,10] \rightarrow[2,3,4,5,1,7,8,6,9,10]$, then $f$ has one cycle of period 5 and one cycle of period 3 , so the period of $f$ is 15 . However,
+
+$$
+f(1)+f(2)+f(3)+f(4)+f(5)+f(6)+f(7)+f(8)+f(9)+f(10)=
+$$
+
+
+
+$$
+2+3+4+5+1+7+8+6+9+10=55,
+$$
+
+because $f$ just rearranges the order of the summands. So $s_{1}=s_{0}$, and for all $n, s_{n}=s_{n+1}$; in short, the period of $\left\{s_{n}\right\}$ is just 1 .
+
+In order for $\left\{s_{n}\right\}$ to have a period greater than $1, f$ must be many-to-one, so that some values occur more than once (and some values do not occur at all) in the sum $f(1)+f(2)+\cdots+f(10)$ (or, in the original problem, $f(1)+f(2)+\cdots+f(20)$ ). For example, consider the function $f_{2}$ below:
+
+$$
+f_{2}:[1,2,3,4,5,6,7,8,9,10] \rightarrow[2,3,4,5,1,10,9,10,7,3]
+$$
+
+Note that $s_{1}=2+3+4+5+1+10+9+10+7+3 \neq 55$, so $\left\{s_{n}\right\}$ is not immediately periodic. But $\left\{s_{n}\right\}$ is eventually periodic, as the following argument shows. The function $f_{2}$ has two cycles: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 1$, and $7 \rightarrow 9 \rightarrow 7$. There are also two paths that meet up with the first cycle: $6 \rightarrow 10 \rightarrow 3 \rightarrow \cdots$ and $8 \rightarrow 10 \rightarrow 3 \rightarrow \cdots$. Thus for all $k$ in $T, f_{2}\left(f_{2}(k)\right)$ is an element of one of these two extended cycles. Thus $\left\{s_{n}\right\}$ eventually becomes periodic.
+
+The criterion that the function be many-to-one is necessary, but not sufficient, for $\left\{s_{n}\right\}$ to have period greater than 1 . To see why, consider the function $g:[1,2,3,4,5,6,7,8,9,10] \rightarrow$ $[2,3,4,5,6,1,8,7,8,7]$. This function is many-to-one, and contains two cycles, $1 \rightarrow 2 \rightarrow$ $3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 1$ and $7 \rightarrow 8 \rightarrow 7$. But because $g(9)=8$ and $g(10)=7$, the sum $s_{1}=2+3+4+5+6+1+8+7+8+7$, while $s_{2}=3+4+5+6+1+2+7+8+7+8$. In fact, for $n>1, s_{n+1}=s_{n}$, because applying $f$ only permutes the 6 -cycle and switches the two 7 's and two 8's. That is, in the list $\underbrace{(g \circ \cdots \circ g)}_{n}(1), \ldots, \underbrace{(g \circ \cdots \circ g)}_{n}(10)$, the values 7 and 8 both show up exactly twice. This cycle is balanced: each of its elements shows up the same number of times for all $n$ in the list $\underbrace{(g \circ \cdots \circ g)}_{n}(1), \ldots, \underbrace{(g \circ \cdots \circ g)}_{n}(10)$, for all $n$ after a certain point. The conclusion is that not all many-to-one functions produce unbalanced cycles.
+
+There are two ways a function $g$ can produce balanced cycles. First, the cycles can be selfcontained, so no element outside of the cycle is ever absorbed into the cycle, as happens with the 6-cycle in the example above. Alternatively, the outside elements that are absorbed into a cycle can all arrive at different points of the cycle, so that each element of the cycle occurs equally often in each iteration of $g$. In the example above, the values $g(9)=7$ and $g(10)=8$ balance the $7 \rightarrow 8 \rightarrow 7$ cycle. On the other hand, in the function $f_{2}$ above, $f(f(6))=f(f(8))=f(f(1))=3$, making the large cycle unbalanced: in $s_{2}$, the value 3 appears three times in $s_{2}$, but the value 2 only appears once in $s_{2}$.
+
+The foregoing shows that only unbalanced cycles can affect the periodicity of $\left\{s_{n}\right\}$. Because each element of a balanced cycle occurs equally often in each iteration, the period of that component of the sum $s_{n}$ attributed to the cycle is simply 1. (The case where $f$ is a permutation of $S$ is simply a special case of this result.) In the above example, the large cycle is
+
+
+
+unbalanced. Note the following results under $f_{2}$.
+
+| $n$ | $\overbrace{\left(f_{2} \circ \cdots \circ f_{2}\right)}^{n}(T)$ | $s_{n}$ |
+| :---: | :---: | :---: |
+| 1 | $[2,3,4,5,1,10,9,10,7,3]$ | 54 |
+| 2 | $[3,4,5,1,2,3,7,3,9,4]$ | 41 |
+| 3 | $[4,5,1,2,3,4,9,4,7,5]$ | 40 |
+| 4 | $[5,1,2,3,4,5,7,5,9,1]$ | 42 |
+| 5 | $[1,2,3,4,5,1,9,1,7,2]$ | 35 |
+| 6 | $[2,3,4,5,1,2,7,2,9,3]$ | 38 |
+| 7 | $[3,4,5,1,2,3,9,3,7,4]$ | 41 |
+| 8 | $[4,5,1,2,3,4,7,4,9,5]$ | 40 |
+| 9 | $[5,1,2,3,4,5,9,5,7,1]$ | 42 |
+
+The period of $\left\{s_{n}\right\}$ for $f_{2}$ is 5 , the period of the unbalanced cycle.
+
+The interested reader may inquire whether all unbalanced cycles affect the periodicity of $\left\{s_{n}\right\}$; we encourage those readers to explore the matter independently. For the purposes of solving this problem, it is sufficient to note that unbalanced cycles can affect $\left\{s_{n}\right\}$ 's periodicity.
+
+Finally, note that an unbalanced $k$-cycle actually requires at least $k+1$ elements: $k$ to form the cycle, plus at least 1 to be absorbed into the cycle and cause the imbalance. For the original set $S$, one way to create such an imbalance would be to have $f(20)=f(1)=$ $2, f(2)=3, f(3)=4, \ldots, f(19)=1$. This arrangement creates an unbalanced cycle of length 19. But breaking up into smaller unbalanced cycles makes it possible to increase the period of $\left\{s_{n}\right\}$ even more, because then in most cases the period is the least common multiple of the periods of the unbalanced cycles. For example, $f:[1,2,3, \ldots, 20]=$ $[2,3,4,5,6,7,8,9,1,1,12,13,14,15,16,17,18,11,11,11]$ has an unbalanced cycle of length 9 and an unbalanced cycle of length 8 , giving $\left\{s_{n}\right\}$ a period of 72 .
+
+So the goal is to maximize $\operatorname{lcm}\left\{k_{1}, k_{2}, \ldots, k_{m}\right\}$ such that $k_{1}+k_{2}+\cdots+k_{m}+m \leq 20$. With $m=2$, the maximal period is 72 , achieved with $k_{1}=9$ and $k_{2}=8$. With $m=3$, $k_{1}+k_{2}+k_{3} \leq 17$, but $\operatorname{lcm}\{7,6,4\}=84<\operatorname{lcm}\{7,5,4\}=140$. This last result can be obtained with unbalanced cycles of length 4,5 , and 7 , with the remaining four points entering the three cycles (or with one point forming a balanced cycle of length 1, i.e., a fixed point). Choosing larger values of $m$ decreases the values of $k$ so far that they no longer form long cycles: when $m=4, k_{1}+k_{2}+k_{3}+k_{4} \leq 16$, and even if $k_{4}=2, k_{3}=3$, and $k_{2}=5$, for a period of 30 , the largest possible value of $k_{1}=6$, which does not alter the period. (Even $k_{1}=7, k_{2}=5$, and $k_{3}=k_{4}=2$ only yields a period of 70 .) Thus the maximum period of $s_{n}$ is $\mathbf{1 4 0}$. One such function $f$ is given below.
+
+$$
+\begin{array}{c|cccccccccccccccccccc}
+n & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 \\
+\hline f(n) & 2 & 3 & 4 & 1 & 1 & 7 & 8 & 9 & 10 & 6 & 6 & 13 & 14 & 15 & 16 & 17 & 18 & 12 & 12 & 20
+\end{array}
+$$
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem Solving
+
+<skill>Pattern Recognition</skill>
+<definition>The ability to identify recurring structures, regularities, or relationships within mathematical objects or sequences, and to use these patterns to make predictions or generalizations.</definition>
+
+<start>0</start>
+<end>355</end>
+<text>If $f$ is simply a permutation of $S$, then $\left\{s_{n}\right\}$ is periodic. To understand why, consider a smaller set $T=\{1,2,3,4,5,6,7,8,9,10\}$. If $f:[1,2,3,4,5,6,7,8,9,10] \rightarrow[2,3,4,5,1,7,8,6,9,10]$, then $f$ has one cycle of period 5 and one cycle of period 3 , so the period of $f$ is 15 .</text>
+<explanation>The solver recognizes a pattern about permutation functions and their cycle structure. They identify that permutations can be decomposed into cycles and that the period of a permutation is related to these cycle structures. This demonstrates pattern recognition as they're identifying the underlying mathematical structure of permutations.</explanation>
+
+<start>1442</start>
+<end>1910</end>
+<text>The function $f_{2}$ has two cycles: $1 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 1$, and $7 \rightarrow 9 \rightarrow 7$. There are also two paths that meet up with the first cycle: $6 \rightarrow 10 \rightarrow 3 \rightarrow \cdots$ and $8 \rightarrow 10 \rightarrow 3 \rightarrow \cdots$. Thus for all $k$ in $T, f_{2}\left(f_{2}(k)\right)$ is an element of one of these two extended cycles. Thus $\left\{s_{n}\right\}$ eventually becomes periodic.</text>
+<explanation>The solver analyzes the cycle structure of a specific function and recognizes patterns in how elements move through the function's mapping. They identify cycles and paths that feed into cycles, demonstrating their ability to recognize structural patterns in function behavior.</explanation>
+
+<start>3767</start>
+<end>4340</end>
+<text>The foregoing shows that only unbalanced cycles can affect the periodicity of $\left\{s_{n}\right\}$. Because each element of a balanced cycle occurs equally often in each iteration, the period of that component of the sum $s_{n}$ attributed to the cycle is simply 1. (The case where $f$ is a permutation of $S$ is simply a special case of this result.) In the above example, the large cycle is unbalanced. Note the following results under $f_{2}$.</text>
+<explanation>The solver recognizes a critical pattern about how cycle balance affects periodicity, generalizing from specific examples to identify a key principle. They recognize that balanced cycles contribute a constant sum in each iteration, while unbalanced cycles create variation in the sequence.</explanation>
+
+<skill>Strategic Simplification</skill>
+<definition>The ability to reduce a complex problem to a simpler case that preserves essential features, making it more tractable while still yielding insights applicable to the original problem.</definition>
+
+<start>91</start>
+<end>355</end>
+<text>To understand why, consider a smaller set $T=\{1,2,3,4,5,6,7,8,9,10\}$. If $f:[1,2,3,4,5,6,7,8,9,10] \rightarrow[2,3,4,5,1,7,8,6,9,10]$, then $f$ has one cycle of period 5 and one cycle of period 3 , so the period of $f$ is 15 .</text>
+<explanation>The solver strategically simplifies the problem by working with a smaller set (10 elements instead of 20) to make the analysis more manageable while preserving the essential mathematical structure. This allows them to understand the core principles before applying them to the larger original problem.</explanation>
+
+<start>1136</start>
+<end>1442</end>
+<text>In order for $\left\{s_{n}\right\}$ to have a period greater than $1, f$ must be many-to-one, so that some values occur more than once (and some values do not occur at all) in the sum $f(1)+f(2)+\cdots+f(10)$ (or, in the original problem, $f(1)+f(2)+\cdots+f(20)$ ). For example, consider the function $f_{2}$ below:</text>
+<explanation>The solver simplifies the problem by focusing on a specific property (many-to-one functions) and then constructing a concrete example to analyze. This strategic simplification helps isolate the key factor that allows for periods greater than 1, making the abstract problem more tractable.</explanation>
+
+<skill>Case Analysis</skill>
+<definition>The systematic examination of different scenarios or possibilities to understand how various conditions affect the solution, often involving the partitioning of a problem into exhaustive subcases.</definition>
+
+<start>1910</start>
+<end>2913</end>
+<text>The criterion that the function be many-to-one is necessary, but not sufficient, for $\left\{s_{n}\right\}$ to have period greater than 1 . To see why, consider the function $g:[1,2,3,4,5,6,7,8,9,10] \rightarrow$ $[2,3,4,5,6,1,8,7,8,7]$. This function is many-to-one, and contains two cycles, $1 \rightarrow 2 \rightarrow$ $3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 1$ and $7 \rightarrow 8 \rightarrow 7$. But because $g(9)=8$ and $g(10)=7$, the sum $s_{1}=2+3+4+5+6+1+8+7+8+7$, while $s_{2}=3+4+5+6+1+2+7+8+7+8$. In fact, for $n>1, s_{n+1}=s_{n}$, because applying $f$ only permutes the 6 -cycle and switches the two 7 's and two 8's.</text>
+<explanation>The solver examines different cases of functions to understand the conditions for periodicity. They analyze a specific counterexample (function g) to show that being many-to-one is not sufficient for a period greater than 1, systematically exploring different conditions and their implications.</explanation>
+
+<start>2913</start>
+<end>3767</end>
+<text>That is, in the list $\underbrace{(g \circ \cdots \circ g)}_{n}(1), \ldots, \underbrace{(g \circ \cdots \circ g)}_{n}(10)$, the values 7 and 8 both show up exactly twice. This cycle is balanced: each of its elements shows up the same number of times for all $n$ in the list $\underbrace{(g \circ \cdots \circ g)}_{n}(1), \ldots, \underbrace{(g \circ \cdots \circ g)}_{n}(10)$, for all $n$ after a certain point. The conclusion is that not all many-to-one functions produce unbalanced cycles.
+
+There are two ways a function $g$ can produce balanced cycles. First, the cycles can be selfcontained, so no element outside of the cycle is ever absorbed into the cycle, as happens with the 6-cycle in the example above. Alternatively, the outside elements that are absorbed into a cycle can all arrive at different points of the cycle, so that each element of the cycle occurs equally often in each iteration of $g$.</text>
+<explanation>The solver systematically analyzes different cases of how cycles can be balanced, examining two distinct scenarios: self-contained cycles and cycles with balanced external inputs. This demonstrates careful case analysis to understand all possible configurations that lead to balanced cycles.</explanation>
+
+<skill>Mathematical Abstraction</skill>
+<definition>The ability to identify and work with the essential mathematical properties of a situation while disregarding irrelevant details, often involving the formulation of general principles from specific instances.</definition>
+
+<start>3767</start>
+<end>4073</end>
+<text>The foregoing shows that only unbalanced cycles can affect the periodicity of $\left\{s_{n}\right\}$. Because each element of a balanced cycle occurs equally often in each iteration, the period of that component of the sum $s_{n}$ attributed to the cycle is simply 1. (The case where $f$ is a permutation of $S$ is simply a special case of this result.)</text>
+<explanation>The solver abstracts from specific examples to a general principle about how cycle balance affects periodicity. They identify that balanced cycles contribute a constant sum regardless of iteration, abstracting away the specific function details to focus on the essential mathematical property of balance.</explanation>
+
+<start>5262</start>
+<end>5735</end>
+<text>Finally, note that an unbalanced $k$-cycle actually requires at least $k+1$ elements: $k$ to form the cycle, plus at least 1 to be absorbed into the cycle and cause the imbalance. For the original set $S$, one way to create such an imbalance would be to have $f(20)=f(1)=$ $2, f(2)=3, f(3)=4, \ldots, f(19)=1$. This arrangement creates an unbalanced cycle of length 19.</text>
+<explanation>The solver abstracts the concept of unbalanced cycles to a general formula about the minimum number of elements required. They recognize that a k-cycle requires k+1 elements to be unbalanced, abstracting from specific examples to a general mathematical principle.</explanation>
+
+<skill>Optimization</skill>
+<definition>The process of finding the best solution from a set of possible alternatives, often involving maximizing or minimizing a specific quantity subject to constraints.</definition>
+
+<start>5735</start>
+<end>6179</end>
+<text>But breaking up into smaller unbalanced cycles makes it possible to increase the period of $\left\{s_{n}\right\}$ even more, because then in most cases the period is the least common multiple of the periods of the unbalanced cycles. For example, $f:[1,2,3, \ldots, 20]=$ $[2,3,4,5,6,7,8,9,1,1,12,13,14,15,16,17,18,11,11,11]$ has an unbalanced cycle of length 9 and an unbalanced cycle of length 8 , giving $\left\{s_{n}\right\}$ a period of 72$.</text>
+<explanation>The solver demonstrates optimization by recognizing that using multiple smaller cycles can increase the period through their least common multiple. They identify a strategy to maximize the period by properly allocating the 20 elements across multiple unbalanced cycles.</explanation>
+
+<start>6179</start>
+<end>6771</end>
+<text>So the goal is to maximize $\operatorname{lcm}\left\{k_{1}, k_{2}, \ldots, k_{m}\right\}$ such that $k_{1}+k_{2}+\cdots+k_{m}+m \leq 20$. With $m=2$, the maximal period is 72 , achieved with $k_{1}=9$ and $k_{2}=8$. With $m=3$, $k_{1}+k_{2}+k_{3} \leq 17$, but $\operatorname{lcm}\{7,6,4\}=84<\operatorname{lcm}\{7,5,4\}=140$. This last result can be obtained with unbalanced cycles of length 4,5 , and 7 , with the remaining four points entering the three cycles (or with one point forming a balanced cycle of length 1, i.e., a fixed point).</text>
+<explanation>The solver explicitly formulates the optimization problem: maximizing the LCM of cycle lengths subject to the constraint that the total number of elements used doesn't exceed 20. They systematically explore different configurations (m=2, m=3) to find the optimal solution, showing strategic optimization.</explanation>
+
+<skill>Mathematical Modeling</skill>
+<definition>The process of representing a real-world or abstract problem using mathematical concepts and language, creating a framework that captures essential features of the situation and allows for analysis.</definition>
+
+<start>0</start>
+<end>634</end>
+<text>If $f$ is simply a permutation of $S$, then $\left\{s_{n}\right\}$ is periodic. To understand why, consider a smaller set $T=\{1,2,3,4,5,6,7,8,9,10\}$. If $f:[1,2,3,4,5,6,7,8,9,10] \rightarrow[2,3,4,5,1,7,8,6,9,10]$, then $f$ has one cycle of period 5 and one cycle of period 3 , so the period of $f$ is 15 . However,
+
+$$
+f(1)+f(2)+f(3)+f(4)+f(5)+f(6)+f(7)+f(8)+f(9)+f(10)=
+$$
+
+
+
+$$
+2+3+4+5+1+7+8+6+9+10=55,
+$$
+
+because $f$ just rearranges the order of the summands. So $s_{1}=s_{0}$, and for all $n, s_{n}=s_{n+1}$; in short, the period of $\left\{s_{n}\right\}$ is just 1 .</text>
+<explanation>The solver creates a mathematical model of how permutation functions affect the sequence of sums. They model the relationship between function cycles and the resulting sequence, showing how permutations merely rearrange elements without changing their sum, leading to a period of 1.</explanation>
+
+<start>6179</start>
+<end>6771</end>
+<text>So the goal is to maximize $\operatorname{lcm}\left\{k_{1}, k_{2}, \ldots, k_{m}\right\}$ such that $k_{1}+k_{2}+\cdots+k_{m}+m \leq 20$. With $m=2$, the maximal period is 72 , achieved with $k_{1}=9$ and $k_{2}=8$. With $m=3$, $k_{1}+k_{2}+k_{3} \leq 17$, but $\operatorname{lcm}\{7,6,4\}=84<\operatorname{lcm}\{7,5,4\}=140$. This last result can be obtained with unbalanced cycles of length 4,5 , and 7 , with the remaining four points entering the three cycles (or with one point forming a balanced cycle of length 1, i.e., a fixed point).</text>
+<explanation>The solver creates a mathematical model of the optimization problem, expressing it as maximizing the LCM of cycle lengths subject to a constraint on the total number of elements. This model transforms the abstract problem about function periodicity into a concrete mathematical optimization problem.</explanation>
+
+SUMMARY_START
+1. Pattern Recognition - The solver consistently identifies patterns in function behavior, cycle structures, and how these affect sequence periodicity.
+
+2. Case Analysis - The solver systematically examines different scenarios and function types to understand the conditions for different periods.
+
+3. Mathematical Abstraction - The solver extracts general principles about balanced and unbalanced cycles from specific examples, formulating key insights about periodicity.
+
+4. Optimization - The solver formulates and solves a constraint optimization problem to find the maximum possible period by optimally allocating elements across multiple cycles.
+
+5. Strategic Simplification - The solver reduces the complex problem to more manageable cases that preserve essential features, allowing for clearer analysis.
+SUMMARY_END
+
+Summary of Key Skills:
+1. Pattern Recognition - The solver consistently identifies patterns in function behavior, cycle structures, and how these affect sequence periodicity.
+
+2. Case Analysis - The solver systematically examines different scenarios and function types to understand the conditions for different periods.
+
+3. Mathematical Abstraction - The solver extracts general principles about balanced and unbalanced cycles from specific examples, formulating key insights about periodicity.
+
+4. Optimization - The solver formulates and solves a constraint optimization problem to find the maximum possible period by optimally allocating elements across multiple cycles.
+
+5. Strategic Simplification - The solver reduces the complex problem to more manageable cases that preserve essential features, allowing for clearer analysis.

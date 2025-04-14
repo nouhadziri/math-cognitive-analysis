@@ -1,0 +1,400 @@
+Problem:
+In a resource-limited ecological system, a population of organisms cannot keep growing forever (such as lab bacteria growing inside culture tube). The effective growth rate $g$ (including
+
+contributions from births and deaths) depends on the instantaneous abundance of resource $R(t)$, which in this problem we will consider the simple case of linear-dependency:
+
+$$
+\frac{\mathrm{d}}{\mathrm{d} t} N=g(R) N=\alpha R N
+$$
+
+where $N(t)$ is the population size at time $t$. The resources is consumed at a constant rate $\beta$ by each organism:
+
+$$
+\frac{\mathrm{d}}{\mathrm{d} t} R=-\beta N
+$$
+
+Initially, the total amount of resources is $R_{0}$ and the population size is $N_{0}$. Given that $\alpha=10^{-9}$ resourceunit $^{-1} \mathrm{~s}^{-1}, \beta=1$ resource-unit/s, $R_{0}=10^{6}$ resource-units and $N_{0}=1$ cell, find the total time it takes from the beginning to when all resources are depleted (in hours).
+
+Domain: Calculus
+
+Solution Trajectory (gemini):
+Let's analyze the problem. We are given two differential equations that describe the dynamics of the population size $N(t)$ and the resource abundance $R(t)$.
+
+The equations are:
+1. $\frac{dN}{dt} = \alpha R N$
+2. $\frac{dR}{dt} = -\beta N$
+
+We are given the initial conditions:
+$R(0) = R_0 = 10^6$
+$N(0) = N_0 = 1$
+
+And the constants:
+$\alpha = 10^{-9}$ resourceunit$^{-1}$ s$^{-1}$
+$\beta = 1$ resource-unit/s
+
+We need to find the time $T$ when $R(T) = 0$.
+
+We can try to solve these coupled differential equations.
+
+From the second equation, we can express $N$ in terms of the rate of change of $R$:
+$N = -\frac{1}{\beta} \frac{dR}{dt}$
+
+Substitute this into the first equation:
+$\frac{d}{dt} \left(-\frac{1}{\beta} \frac{dR}{dt}\right) = \alpha R \left(-\frac{1}{\beta} \frac{dR}{dt}\right)$
+$-\frac{1}{\beta} \frac{d^2R}{dt^2} = -\frac{\alpha}{\beta} R \frac{dR}{dt}$
+$\frac{d^2R}{dt^2} = \alpha R \frac{dR}{dt}$
+
+This is a second-order non-linear differential equation, which might be hard to solve directly.
+
+Let's try another approach. Consider the ratio of the two derivatives:
+$\frac{dN/dt}{dR/dt} = \frac{\alpha R N}{-\beta N}$
+$\frac{dN}{dR} = -\frac{\alpha}{\beta} R$
+
+Now we can integrate this with respect to R:
+$\int dN = \int -\frac{\alpha}{\beta} R dR$
+$N(R) = -\frac{\alpha}{2\beta} R^2 + C$
+
+We can use the initial conditions to find the constant $C$:
+$N(R_0) = N_0$
+$N_0 = -\frac{\alpha}{2\beta} R_0^2 + C$
+$C = N_0 + \frac{\alpha}{2\beta} R_0^2$
+
+So, the relationship between $N$ and $R$ is:
+$N(R) = N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2)$
+
+Now substitute this back into the second differential equation:
+$\frac{dR}{dt} = -\beta \left(N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2)\right)$
+$\frac{dR}{dt} = -\beta N_0 - \frac{\alpha}{2} (R_0^2 - R^2)$
+$\frac{dR}{dt} = \frac{\alpha}{2} R^2 - \left(\beta N_0 + \frac{\alpha}{2} R_0^2\right)$
+
+Let $K = \beta N_0 + \frac{\alpha}{2} R_0^2$. Then the equation is:
+$\frac{dR}{dt} = \frac{\alpha}{2} R^2 - K$
+
+We need to solve this first-order separable differential equation.
+$\int \frac{dR}{\frac{\alpha}{2} R^2 - K} = \int dt$
+
+Let's plug in the values of the constants first to see if the expression simplifies.
+$K = (1)(1) + \frac{10^{-9}}{2} (10^6)^2 = 1 + 0.5 \times 10^{-9} \times 10^{12} = 1 + 0.5 \times 10^3 = 1 + 500 = 501$
+$\frac{\alpha}{2} = 0.5 \times 10^{-9}$
+
+So the integral is:
+$\int \frac{dR}{0.5 \times 10^{-9} R^2 - 501} = \int dt$
+$\frac{1}{0.5 \times 10^{-9}} \int \frac{dR}{R^2 - \frac{501}{0.5 \times 10^{-9}}} = \int dt$
+$2 \times 10^9 \int \frac{dR}{R^2 - 1002 \times 10^9} = \int dt$
+$2 \times 10^9 \int \frac{dR}{R^2 - ( \sqrt{1002 \times 10^9} )^2} = \int dt$
+$\sqrt{1002 \times 10^9} = \sqrt{1.002 \times 10^{12}} \approx \sqrt{1 \times 10^{12}} = 10^6$
+
+Using the formula $\int \frac{dx}{x^2 - a^2} = \frac{1}{2a} \ln \left| \frac{x-a}{x+a} \right| + C$:
+$a = \sqrt{1002 \times 10^9}$
+$2 \times 10^9 \times \frac{1}{2 \sqrt{1002 \times 10^9}} \ln \left| \frac{R - \sqrt{1002 \times 10^9}}{R + \sqrt{1002 \times 10^9}} \right| = t + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{R - \sqrt{1002 \times 10^9}}{R + \sqrt{1002 \times 10^9}} \right| = t + C_2$
+
+Using initial condition $R(0) = R_0 = 10^6$:
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{10^6 - \sqrt{1002 \times 10^9}}{10^6 + \sqrt{1002 \times 10^9}} \right| = 0 + C_2$
+$C_2 = \frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{10^6 - \sqrt{1002 \times 10^9}}{10^6 + \sqrt{1002 \times 10^9}} \right|$
+
+We need to find the time $T$ when $R(T) = 0$.
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{0 - \sqrt{1002 \times 10^9}}{0 + \sqrt{1002 \times 10^9}} \right| = T + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{-\sqrt{1002 \times 10^9}}{\sqrt{1002 \times 10^9}} \right| = T + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln |-1| = T + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln(1) = T + C_2$
+$0 = T + C_2$
+$T = -C_2$
+$T = - \frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{10^6 - \sqrt{1002 \times 10^9}}{10^6 + \sqrt{1002 \times 10^9}} \right|$
+
+$\sqrt{1002 \times 10^9} = \sqrt{1.002} \times 10^6 \approx 1.001 \times 10^6$
+$T = - \frac{10^9}{1.001 \times 10^6} \ln \left| \frac{10^6 - 1.001 \times 10^6}{10^6 + 1.001 \times 10^6} \right|$
+$T = - \frac{1000}{1.001} \ln \left| \frac{-0.001 \times 10^6}{2.001 \times 10^6} \right|$
+$T = - \frac{1000}{1.001} \ln \left| \frac{-0.001}{2.001} \right|$
+$T = - \frac{1000}{1.001} \ln \left( \frac{0.001}{2.001} \right)$
+$T = - \frac{1000}{1.001} \ln \left( \frac{1}{2001} \right)$
+$T = - \frac{1000}{1.001} (\ln(1) - \ln(2001))$
+$T = - \frac{1000}{1.001} (0 - \ln(2001))$
+$T = \frac{1000}{1.001} \ln(2001)$
+
+$\ln(2001) \approx \ln(2000) = \ln(2 \times 10^3) = \ln(2) + 3 \ln(10) \approx 0.693 + 3 \times 2.303 = 0.693 + 6.909 = 7.602$
+$T \approx \frac{1000}{1.001} \times 7.602 \approx 1000 \times 7.602 = 7602$ seconds.
+
+Let's reconsider the differential equation for $R$:
+$\frac{dR}{dt} = -\beta N$
+Integrate both sides from $t=0$ to $T$:
+$\int_{0}^{T} \frac{dR}{dt} dt = \int_{0}^{T} -\beta N dt$
+$R(T) - R(0) = -\beta \int_{0}^{T} N dt$
+$0 - R_0 = -\beta \int_{0}^{T} N dt$
+$\int_{0}^{T} N dt = \frac{R_0}{\beta}$
+
+From the relation $N(R) = N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2)$, we know that $N$ is always positive since $R \le R_0$.
+
+Consider the equation $\frac{dN}{dR} = -\frac{\alpha}{\beta} R$.
+Integrate from the initial state $(R_0, N_0)$ to a state $(R, N)$:
+$\int_{N_0}^{N} dN' = \int_{R_0}^{R} -\frac{\alpha}{\beta} R' dR'$
+$N - N_0 = -\frac{\alpha}{2\beta} (R^2 - R_0^2) = \frac{\alpha}{2\beta} (R_0^2 - R^2)$
+$N = N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2)$
+
+Now consider the equation for $\frac{dR}{dt}$:
+$\frac{dR}{dt} = -\beta N = -\beta \left( N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2) \right)$
+$\frac{dR}{dt} = -\beta N_0 - \frac{\alpha}{2} R_0^2 + \frac{\alpha}{2} R^2$
+$\frac{dR}{dt} = \frac{\alpha}{2} R^2 - (\beta N_0 + \frac{\alpha}{2} R_0^2)$
+
+Let $K = \beta N_0 + \frac{\alpha}{2} R_0^2$.
+$\frac{dR}{dt} = \frac{\alpha}{2} R^2 - K$
+
+When resources are depleted, $R=0$.
+$\frac{dR}{dt}|_{R=0} = -K = -(\beta N_0 + \frac{\alpha}{2} R_0^2)$
+This is the rate of change of resource when $R=0$.
+
+Consider the point when $R$ goes from $R_0$ to $0$.
+The time taken can be estimated if the rate of change is somewhat constant.
+However, the rate of change depends on $R$.
+
+Let's go back to the integral:
+$\int_{R_0}^{0} \frac{dR}{\frac{\alpha}{2} R^2 - K} = \int_{0}^{T} dt = T$
+$\int_{R_0}^{0} \frac{dR}{\frac{\alpha}{2} (R^2 - \frac{2K}{\alpha})} = \frac{2}{\alpha} \int_{R_0}^{0} \frac{dR}{R^2 - \frac{2K}{\alpha}}$
+$\frac{2K}{\alpha} = \frac{2}{\alpha} (\beta N_0 + \frac{\alpha}{2} R_0^2) = \frac{2\beta N_0}{\alpha} + R_0^2$
+$\frac{2\beta N_0}{\alpha} = \frac{2 \times 1}{10^{-9}} \times 1 = 2 \times 10^9$
+$\frac{2K}{\alpha} = 2 \times 10^9 + (10^6)^2 = 2 \times 10^9 + 10^{12} = 10^{12} (0.002 + 1) = 1.002 \times 10^{12}$
+$\sqrt{\frac{2K}{\alpha}} = \sqrt{1.002 \times 10^{12}} = 1.001 \times 10^6$
+
+$T = \frac{2}{\alpha} \int_{R_0}^{0} \frac{dR}{R^2 - (\sqrt{\frac{2K}{\alpha}})^2}$
+$T = \frac{2}{\alpha} \left[ \frac{1}{2 \sqrt{\frac{2K}{\alpha}}} \ln \left| \frac{R - \sqrt{\frac{2K}{\alpha}}}{R + \sqrt{\frac{2K}{\alpha}}} \right| \right]_{R_0}^{0}$
+$T = \frac{1}{\alpha \sqrt{\frac{2K}{\alpha}}} \left[ \ln \left| \frac{R - \sqrt{\frac{2K}{\alpha}}}{R + \sqrt{\frac{2K}{\alpha}}} \right| \right]_{R_0}^{0}$
+$T = \frac{1}{\sqrt{2 \alpha K}} \left( \ln \left| \frac{0 - \sqrt{\frac{2K}{\alpha}}}{0 + \sqrt{\frac{2K}{\alpha}}} \right| - \ln \left| \frac{R_0 - \sqrt{\frac{2K}{\alpha}}}{R_0 + \sqrt{\frac{2K}{\alpha}}} \right| \right)$
+$T = \frac{1}{\sqrt{2 \alpha K}} \left( \ln |-1| - \ln \left| \frac{R_0 - \sqrt{\frac{2K}{\alpha}}}{R_0 + \sqrt{\frac{2K}{\alpha}}} \right| \right)$
+$T = \frac{1}{\sqrt{2 \alpha K}} \left( 0 - \ln \left| \frac{R_0 - \sqrt{\frac{2K}{\alpha}}}{R_0 + \sqrt{\frac{2K}{\alpha}}} \right| \right)$
+$T = - \frac{1}{\sqrt{2 \alpha K}} \ln \left| \frac{R_0 - \sqrt{\frac{2K}{\alpha}}}{R_0 + \sqrt{\frac{2K}{\alpha}}} \right|$
+
+$\sqrt{2 \alpha K} = \sqrt{2 \times 10^{-9} \times 501} = \sqrt{1002 \times 10^{-9}} = \sqrt{1.002 \times 10^{-6}} = 1.001 \times 10^{-3}$
+
+$\sqrt{\frac{2K}{\alpha}} = 1.001 \times 10^6$
+
+$T = - \frac{1}{1.001 \times 10^{-3}} \ln \left| \frac{10^6 - 1.001 \times 10^6}{10^6 + 1.001 \times 10^6} \right|$
+$T = - \frac{1000}{1.001} \ln \left| \frac{-0.001 \times 10^6}{2.001 \times 10^6} \right|$
+$T = - \frac{1000}{1.001} \ln \left( \frac{0.001}{2.001} \right)$
+$T = \frac{1000}{1.001} \ln \left( \frac{2001}{1} \right) = \frac{1000}{1.001} \ln(2001)$
+
+$T \approx 1000 \times 7.602 = 7602$ seconds.
+
+Convert to hours:
+$T_{hours} = \frac{7602}{3600} \approx 2.11$ hours.
+
+Let's double check the calculations.
+
+We used the integral $\int \frac{dx}{x^2 - a^2} = \frac{1}{2a} \ln \left| \frac{x-a}{x+a} \right|$.
+
+The time it takes for all resources to be depleted is the time $T$ when $R(T) = 0$.
+
+Final answer in hours.
+$T = \frac{1000}{1.001} \ln(2001)$ seconds.
+$T \approx 1000 \times 7.602 = 7602$ seconds.
+$T_{hours} = \frac{7602}{3600} = 2.1116...$ hours.
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Problem representation</skill>
+<definition>The ability to translate a problem statement into mathematical notation, identifying relevant variables, parameters, and their relationships.</definition>
+
+<start>0</start>
+<end>206</end>
+<text>Let's analyze the problem. We are given two differential equations that describe the dynamics of the population size $N(t)$ and the resource abundance $R(t)$.</text>
+<explanation>The solver begins by clearly framing the problem, identifying the key variables ($N(t)$ and $R(t)$) and recognizing that the problem involves a system of differential equations.</explanation>
+
+<start>208</start>
+<end>291</end>
+<text>The equations are:
+1. $\frac{dN}{dt} = \alpha R N$
+2. $\frac{dR}{dt} = -\beta N$</text>
+<explanation>The solver explicitly writes out the mathematical equations that govern the system, showing their ability to represent the problem formally.</explanation>
+
+<start>293</start>
+<end>369</end>
+<text>We are given the initial conditions:
+$R(0) = R_0 = 10^6$
+$N(0) = N_0 = 1$</text>
+<explanation>The solver identifies and clearly states the initial conditions, which are crucial constraints for solving differential equations.</explanation>
+
+<start>371</start>
+<end>460</end>
+<text>And the constants:
+$\alpha = 10^{-9}$ resourceunit$^{-1}$ s$^{-1}$
+$\beta = 1$ resource-unit/s</text>
+<explanation>The solver recognizes and explicitly states the parameter values that will be needed for numerical calculations.</explanation>
+
+<start>462</start>
+<end>504</end>
+<text>We need to find the time $T$ when $R(T) = 0$.</text>
+<explanation>The solver clearly articulates the goal of the problem, identifying the specific quantity to be determined.</explanation>
+
+<skill>Strategic approach selection</skill>
+<definition>The ability to choose appropriate mathematical techniques or strategies based on the nature of the problem, and to adapt when initial approaches prove challenging.</definition>
+
+<start>506</start>
+<end>567</end>
+<text>We can try to solve these coupled differential equations.</text>
+<explanation>The solver recognizes the need to address the coupled nature of the differential equations and begins with a direct approach.</explanation>
+
+<start>1076</start>
+<end>1131</end>
+<text>This is a second-order non-linear differential equation, which might be hard to solve directly.</text>
+<explanation>The solver evaluates the difficulty of the current approach and recognizes that it may not be the most efficient method.</explanation>
+
+<start>1133</start>
+<end>1212</end>
+<text>Let's try another approach. Consider the ratio of the two derivatives:</text>
+<explanation>After recognizing the challenges with the initial approach, the solver strategically shifts to an alternative method, demonstrating flexibility in problem-solving.</explanation>
+
+<start>1213</start>
+<end>1300</end>
+<text>$\frac{dN/dt}{dR/dt} = \frac{\alpha R N}{-\beta N}$
+$\frac{dN}{dR} = -\frac{\alpha}{\beta} R$</text>
+<explanation>The solver employs a clever technique of taking the ratio of derivatives to eliminate time as a variable, transforming the system into a simpler form.</explanation>
+
+<start>4487</start>
+<end>4593</end>
+<text>Let's reconsider the differential equation for $R$:
+$\frac{dR}{dt} = -\beta N$
+Integrate both sides from $t=0$ to $T$:</text>
+<explanation>When the calculations become complex, the solver strategically reconsiders the problem from a different angle, showing adaptability in approach.</explanation>
+
+<skill>Mathematical transformation</skill>
+<definition>The ability to convert mathematical expressions into equivalent forms that are more tractable for solving the problem at hand.</definition>
+
+<start>569</start>
+<end>650</end>
+<text>From the second equation, we can express $N$ in terms of the rate of change of $R$:
+$N = -\frac{1}{\beta} \frac{dR}{dt}$</text>
+<explanation>The solver rearranges the second differential equation to express N in terms of R, which is a key transformation that helps in combining the equations.</explanation>
+
+<start>652</start>
+<end>925</end>
+<text>Substitute this into the first equation:
+$\frac{d}{dt} \left(-\frac{1}{\beta} \frac{dR}{dt}\right) = \alpha R \left(-\frac{1}{\beta} \frac{dR}{dt}\right)$
+$-\frac{1}{\beta} \frac{d^2R}{dt^2} = -\frac{\alpha}{\beta} R \frac{dR}{dt}$
+$\frac{d^2R}{dt^2} = \alpha R \frac{dR}{dt}$</text>
+<explanation>The solver performs a series of algebraic manipulations to combine the two differential equations, demonstrating the ability to transform mathematical expressions systematically.</explanation>
+
+<start>1302</start>
+<end>1413</end>
+<text>Now we can integrate this with respect to R:
+$\int dN = \int -\frac{\alpha}{\beta} R dR$
+$N(R) = -\frac{\alpha}{2\beta} R^2 + C$</text>
+<explanation>The solver transforms the differential equation into an integral form and solves it to find a relationship between N and R, showing skill in applying calculus techniques.</explanation>
+
+<start>1631</start>
+<end>1823</end>
+<text>Now substitute this back into the second differential equation:
+$\frac{dR}{dt} = -\beta \left(N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2)\right)$
+$\frac{dR}{dt} = -\beta N_0 - \frac{\alpha}{2} (R_0^2 - R^2)$
+$\frac{dR}{dt} = \frac{\alpha}{2} R^2 - \left(\beta N_0 + \frac{\alpha}{2} R_0^2\right)$</text>
+<explanation>The solver substitutes the derived relationship back into the original differential equation and simplifies it through algebraic manipulation, demonstrating skill in transforming complex expressions.</explanation>
+
+<skill>Integration of standard forms</skill>
+<definition>The ability to recognize patterns in mathematical expressions that correspond to standard integral forms and apply the appropriate integration formulas.</definition>
+
+<start>2124</start>
+<end>2243</end>
+<text>Using the formula $\int \frac{dx}{x^2 - a^2} = \frac{1}{2a} \ln \left| \frac{x-a}{x+a} \right| + C$:
+$a = \sqrt{1002 \times 10^9}$</text>
+<explanation>The solver recognizes that the integral matches a standard form and correctly applies the appropriate integration formula, showing knowledge of calculus techniques.</explanation>
+
+<start>2245</start>
+<end>2475</end>
+<text>$2 \times 10^9 \times \frac{1}{2 \sqrt{1002 \times 10^9}} \ln \left| \frac{R - \sqrt{1002 \times 10^9}}{R + \sqrt{1002 \times 10^9}} \right| = t + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{R - \sqrt{1002 \times 10^9}}{R + \sqrt{1002 \times 10^9}} \right| = t + C_2$</text>
+<explanation>The solver correctly applies the integration formula and simplifies the resulting expression, demonstrating proficiency with standard integral forms.</explanation>
+
+<start>5997</start>
+<end>6161</end>
+<text>$T = \frac{2}{\alpha} \int_{R_0}^{0} \frac{dR}{R^2 - (\sqrt{\frac{2K}{\alpha}})^2}$
+$T = \frac{2}{\alpha} \left[ \frac{1}{2 \sqrt{\frac{2K}{\alpha}}} \ln \left| \frac{R - \sqrt{\frac{2K}{\alpha}}}{R + \sqrt{\frac{2K}{\alpha}}} \right| \right]_{R_0}^{0}$</text>
+<explanation>The solver again recognizes and applies the standard integral form, this time with definite integration limits, showing consistent application of calculus knowledge.</explanation>
+
+<skill>Numerical computation</skill>
+<definition>The ability to perform accurate calculations with numerical values, including operations with scientific notation and logarithms.</definition>
+
+<start>1848</start>
+<end>2051</end>
+<text>Let's plug in the values of the constants first to see if the expression simplifies.
+$K = (1)(1) + \frac{10^{-9}}{2} (10^6)^2 = 1 + 0.5 \times 10^{-9} \times 10^{12} = 1 + 0.5 \times 10^3 = 1 + 500 = 501$
+$\frac{\alpha}{2} = 0.5 \times 10^{-9}$</text>
+<explanation>The solver substitutes numerical values and performs calculations with scientific notation, demonstrating computational skill.</explanation>
+
+<start>2053</start>
+<end>2122</end>
+<text>So the integral is:
+$\int \frac{dR}{0.5 \times 10^{-9} R^2 - 501} = \int dt$
+$\frac{1}{0.5 \times 10^{-9}} \int \frac{dR}{R^2 - \frac{501}{0.5 \times 10^{-9}}} = \int dt$
+$2 \times 10^9 \int \frac{dR}{R^2 - 1002 \times 10^9} = \int dt$
+$2 \times 10^9 \int \frac{dR}{R^2 - ( \sqrt{1002 \times 10^9} )^2} = \int dt$
+$\sqrt{1002 \times 10^9} = \sqrt{1.002 \times 10^{12}} \approx \sqrt{1 \times 10^{12}} = 10^6$</text>
+<explanation>The solver manipulates expressions with scientific notation and performs approximations, showing numerical computation skills.</explanation>
+
+<start>3498</start>
+<end>3692</end>
+<text>$\ln(2001) \approx \ln(2000) = \ln(2 \times 10^3) = \ln(2) + 3 \ln(10) \approx 0.693 + 3 \times 2.303 = 0.693 + 6.909 = 7.602$
+$T \approx \frac{1000}{1.001} \times 7.602 \approx 1000 \times 7.602 = 7602$ seconds.</text>
+<explanation>The solver computes logarithmic values and performs approximations to simplify calculations, demonstrating numerical computation skills with logarithms.</explanation>
+
+<start>7057</start>
+<end>7190</end>
+<text>$T = \frac{1000}{1.001} \ln(2001)$ seconds.
+$T \approx 1000 \times 7.602 = 7602$ seconds.
+$T_{hours} = \frac{7602}{3600} = 2.1116...$ hours.</text>
+<explanation>The solver performs unit conversion and final calculations to arrive at the answer in the requested units, showing attention to numerical precision.</explanation>
+
+<skill>Verification and double-checking</skill>
+<definition>The ability to verify results by rechecking calculations, confirming that the solution satisfies the original constraints, or solving the problem using an alternative method.</definition>
+
+<start>7038</start>
+<end>7055</end>
+<text>Let's double check the calculations.</text>
+<explanation>The solver explicitly states the intention to verify the calculations, showing awareness of the importance of checking work.</explanation>
+
+<start>6997</start>
+<end>7036</end>
+<text>Final answer in hours.
+$T = \frac{1000}{1.001} \ln(2001)$ seconds.</text>
+<explanation>The solver restates the final answer in a clear form, indicating an effort to verify that the solution addresses the original question.</explanation>
+
+<start>4487</start>
+<end>4724</end>
+<text>Let's reconsider the differential equation for $R$:
+$\frac{dR}{dt} = -\beta N$
+Integrate both sides from $t=0$ to $T$:
+$\int_{0}^{T} \frac{dR}{dt} dt = \int_{0}^{T} -\beta N dt$
+$R(T) - R(0) = -\beta \int_{0}^{T} N dt$
+$0 - R_0 = -\beta \int_{0}^{T} N dt$
+$\int_{0}^{T} N dt = \frac{R_0}{\beta}$</text>
+<explanation>The solver attempts an alternative approach to verify the solution, showing thoroughness in problem-solving.</explanation>
+
+<skill>Systematic equation solving</skill>
+<definition>The ability to solve equations through a logical sequence of steps, applying appropriate mathematical rules and techniques.</definition>
+
+<start>1415</start>
+<end>1629</end>
+<text>We can use the initial conditions to find the constant $C$:
+$N(R_0) = N_0$
+$N_0 = -\frac{\alpha}{2\beta} R_0^2 + C$
+$C = N_0 + \frac{\alpha}{2\beta} R_0^2$
+
+So, the relationship between $N$ and $R$ is:
+$N(R) = N_0 + \frac{\alpha}{2\beta} (R_0^2 - R^2)$</text>
+<explanation>The solver systematically applies initial conditions to determine the integration constant, following a logical sequence of algebraic steps.</explanation>
+
+<start>2477</start>
+<end>2711</end>
+<text>Using initial condition $R(0) = R_0 = 10^6$:
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{10^6 - \sqrt{1002 \times 10^9}}{10^6 + \sqrt{1002 \times 10^9}} \right| = 0 + C_2$
+$C_2 = \frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{10^6 - \sqrt{1002 \times 10^9}}{10^6 + \sqrt{1002 \times 10^9}} \right|$</text>
+<explanation>The solver systematically applies the initial condition to determine the integration constant, following a logical sequence of steps.</explanation>
+
+<start>2713</start>
+<end>3037</end>
+<text>We need to find the time $T$ when $R(T) = 0$.
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{0 - \sqrt{1002 \times 10^9}}{0 + \sqrt{1002 \times 10^9}} \right| = T + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^9}} \ln \left| \frac{-\sqrt{1002 \times 10^9}}{\sqrt{1002 \times 10^9}} \right| = T + C_2$
+$\frac{10^9}{\sqrt{1002 \times 10^
+
+Summary of Key Skills:
+Not found

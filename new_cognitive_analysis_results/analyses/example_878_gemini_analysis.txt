@@ -1,0 +1,349 @@
+Problem:
+Let  $a,b,A,B$  be given reals. We consider the function defined by \[ f(x) = 1 - a \cdot \cos(x) - b \cdot \sin(x) - A \cdot \cos(2x) - B \cdot \sin(2x). \] Prove that if for any real number  $x$  we have  $f(x) \geq 0$  then  $a^2 + b^2 \leq 2$  and  $A^2 + B^2 \leq 1.$ 
+
+Domain: Other
+
+Solution Trajectory (gemini):
+Let $f(x) = 1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x \geq 0$ for all $x \in \mathbb{R}$.
+We want to show that $a^2 + b^2 \leq 2$ and $A^2 + B^2 \leq 1$.
+
+Consider specific values of $x$.
+For $x=0$, $f(0) = 1 - a - A \geq 0$, so $a+A \leq 1$.
+For $x=\pi$, $f(\pi) = 1 - a \cos \pi - b \sin \pi - A \cos 2\pi - B \sin 2\pi = 1 - a(-1) - b(0) - A(1) - B(0) = 1+a-A \geq 0$, so $A-a \leq 1$.
+For $x=\pi/2$, $f(\pi/2) = 1 - a \cos(\pi/2) - b \sin(\pi/2) - A \cos(\pi) - B \sin(\pi) = 1 - a(0) - b(1) - A(-1) - B(0) = 1 - b + A \geq 0$, so $b-A \leq 1$.
+For $x=3\pi/2$, $f(3\pi/2) = 1 - a \cos(3\pi/2) - b \sin(3\pi/2) - A \cos(3\pi) - B \sin(3\pi) = 1 - a(0) - b(-1) - A(-1) - B(0) = 1 + b + A \geq 0$, so $-b-A \leq 1$.
+
+From $a+A \leq 1$ and $A-a \leq 1$, we have $-1 \leq a+A \leq 1$ and $-1 \leq a-A \leq 1$.
+From $b-A \leq 1$ and $-b-A \leq 1$, we have $-1 \leq b-A \leq 1$ and $-1 \leq b+A \leq 1$.
+
+Consider the integral of $f(x)$ over a period.
+$\int_0^{2\pi} f(x) dx = \int_0^{2\pi} (1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x) dx \geq 0$.
+$\int_0^{2\pi} 1 dx = 2\pi$.
+$\int_0^{2\pi} \cos x dx = [\sin x]_0^{2\pi} = 0$.
+$\int_0^{2\pi} \sin x dx = [-\cos x]_0^{2\pi} = -1 - (-1) = 0$.
+$\int_0^{2\pi} \cos 2x dx = [\frac{1}{2} \sin 2x]_0^{2\pi} = 0$.
+$\int_0^{2\pi} \sin 2x dx = [-\frac{1}{2} \cos 2x]_0^{2\pi} = -\frac{1}{2} - (-\frac{1}{2}) = 0$.
+So $\int_0^{2\pi} f(x) dx = 2\pi \geq 0$. This doesn't give any information.
+
+Multiply $f(x)$ by $\cos x$ and integrate.
+$\int_0^{2\pi} f(x) \cos x dx = \int_0^{2\pi} (1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x) \cos x dx \geq 0$.
+$\int_0^{2\pi} \cos x dx = 0$.
+$\int_0^{2\pi} \cos^2 x dx = \int_0^{2\pi} \frac{1+\cos 2x}{2} dx = [\frac{x}{2} + \frac{\sin 2x}{4}]_0^{2\pi} = \pi$.
+$\int_0^{2\pi} \sin x \cos x dx = \int_0^{2\pi} \frac{1}{2} \sin 2x dx = [-\frac{1}{4} \cos 2x]_0^{2\pi} = -\frac{1}{4} - (-\frac{1}{4}) = 0$.
+$\int_0^{2\pi} \cos 2x \cos x dx = \int_0^{2\pi} \frac{1}{2} (\cos 3x + \cos x) dx = [\frac{1}{6} \sin 3x + \frac{1}{2} \sin x]_0^{2\pi} = 0$.
+$\int_0^{2\pi} \sin 2x \cos x dx = \int_0^{2\pi} \frac{1}{2} (\sin 3x + \sin x) dx = [-\frac{1}{6} \cos 3x - \frac{1}{2} \cos x]_0^{2\pi} = (-\frac{1}{6} - \frac{1}{2}) - (-\frac{1}{6} - \frac{1}{2}) = 0$.
+So $\int_0^{2\pi} f(x) \cos x dx = 0 - a \pi - 0 - 0 - 0 = -a\pi \geq 0$, so $a \leq 0$. This is not necessarily true.
+
+Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+Let $a = r \cos \alpha, b = r \sin \alpha$. Then $a \cos x + b \sin x = r (\cos \alpha \cos x + \sin \alpha \sin x) = r \cos(x-\alpha)$.
+Let $A = R \cos \beta, B = R \sin \beta$. Then $A \cos 2x + B \sin 2x = R (\cos \beta \cos 2x + \sin \beta \sin 2x) = R \cos(2x-\beta)$.
+So $1 - r \cos(x-\alpha) - R \cos(2x-\beta) \geq 0$.
+Let $y = x-\alpha$. Then $2x-\beta = 2(y+\alpha) - \beta = 2y + 2\alpha - \beta$. Let $\gamma = 2\alpha - \beta$.
+$1 - r \cos y - R \cos(2y+\gamma) \geq 0$.
+$1 - r \cos y - R (\cos 2y \cos \gamma - \sin 2y \sin \gamma) \geq 0$.
+$1 - r \cos y - R ((2\cos^2 y - 1) \cos \gamma - 2 \sin y \cos y \sin \gamma) \geq 0$.
+$1 - r \cos y - 2R \cos^2 y \cos \gamma + R \cos \gamma + 2R \sin y \cos y \sin \gamma \geq 0$.
+
+Consider $f(x) \geq 0$.
+Multiply by $\cos(x-\phi)$ and integrate from $0$ to $2\pi$.
+$\int_0^{2\pi} f(x) \cos(x-\phi) dx \geq 0$.
+$\int_0^{2\pi} (1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x) (\cos x \cos \phi + \sin x \sin \phi) dx \geq 0$.
+$\cos \phi \int_0^{2\pi} (\cos x - a \cos^2 x - b \sin x \cos x - A \cos 2x \cos x - B \sin 2x \cos x) dx + \sin \phi \int_0^{2\pi} (\sin x - a \cos x \sin x - b \sin^2 x - A \cos 2x \sin x - B \sin 2x \sin x) dx \geq 0$.
+$\cos \phi (0 - a\pi - 0 - 0 - 0) + \sin \phi (0 - 0 - b\pi - 0 - 0) \geq 0$.
+$-a\pi \cos \phi - b\pi \sin \phi \geq 0$.
+$a \cos \phi + b \sin \phi \leq 0$.
+This must be true for all $\phi$. Let $\phi$ such that $\tan \phi = b/a$. Then $a \frac{a}{\sqrt{a^2+b^2}} + b \frac{b}{\sqrt{a^2+b^2}} = \sqrt{a^2+b^2} \leq 0$, so $a=b=0$. This is wrong.
+
+Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+The minimum value of $a \cos x + b \sin x$ is $-\sqrt{a^2+b^2}$.
+The minimum value of $A \cos 2x + B \sin 2x$ is $-\sqrt{A^2+B^2}$.
+$1 - (a \cos x + b \sin x) \geq A \cos 2x + B \sin 2x$.
+Minimum of LHS is $1 - \sqrt{a^2+b^2}$. Maximum of RHS is $\sqrt{A^2+B^2}$.
+$1 - \sqrt{a^2+b^2} \geq \sqrt{A^2+B^2}$.
+
+Consider $g(x) = 1 - A \cos 2x - B \sin 2x \geq a \cos x + b \sin x$.
+Minimum of LHS is $1 - \sqrt{A^2+B^2}$. Maximum of RHS is $\sqrt{a^2+b^2}$.
+$1 - \sqrt{A^2+B^2} \geq \sqrt{a^2+b^2}$.
+
+Let $x=0$, $1-a-A \geq 0$.
+Let $x=\pi$, $1+a-A \geq 0$.
+Let $x=\pi/2$, $1-b+A \geq 0$.
+Let $x=3\pi/2$, $1+b+A \geq 0$.
+
+Consider the case where $b=B=0$.
+$f(x) = 1 - a \cos x - A \cos 2x \geq 0$.
+$1 - a \cos x - A (2 \cos^2 x - 1) \geq 0$.
+$1 - a \cos x - 2A \cos^2 x + A \geq 0$.
+$A+1 - a \cos x - 2A \cos^2 x \geq 0$.
+Let $y = \cos x$, $-1 \leq y \leq 1$.
+$g(y) = -2Ay^2 - ay + A+1 \geq 0$ for $y \in [-1, 1]$.
+If $A=0$, $-ay+1 \geq 0$ for $y \in [-1, 1]$. If $a>0$, $-a+1 \geq 0$, $a \leq 1$. If $a<0$, $a+1 \geq 0$, $a \geq -1$. So $|a| \leq 1$. $a^2 \leq 1 \leq 2$.
+If $A>0$, the parabola opens downwards. We need $g(-1) = -2A+a+A+1 = -A+a+1 \geq 0$, $a \geq A-1$. And $g(1) = -2A-a+A+1 = -A-a+1 \geq 0$, $a \leq 1-A$. Also the vertex must be outside $[-1, 1]$ or the vertex is in $[-1, 1]$ and the value is non-negative. Vertex at $y = -(-a)/(2(-2A)) = -a/4A$. If $|-a/4A| \leq 1$, then $a^2 \leq 16A^2$. $g(-a/4A) = -2A (-a/4A)^2 - a(-a/4A) + A+1 = -2A a^2/16A^2 + a^2/4A + A+1 = -a^2/8A + a^2/4A + A+1 = a^2/8A + A+1 \geq 0$.
+If $A<0$, the parabola opens upwards. We need $g(-1) \geq 0$ and $g(1) \geq 0$.
+$-A+a+1 \geq 0$, $a \geq A-1$.
+$-A-a+1 \geq 0$, $a \leq 1-A$.
+
+Consider integrals again.
+$\int_0^{2\pi} f(x) dx \geq 0 \implies 2\pi \geq 0$.
+$\int_0^{2\pi} f(x) \cos x dx \geq 0 \implies -a \pi \geq 0 \implies a \leq 0$.
+$\int_0^{2\pi} f(x) \sin x dx \geq 0 \implies -b \pi \geq 0 \implies b \leq 0$.
+$\int_0^{2\pi} f(x) \cos 2x dx \geq 0 \implies -A \pi \geq 0 \implies A \leq 0$.
+$\int_0^{2\pi} f(x) \sin 2x dx \geq 0 \implies -B \pi \geq 0 \implies B \leq 0$.
+This is not true.
+
+Consider the vector $v = (1, \cos x, \sin x, \cos 2x, \sin 2x)$.
+The condition is $v \cdot c \geq 0$, where $c = (1, -a, -b, -A, -B)$.
+
+Consider the case where $f(x) = (1 - \alpha \cos x - \beta \sin x)^2 \geq 0$.
+$1 + \alpha^2 \cos^2 x + \beta^2 \sin^2 x - 2 \alpha \cos x - 2 \beta \sin x + 2 \alpha \beta \cos x \sin x \geq 0$.
+$1 + \frac{\alpha^2+\beta^2}{2} + \frac{\alpha^2-\beta^2}{2} \cos 2x - 2 \alpha \cos x - 2 \beta \sin x + \alpha \beta \sin 2x \geq 0$.
+Compare with $1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x \geq 0$.
+$-a = -2\alpha$, $-b = -2\beta$, $-A = \frac{\alpha^2-\beta^2}{2}$, $-B = \alpha \beta$.
+$a = 2\alpha$, $b = 2\beta$.
+$A = \frac{\beta^2-\alpha^2}{2}$, $B = -\alpha \beta$.
+$a^2+b^2 = 4\alpha^2+4\beta^2$.
+$A^2+B^2 = \frac{(\beta^2-\alpha^2)^2}{4} + \alpha^2 \beta^2 = \frac{\beta^4 - 2\alpha^2 \beta^2 + \alpha^4 + 4\alpha^2 \beta^2}{4} = \frac{(\alpha^2+\beta^2)^2}{4}$.
+
+Consider $f(x) \geq 0$.
+Consider the Fourier series of $|f(x)| = f(x)$.
+The coefficients must match.
+
+Let $z = e^{ix}$.
+$f(x) = 1 - \frac{a}{2}(z+z^{-1}) - \frac{b}{2i}(z-z^{-1}) - \frac{A}{2}(z^2+z^{-2}) - \frac{B}{2i}(z^2-z^{-2}) \geq 0$.
+$2if(x) = 2i - ia(z+z^{-1}) + b(z-z^{-1}) - iA(z^2+z^{-2}) + B(z^2-z^{-2}) \geq 0$.
+$2if(x) = 2i - i a z - i a z^{-1} + b z - b z^{-1} - i A z^2 - i A z^{-2} + B z^2 - B z^{-2} \geq 0$.
+$2if(x) = 2i + (b-ia)z + (-b-ia)z^{-1} + (B-iA)z^2 + (-B-iA)z^{-2} \geq 0$.
+
+Consider the integral $\frac{1}{2\pi} \int_0^{2\pi} f(x) e^{inx} dx$.
+For $n=0$, $\frac{1}{2\pi} \int_0^{2\pi} f(x) dx = 1 \geq 0$.
+For $n=1$, $\frac{1}{2\pi} \int_0^{2\pi} f(x) (\cos x + i \sin x) dx = \frac{1}{2\pi} \int_0^{2\pi} (1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x) (\cos x + i \sin x) dx = -a/2 - ib/2$.
+Since $f(x) \geq 0$, the coefficients of the Fourier series must satisfy certain conditions.
+
+Consider trigonometric polynomials that are non-negative.
+If $P(\theta) = \sum_{k=-n}^n c_k e^{ik\theta} \geq 0$, then $c_{-k} = \overline{c_k}$ and $c_0 \geq 0$.
+In our case, the coefficients are:
+$c_0 = 1$.
+$c_1 = -a/2 - ib/2$.
+$c_{-1} = -a/2 + ib/2$.
+$c_2 = -A/2 - iB/2$.
+$c_{-2} = -A/2 + iB/2$.
+We need a condition on the coefficients such that the polynomial is non-negative.
+
+If $1 - a \cos x - b \sin x \geq 0$, then $1 \geq \sqrt{a^2+b^2}$.
+If $1 - A \cos 2x - B \sin 2x \geq 0$, then $1 \geq \sqrt{A^2+B^2}$.
+
+Consider $f(x) = |1 - \alpha e^{ix} - \beta e^{2ix}|^2 \geq 0$.
+$(1 - \alpha e^{ix} - \beta e^{2ix})(1 - \bar{\alpha} e^{-ix} - \bar{\beta} e^{-2ix})$.
+$1 - \bar{\alpha} e^{-ix} - \bar{\beta} e^{-2ix} - \alpha e^{ix} + |\alpha|^2 - \alpha \bar{\beta} e^{-ix} - \beta e^{2ix} - \beta \bar{\alpha} e^{ix} + |\beta|^2$.
+$1 + |\alpha|^2 + |\beta|^2 - (\bar{\alpha} + \alpha + \alpha \bar{\beta}) e^{-ix} - (\bar{\beta} + \beta + \beta \bar{\alpha}) e^{-2ix}$.
+$1 + |\alpha|^2 + |\beta|^2 - (2 \text{Re}(\alpha) + \alpha \bar{\beta}) e^{-ix} - (2 \text{Re}(\beta) + \beta \bar{\alpha}) e^{-2ix}$.
+Compare coefficients.
+
+If $P(\theta) = |\sum_{k=0}^n z_k e^{ik\theta}|^2$, then $P(\theta) \geq 0$.
+Consider $P(x) = |1 - \alpha e^{ix}|^2 = (1-\alpha e^{ix})(1-\bar{\alpha} e^{-ix}) = 1 - \bar{\alpha} e^{-ix} - \alpha e^{ix} + |\alpha|^2 = 1+|\alpha|^2 - 2 \text{Re}(\alpha) \cos x + 2 \text{Im}(\alpha) \sin x$.
+Compare with $1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x$.
+
+Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+Let $a = r_1 \cos \phi_1, b = r_1 \sin \phi_1$.
+Let $A = r_2 \cos \phi_2, B = r_2 \sin \phi_2$.
+$1 - r_1 \cos(x-\phi_1) - r_2 \cos(2x-\phi_2) \geq 0$.
+Let $x - \phi_1 = y$. Then $2x - \phi_2 = 2(y+\phi_1) - \phi_2 = 2y + 2\phi_1 - \phi_2$. Let $\delta = 2\phi_1 - \phi_2$.
+$1 - r_1 \cos y - r_2 \cos(2y+\delta) \geq 0$.
+$1 - r_1 \cos y - r_2 (\cos 2y \cos \delta - \sin 2y \sin \delta) \geq 0$.
+$1 - r_1 \cos y - r_2 ( (2\cos^2 y - 1) \cos \delta - 2 \sin y \cos y \sin \delta ) \geq 0$.
+$1 - r_1 \cos y - 2 r_2 \cos^2 y \cos \delta + r_2 \cos \delta + 2 r_2 \sin y \cos y \sin \delta \geq 0$.
+$1 + r_2 \cos \delta - r_1 \cos y - 2 r_2 \cos \delta \cos^2 y + r_2 \sin \delta \sin 2y \geq 0$.
+
+If $f(x) \geq 0$, then the average value is non-negative.
+Consider $1 - a \cos x - b \sin x \geq 0$. Square both sides? No.
+Consider $1 - A \cos 2x - B \sin 2x \geq |a \cos x + b \sin x|$.
+$1 - \sqrt{A^2+B^2} \leq 1 - A \cos 2x - B \sin 2x \leq 1 + \sqrt{A^2+B^2}$.
+$|a \cos x + b \sin x| \leq \sqrt{a^2+b^2}$.
+So $1 - \sqrt{A^2+B^2} \geq \sqrt{a^2+b^2}$. This is not necessarily true.
+
+Consider $f(x) \geq 0$.
+$\int_0^{2\pi} f(x) d x = 2\pi$.
+$\int_0^{2\pi} f(x) \cos x d x = -a\pi$.
+$\int_0^{2\pi} f(x) \sin x d x = -b\pi$.
+$\int_0^{2\pi} f(x) \cos 2x d x = -A\pi$.
+$\int_0^{2\pi} f(x) \sin 2x d x = -B\pi$.
+Since $f(x) \geq 0$, consider the Fejer-Riesz theorem. A non-negative trigonometric polynomial can be written as the squared modulus of another trigonometric polynomial.
+$1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x = |c_0 + c_1 e^{ix} + c_2 e^{2ix}|^2$.
+$= (c_0 + c_1 e^{ix} + c_2 e^{2ix})(\bar{c_0} + \bar{c_1} e^{-ix} + \bar{c_2} e^{-2ix})$.
+$= |c_0|^2 + |c_1|^2 + |c_2|^2 + (c_0 \bar{c_1} + c_1 \bar{c_2}) e^{ix} + (\bar{c_0} c_1 + \bar{c_1} c_2) e^{-ix} + c_0 \bar{c_2} e^{2ix} + \bar{c_0} c_2 e^{-2ix}$.
+$= |c_0|^2 + |c_1|^2 + |c_2|^2 + 2 \text{Re}(c_0 \bar{c_1} + c_1 \bar{c_2}) \cos x - 2 \text{Im}(c_0 \bar{c_1} + c_1 \bar{c_2}) \sin x + 2 \text{Re}(c_0 \bar{c_2}) \cos 2x - 2 \text{Im}(c_0 \bar{c_2}) \sin 2x$.
+Compare coefficients:
+$1 = |c_0|^2 + |c_1|^2 + |c_2|^2$.
+$-a = 2 \text{Re}(c_0 \bar{c_1} + c_1 \bar{c_2})$.
+$-b = -2 \text{Im}(c_0 \bar{c_1} + c_1 \bar{c_2})$.
+$-A = 2 \text{Re}(c_0 \bar{c_2})$.
+$-B = -2 \text{Im}(c_0 \bar{c_2})$.
+$A^2+B^2 = 4 (\text{Re}(c_0 \bar{c_2})^2 + \text{Im}(c_0 \bar{c_2})^2) = 4 |c_0 \bar{c_2}|^2 = 4 |c_0|^2 |c_2|^2$.
+Let $c_0 = 1$.
+$1 = 1 + |c_1|^2 + |c_2|^2 \implies |c_1|^2 + |c_2|^2 = 0 \implies c_1 = c_2 = 0$. Then $f(x) = 1$, $a=b=A=B=0$.
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Strategic Exploration</skill>
+<definition>The ability to systematically try different approaches to a problem, testing various methods and special cases to gain insight into the problem structure.</definition>
+
+<start>0</start>
+<end>198</end>
+<text>Let $f(x) = 1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x \geq 0$ for all $x \in \mathbb{R}$.
+We want to show that $a^2 + b^2 \leq 2$ and $A^2 + B^2 \leq 1$.</text>
+<explanation>The solver begins by clearly stating the problem and the goal, setting up a strategic framework for exploration of the function's properties.</explanation>
+
+<start>200</start>
+<end>534</end>
+<text>Consider specific values of $x$.
+For $x=0$, $f(0) = 1 - a - A \geq 0$, so $a+A \leq 1$.
+For $x=\pi$, $f(\pi) = 1 - a \cos \pi - b \sin \pi - A \cos 2\pi - B \sin 2\pi = 1 - a(-1) - b(0) - A(1) - B(0) = 1+a-A \geq 0$, so $A-a \leq 1$.</text>
+<explanation>The solver strategically explores specific values of x to derive constraints on the parameters, a standard technique for understanding function behavior at key points.</explanation>
+
+<start>1043</start>
+<end>1457</end>
+<text>Consider the integral of $f(x)$ over a period.
+$\int_0^{2\pi} f(x) dx = \int_0^{2\pi} (1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x) dx \geq 0$.
+$\int_0^{2\pi} 1 dx = 2\pi$.
+$\int_0^{2\pi} \cos x dx = [\sin x]_0^{2\pi} = 0$.
+$\int_0^{2\pi} \sin x dx = [-\cos x]_0^{2\pi} = -1 - (-1) = 0$.</text>
+<explanation>The solver explores a different approach using integration over a period, demonstrating strategic flexibility in trying different mathematical tools.</explanation>
+
+<start>2318</start>
+<end>2642</end>
+<text>Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+Let $a = r \cos \alpha, b = r \sin \alpha$. Then $a \cos x + b \sin x = r (\cos \alpha \cos x + \sin \alpha \sin x) = r \cos(x-\alpha)$.
+Let $A = R \cos \beta, B = R \sin \beta$. Then $A \cos 2x + B \sin 2x = R (\cos \beta \cos 2x + \sin \beta \sin 2x) = R \cos(2x-\beta)$.</text>
+<explanation>The solver tries a parametrization approach, converting the trigonometric expressions into a more manageable form using polar coordinates, showing strategic exploration of alternative representations.</explanation>
+
+<start>4896</start>
+<end>5285</end>
+<text>Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+The minimum value of $a \cos x + b \sin x$ is $-\sqrt{a^2+b^2}$.
+The minimum value of $A \cos 2x + B \sin 2x$ is $-\sqrt{A^2+B^2}$.
+$1 - (a \cos x + b \sin x) \geq A \cos 2x + B \sin 2x$.
+Minimum of LHS is $1 - \sqrt{a^2+b^2}$. Maximum of RHS is $\sqrt{A^2+B^2}$.</text>
+<explanation>The solver explores the extremal values of the trigonometric expressions, a strategic approach to establish bounds on the function.</explanation>
+
+<skill>Mathematical Reformulation</skill>
+<definition>The ability to rewrite mathematical expressions in equivalent forms that reveal new insights or simplify the problem.</definition>
+
+<start>2318</start>
+<end>2642</end>
+<text>Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+Let $a = r \cos \alpha, b = r \sin \alpha$. Then $a \cos x + b \sin x = r (\cos \alpha \cos x + \sin \alpha \sin x) = r \cos(x-\alpha)$.
+Let $A = R \cos \beta, B = R \sin \beta$. Then $A \cos 2x + B \sin 2x = R (\cos \beta \cos 2x + \sin \beta \sin 2x) = R \cos(2x-\beta)$.</text>
+<explanation>The solver reformulates the trigonometric expressions using polar coordinates, converting the sum of sine and cosine terms into a single cosine with phase shift, which simplifies the analysis.</explanation>
+
+<start>2643</start>
+<end>2804</end>
+<text>So $1 - r \cos(x-\alpha) - R \cos(2x-\beta) \geq 0$.
+Let $y = x-\alpha$. Then $2x-\beta = 2(y+\alpha) - \beta = 2y + 2\alpha - \beta$. Let $\gamma = 2\alpha - \beta$.</text>
+<explanation>The solver further reformulates the problem with a variable substitution, transforming the expression into a form that depends on a single variable with adjusted parameters.</explanation>
+
+<start>6267</start>
+<end>6659</end>
+<text>Let $z = e^{ix}$.
+$f(x) = 1 - \frac{a}{2}(z+z^{-1}) - \frac{b}{2i}(z-z^{-1}) - \frac{A}{2}(z^2+z^{-2}) - \frac{B}{2i}(z^2-z^{-2}) \geq 0$.
+$2if(x) = 2i - ia(z+z^{-1}) + b(z-z^{-1}) - iA(z^2+z^{-2}) + B(z^2-z^{-2}) \geq 0$.</text>
+<explanation>The solver reformulates the trigonometric expressions using complex exponentials, a powerful technique that can simplify manipulation of trigonometric functions.</explanation>
+
+<start>8337</start>
+<end>8755</end>
+<text>Consider $f(x) = |1 - \alpha e^{ix} - \beta e^{2ix}|^2 \geq 0$.
+$(1 - \alpha e^{ix} - \beta e^{2ix})(1 - \bar{\alpha} e^{-ix} - \bar{\beta} e^{-2ix})$.
+$1 - \bar{\alpha} e^{-ix} - \bar{\beta} e^{-2ix} - \alpha e^{ix} + |\alpha|^2 - \alpha \bar{\beta} e^{-ix} - \beta e^{2ix} - \beta \bar{\alpha} e^{ix} + |\beta|^2$.</text>
+<explanation>The solver reformulates the problem using the squared modulus of a complex function, multiplying a complex expression by its conjugate to obtain a real-valued function that is guaranteed to be non-negative.</explanation>
+
+<skill>Pattern Recognition</skill>
+<definition>The ability to identify mathematical structures, relationships, and regularities in the problem that can lead to insights or solution strategies.</definition>
+
+<start>4896</start>
+<end>5285</end>
+<text>Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x + B \sin 2x) \geq 0$.
+The minimum value of $a \cos x + b \sin x$ is $-\sqrt{a^2+b^2}$.
+The minimum value of $A \cos 2x + B \sin 2x$ is $-\sqrt{A^2+B^2}$.
+$1 - (a \cos x + b \sin x) \geq A \cos 2x + B \sin 2x$.
+Minimum of LHS is $1 - \sqrt{a^2+b^2}$. Maximum of RHS is $\sqrt{A^2+B^2}$.</text>
+<explanation>The solver recognizes the pattern that linear combinations of sine and cosine with the same frequency have bounded values determined by the coefficients, using this to establish inequalities.</explanation>
+
+<start>5286</start>
+<end>5414</end>
+<text>$1 - \sqrt{a^2+b^2} \geq \sqrt{A^2+B^2}$.
+
+Consider $g(x) = 1 - A \cos 2x - B \sin 2x \geq a \cos x + b \sin x$.</text>
+<explanation>The solver recognizes a pattern in the inequality structure that allows for a reformulation of the problem, isolating terms with different frequencies.</explanation>
+
+<start>7949</start>
+<end>8269</end>
+<text>If $P(\theta) = \sum_{k=-n}^n c_k e^{ik\theta} \geq 0$, then $c_{-k} = \overline{c_k}$ and $c_0 \geq 0$.
+In our case, the coefficients are:
+$c_0 = 1$.
+$c_1 = -a/2 - ib/2$.
+$c_{-1} = -a/2 + ib/2$.
+$c_2 = -A/2 - iB/2$.
+$c_{-2} = -A/2 + iB/2$.
+We need a condition on the coefficients such that the polynomial is non-negative.</text>
+<explanation>The solver recognizes the pattern of Fourier coefficients in non-negative trigonometric polynomials, identifying the symmetry relation between coefficients of opposite indices.</explanation>
+
+<skill>Knowledge Application</skill>
+<definition>The ability to apply relevant mathematical theorems, formulas, and techniques to solve the problem.</definition>
+
+<start>1043</start>
+<end>1457</end>
+<text>Consider the integral of $f(x)$ over a period.
+$\int_0^{2\pi} f(x) dx = \int_0^{2\pi} (1 - a \cos x - b \sin x - A \cos 2x - B \sin 2x) dx \geq 0$.
+$\int_0^{2\pi} 1 dx = 2\pi$.
+$\int_0^{2\pi} \cos x dx = [\sin x]_0^{2\pi} = 0$.
+$\int_0^{2\pi} \sin x dx = [-\cos x]_0^{2\pi} = -1 - (-1) = 0$.</text>
+<explanation>The solver applies knowledge of definite integrals of trigonometric functions over a complete period, correctly evaluating each integral term.</explanation>
+
+<start>1734</start>
+<end>2126</end>
+<text>$\int_0^{2\pi} \cos^2 x dx = \int_0^{2\pi} \frac{1+\cos 2x}{2} dx = [\frac{x}{2} + \frac{\sin 2x}{4}]_0^{2\pi} = \pi$.
+$\int_0^{2\pi} \sin x \cos x dx = \int_0^{2\pi} \frac{1}{2} \sin 2x dx = [-\frac{1}{4} \cos 2x]_0^{2\pi} = -\frac{1}{4} - (-\frac{1}{4}) = 0$.</text>
+<explanation>The solver applies trigonometric identities to transform integrals into more easily computable forms, demonstrating knowledge of both integration techniques and trigonometric relations.</explanation>
+
+<start>8337</start>
+<end>8755</end>
+<text>Consider $f(x) = |1 - \alpha e^{ix} - \beta e^{2ix}|^2 \geq 0$.
+$(1 - \alpha e^{ix} - \beta e^{2ix})(1 - \bar{\alpha} e^{-ix} - \bar{\beta} e^{-2ix})$.
+$1 - \bar{\alpha} e^{-ix} - \bar{\beta} e^{-2ix} - \alpha e^{ix} + |\alpha|^2 - \alpha \bar{\beta} e^{-ix} - \beta e^{2ix} - \beta \bar{\alpha} e^{ix} + |\beta|^2$.</text>
+<explanation>The solver applies knowledge of complex analysis, specifically how to compute the squared modulus of a complex expression by multiplying by its complex conjugate.</explanation>
+
+<start>9055</start>
+<end>9214</end>
+<text>Since $f(x) \geq 0$, consider the Fejer-Riesz theorem. A non-negative trigonometric polynomial can be written as the squared modulus of another trigonometric polynomial.</text>
+<explanation>The solver applies specialized mathematical knowledge, specifically the Fejer-Riesz theorem about non-negative trigonometric polynomials, which is directly relevant to the problem structure.</explanation>
+
+<skill>Analytical Reasoning</skill>
+<definition>The ability to break down complex problems into simpler components, analyze relationships between parts, and draw logical conclusions based on given information.</definition>
+
+<start>534</start>
+<end>798</end>
+<text>For $x=\pi/2$, $f(\pi/2) = 1 - a \cos(\pi/2) - b \sin(\pi/2) - A \cos(\pi) - B \sin(\pi) = 1 - a(0) - b(1) - A(-1) - B(0) = 1 - b + A \geq 0$, so $b-A \leq 1$.
+For $x=3\pi/2$, $f(3\pi/2) = 1 - a \cos(3\pi/2) - b \sin(3\pi/2) - A \cos(3\pi) - B \sin(3\pi) = 1 - a(0) - b(-1) - A(-1) - B(0) = 1 + b + A \geq 0$, so $-b-A \leq 1$.</text>
+<explanation>The solver analyzes the function at specific values, carefully evaluating each trigonometric term and drawing logical conclusions about the constraints on parameters.</explanation>
+
+<start>799</start>
+<end>1042</end>
+<text>From $a+A \leq 1$ and $A-a \leq 1$, we have $-1 \leq a+A \leq 1$ and $-1 \leq a-A \leq 1$.
+From $b-A \leq 1$ and $-b-A \leq 1$, we have $-1 \leq b-A \leq 1$ and $-1 \leq b+A \leq 1$.</text>
+<explanation>The solver combines the previously derived inequalities to establish bounds on combinations of parameters, demonstrating logical reasoning to extract more information from the existing constraints.</explanation>
+
+<start>4896</start>
+<end>5414</end>
+<text>Consider $f(x) \geq 0$.
+$1 - (a \cos x + b \sin x) - (A \cos 2x
+
+Summary of Key Skills:
+Not found

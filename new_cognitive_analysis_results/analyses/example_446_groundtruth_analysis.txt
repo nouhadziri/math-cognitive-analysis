@@ -1,0 +1,89 @@
+Problem:
+FemtoPravis is walking on an $8 \times 8$ chessboard that wraps around at its edges (so squares on the left edge of the chessboard are adjacent to squares on the right edge, and similarly for the top and bottom edges). Each femtosecond, FemtoPravis moves in one of the four diagonal directions uniformly at random. After 2012 femtoseconds, what is the probability that FemtoPravis is at his original location?
+
+Domain: Probability theory
+
+Solution Trajectory (groundtruth):
+We note the probability that he ends up in the same row is equal to the probability that he ends up in the same column by symmetry. Clearly these are independent, so we calculate the probability that he ends up in the same row. Now we number the rows $0-7$ where 0 and 7 are adjacent. Suppose he starts at row 0 . After two more turns, the probability he is in row 2 (or row 6 ) is \frac{1}{4}$, and the probability he is in row 0 again is \frac{1}{2}$. Let $a_{n}, b_{n}, c_{n}$ and $d_{n}$ denote the probability he is in row $0,2,4,6$ respectively after $2 n$ moves. We have $a_{0}=1$, and for $n \geq 0$ we have the following equations: $$ \begin{aligned} & a_{n+1}=\frac{1}{2} a_{n}+\frac{1}{4} b_{n}+\frac{1}{4} d_{n} \\ & b_{n+1}=\frac{1}{2} b_{n}+\frac{1}{4} a_{n}+\frac{1}{4} c_{n} \\ & c_{n+1}=\frac{1}{2} c_{n}+\frac{1}{4} b_{n}+\frac{1}{4} d_{n} \\ & d_{n+1}=\frac{1}{2} d_{n}+\frac{1}{4} a_{n}+\frac{1}{4} c_{n} \end{aligned} $$ From which we get the following equations: $$ \begin{gathered} a_{n}+c_{n}=\frac{1}{2} \\ x_{n}=a_{n}-c_{n}=\frac{1}{2}\left(a_{n-1}-c_{n-1}\right)=\frac{x_{n-1}}{2} \end{gathered} $$ So $$ \begin{gathered} a_{1006}+c_{1006}=\frac{1}{2} \\ x_{0}=1, x_{1006}=\frac{1}{2^{1006}} \\ a_{1006}=\frac{1+2^{1005}}{2^{1007}} \end{gathered} $$ And thus the answer is \left(\frac{1+2^{1005}}{2^{1007}}\right)^{2}$.
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Problem Decomposition</skill>
+<definition>Breaking down a complex problem into simpler, more manageable sub-problems that can be solved independently and then combined to solve the original problem.</definition>
+
+<start>0</start>
+<end>196</end>
+<text>We note the probability that he ends up in the same row is equal to the probability that he ends up in the same column by symmetry. Clearly these are independent, so we calculate the probability that he ends up in the same row.</text>
+<explanation>The solver decomposes the 2D movement problem into two independent 1D problems (row and column). By recognizing symmetry and independence, they simplify the problem to just calculating the probability for rows, which they'll later square to get the final answer.</explanation>
+
+<skill>Symmetry Recognition</skill>
+<definition>Identifying and leveraging symmetrical patterns or relationships in a problem to simplify calculations or reasoning.</definition>
+
+<start>0</start>
+<end>109</end>
+<text>We note the probability that he ends up in the same row is equal to the probability that he ends up in the same column by symmetry.</text>
+<explanation>The solver recognizes the inherent symmetry between row and column movements on the chessboard, allowing them to focus on just one dimension (rows) with the knowledge that columns will behave identically.</explanation>
+
+<skill>Mathematical Modeling</skill>
+<definition>Translating a real-world or abstract problem into formal mathematical structures, equations, or representations that capture the essential features of the problem.</definition>
+
+<start>196</start>
+<end>513</end>
+<text>Now we number the rows $0-7$ where 0 and 7 are adjacent. Suppose he starts at row 0 . After two more turns, the probability he is in row 2 (or row 6 ) is \frac{1}{4}$, and the probability he is in row 0 again is \frac{1}{2}$. Let $a_{n}, b_{n}, c_{n}$ and $d_{n}$ denote the probability he is in row $0,2,4,6$ respectively after $2 n$ moves.</text>
+<explanation>The solver creates a mathematical model by numbering the rows, establishing initial conditions, and defining variables (a_n, b_n, c_n, d_n) to represent probabilities of being in specific rows after 2n moves. This transforms the physical movement problem into a mathematical structure.</explanation>
+
+<skill>Recursive Thinking</skill>
+<definition>Defining a problem in terms of simpler versions of itself, often leading to recurrence relations that can be solved to find the general solution.</definition>
+
+<start>513</start>
+<end>814</end>
+<text>We have $a_{0}=1$, and for $n \geq 0$ we have the following equations: $$ \begin{aligned} & a_{n+1}=\frac{1}{2} a_{n}+\frac{1}{4} b_{n}+\frac{1}{4} d_{n} \\ & b_{n+1}=\frac{1}{2} b_{n}+\frac{1}{4} a_{n}+\frac{1}{4} c_{n} \\ & c_{n+1}=\frac{1}{2} c_{n}+\frac{1}{4} b_{n}+\frac{1}{4} d_{n} \\ & d_{n+1}=\frac{1}{2} d_{n}+\frac{1}{4} a_{n}+\frac{1}{4} c_{n} \end{aligned} $$</text>
+<explanation>The solver establishes recurrence relations that define how the probabilities evolve over time. Each state is defined in terms of previous states, showing recursive thinking by expressing the problem at time n+1 in terms of the problem at time n.</explanation>
+
+<skill>Pattern Recognition</skill>
+<definition>Identifying regular structures, relationships, or sequences in data or problem conditions that can lead to insights or simplifications.</definition>
+
+<start>814</start>
+<end>954</end>
+<text>From which we get the following equations: $$ \begin{gathered} a_{n}+c_{n}=\frac{1}{2} \\ x_{n}=a_{n}-c_{n}=\frac{1}{2}\left(a_{n-1}-c_{n-1}\right)=\frac{x_{n-1}}{2} \end{gathered} $$</text>
+<explanation>The solver recognizes patterns in the recurrence relations that allow for simplification. They identify that a_n + c_n = 1/2 and that x_n = a_n - c_n follows a simple halving pattern. This pattern recognition dramatically simplifies the calculation.</explanation>
+
+<skill>Mathematical Simplification</skill>
+<definition>Reducing complex mathematical expressions or equations to simpler forms that are easier to analyze or solve while preserving the essential mathematical relationships.</definition>
+
+<start>814</start>
+<end>1043</end>
+<text>From which we get the following equations: $$ \begin{gathered} a_{n}+c_{n}=\frac{1}{2} \\ x_{n}=a_{n}-c_{n}=\frac{1}{2}\left(a_{n-1}-c_{n-1}\right)=\frac{x_{n-1}}{2} \end{gathered} $$ So $$ \begin{gathered} a_{1006}+c_{1006}=\frac{1}{2} \\ x_{0}=1, x_{1006}=\frac{1}{2^{1006}} \\ a_{1006}=\frac{1+2^{1005}}{2^{1007}} \end{gathered} $$</text>
+<explanation>The solver simplifies the original system of four recurrence relations into just two equations and then solves them to find a direct formula for a_1006. This mathematical simplification transforms a potentially computationally intensive problem into one that can be solved with a closed-form expression.</explanation>
+
+<skill>Algebraic Manipulation</skill>
+<definition>Applying algebraic operations and transformations to mathematical expressions to solve equations, isolate variables, or derive new relationships.</definition>
+
+<start>954</start>
+<end>1043</end>
+<text>So $$ \begin{gathered} a_{1006}+c_{1006}=\frac{1}{2} \\ x_{0}=1, x_{1006}=\frac{1}{2^{1006}} \\ a_{1006}=\frac{1+2^{1005}}{2^{1007}} \end{gathered} $$</text>
+<explanation>The solver uses algebraic manipulation to solve for a_1006 by combining the equations a_n + c_n = 1/2 and x_n = a_n - c_n = x_{n-1}/2. They solve the recurrence relation for x_n and then use it along with the constraint equation to isolate and solve for a_1006.</explanation>
+
+<skill>Solution Synthesis</skill>
+<definition>Combining the results of sub-problems or intermediate calculations to construct the final solution to the original problem.</definition>
+
+<start>1043</start>
+<end>1108</end>
+<text>And thus the answer is \left(\frac{1+2^{1005}}{2^{1007}}\right)^{2}.</text>
+<explanation>The solver synthesizes the final solution by returning to their initial decomposition strategy. Having calculated the probability for rows (a_1006), they square this result to account for both row and column probabilities, completing the solution to the original problem.</explanation>
+
+SUMMARY_START
+1. Problem Decomposition - Breaking the 2D problem into independent 1D problems
+2. Mathematical Modeling - Translating the movement problem into recurrence relations
+3. Recursive Thinking - Defining probabilities in terms of previous states
+4. Pattern Recognition - Identifying simplifying patterns in the recurrence relations
+5. Solution Synthesis - Combining row and column probabilities to solve the original problem
+SUMMARY_END
+
+Summary of Key Skills:
+1. Problem Decomposition - Breaking the 2D problem into independent 1D problems
+2. Mathematical Modeling - Translating the movement problem into recurrence relations
+3. Recursive Thinking - Defining probabilities in terms of previous states
+4. Pattern Recognition - Identifying simplifying patterns in the recurrence relations
+5. Solution Synthesis - Combining row and column probabilities to solve the original problem

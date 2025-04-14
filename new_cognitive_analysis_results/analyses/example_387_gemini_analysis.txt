@@ -1,0 +1,300 @@
+Problem:
+For a continuous and absolutely integrable complex-valued function $f(x)$ on $\mathbb{R}$, define a function $(S f)(x)$ on $\mathbb{R}$ by $(S f)(x)=\int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} u x} f(u) \mathrm{d} u$. Find explicit forms of $S\left(\frac{1}{1+x^{2}}\right)$ and $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)$.
+
+Domain: Calculus
+
+Solution Trajectory (gemini):
+
+The problem asks for the explicit forms of the Fourier transform of two specific functions, $\frac{1}{1+x^{2}}$ and $\frac{1}{\left(1+x^{2}\right)^{2}}$. The Fourier transform is defined as $(S f)(x)=\int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} u x} f(u) \mathrm{d} u$.
+
+Part 1: Find $S\left(\frac{1}{1+x^{2}}\right)$.
+We need to compute the integral $\int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} u x} \frac{1}{1+u^{2}} \mathrm{d} u$.
+
+Consider the function $g(z) = \frac{e^{2 \pi \mathrm{i} z x}}{1+z^{2}} = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)(z+i)}$. The singularities are at $z=i$ and $z=-i$.
+
+Case 1: $x > 0$. We close the contour in the upper half-plane. The contour consists of the real axis from $-R$ to $R$ and a semicircle in the upper half-plane with radius $R$. As $R \to \infty$, the integral over the semicircle goes to zero by Jordan's lemma, since the exponent is $2 \pi \mathrm{i} (t+iy) x = 2 \pi \mathrm{i} t x - 2 \pi y x$, and the factor $e^{-2 \pi y x}$ goes to zero as $y \to \infty$ for $x > 0$.
+
+The residue at $z=i$ is $\lim_{z \to i} (z-i) \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)(z+i)} = \frac{e^{2 \pi \mathrm{i} (i) x}}{i+i} = \frac{e^{-2 \pi x}}{2i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{1+u^{2}} \mathrm{d} u = 2 \pi \mathrm{i} \times \text{Residue at } z=i = 2 \pi \mathrm{i} \frac{e^{-2 \pi x}}{2i} = \pi e^{-2 \pi x}$.
+
+Case 2: $x < 0$. We close the contour in the lower half-plane. The contour consists of the real axis from $-R$ to $R$ and a semicircle in the lower half-plane with radius $R$. The orientation is clockwise, so we need to consider $-2 \pi \mathrm{i}$ times the sum of the residues.
+
+The relevant singularity is at $z=-i$. The residue at $z=-i$ is $\lim_{z \to -i} (z+i) \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)(z+i)} = \frac{e^{2 \pi \mathrm{i} (-i) x}}{-i-i} = \frac{e^{2 \pi x}}{-2i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{1+u^{2}} \mathrm{d} u = -2 \pi \mathrm{i} \times \text{Residue at } z=-i = -2 \pi \mathrm{i} \frac{e^{2 \pi x}}{-2i} = \pi e^{2 \pi x}$.
+
+Case 3: $x = 0$. $\int_{-\infty}^{+\infty} \frac{1}{1+u^{2}} \mathrm{d} u = [\arctan(u)]_{-\infty}^{+\infty} = \frac{\pi}{2} - (-\frac{\pi}{2}) = \pi$.
+This matches the formulas for $x > 0$ and $x < 0$ as $x \to 0$.
+
+Combining the cases, $S\left(\frac{1}{1+x^{2}}\right)(x) = \pi e^{-2 \pi |x|}$.
+
+Part 2: Find $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)$.
+We need to compute the integral $\int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} u x} \frac{1}{\left(1+u^{2}\right)^{2}} \mathrm{d} u$.
+
+Consider the function $h(z) = \frac{e^{2 \pi \mathrm{i} z x}}{\left(1+z^{2}\right)^{2}} = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}(z+i)^{2}}$. The singularities are poles of order 2 at $z=i$ and $z=-i$.
+
+Case 1: $x > 0$. We close the contour in the upper half-plane. We need the residue at $z=i$.
+The residue of a function $f(z)$ at a pole of order $m$ at $z_0$ is given by $\frac{1}{(m-1)!} \lim_{z \to z_0} \frac{d^{m-1}}{dz^{m-1}} [(z-z_0)^m f(z)]$.
+Here, $m=2$, $z_0=i$, $f(z) = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}(z+i)^{2}}$.
+$(z-i)^2 f(z) = \frac{e^{2 \pi \mathrm{i} z x}}{(z+i)^{2}}$.
+
+$\frac{d}{dz} \left( \frac{e^{2 \pi \mathrm{i} z x}}{(z+i)^{2}} \right) = \frac{(2 \pi \mathrm{i} x e^{2 \pi \mathrm{i} z x})(z+i)^{2} - e^{2 \pi \mathrm{i} z x} (2(z+i))}{(z+i)^{4}} = \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z+i) - 2]}{(z+i)^{3}}$.
+
+Residue at $z=i$: $\lim_{z \to i} \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z+i) - 2]}{(z+i)^{3}} = \frac{e^{2 \pi \mathrm{i} (i) x} [2 \pi \mathrm{i} x (2i) - 2]}{(2i)^{3}} = \frac{e^{-2 \pi x} [-4 \pi x - 2]}{-8i} = \frac{e^{-2 \pi x} (2 \pi x + 1)}{4i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{\left(1+u^{2}\right)^{2}} \mathrm{d} u = 2 \pi \mathrm{i} \times \text{Residue at } z=i = 2 \pi \mathrm{i} \frac{e^{-2 \pi x} (2 \pi x + 1)}{4i} = \frac{\pi}{2} e^{-2 \pi x} (2 \pi x + 1)$.
+
+Case 2: $x < 0$. We close the contour in the lower half-plane. We need the residue at $z=-i$.
+$(z+i)^2 f(z) = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}}$.
+
+$\frac{d}{dz} \left( \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}} \right) = \frac{(2 \pi \mathrm{i} x e^{2 \pi \mathrm{i} z x})(z-i)^{2} - e^{2 \pi \mathrm{i} z x} (2(z-i))}{(z-i)^{4}} = \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z-i) - 2]}{(z-i)^{3}}$.
+
+Residue at $z=-i$: $\lim_{z \to -i} \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z-i) - 2]}{(z-i)^{3}} = \frac{e^{2 \pi \mathrm{i} (-i) x} [2 \pi \mathrm{i} x (-2i) - 2]}{(-2i)^{3}} = \frac{e^{2 \pi x} [4 \pi x - 2]}{8i} = \frac{e^{2 \pi x} (2 \pi x - 1)}{4i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{\left(1+u^{2}\right)^{2}} \mathrm{d} u = -2 \pi \mathrm{i} \times \text{Residue at } z=-i = -2 \pi \mathrm{i} \frac{e^{2 \pi x} (2 \pi x - 1)}{4i} = -\frac{\pi}{2} e^{2 \pi x} (2 \pi x - 1) = \frac{\pi}{2} e^{2 \pi x} (1 - 2 \pi x)$.
+
+Case 3: $x = 0$. $\int_{-\infty}^{+\infty} \frac{1}{\left(1+u^{2}\right)^{2}} \mathrm{d} u$.
+Use the substitution $u = \tan \theta$, $\mathrm{d} u = \sec^2 \theta \mathrm{d} \theta$.
+$\int_{-\pi/2}^{\pi/2} \frac{\sec^2 \theta}{(1+\tan^2 \theta)^2} \mathrm{d} \theta = \int_{-\pi/2}^{\pi/2} \frac{\sec^2 \theta}{(\sec^2 \theta)^2} \mathrm{d} \theta = \int_{-\pi/2}^{\pi/2} \frac{1}{\sec^2 \theta} \mathrm{d} \theta = \int_{-\pi/2}^{\pi/2} \cos^2 \theta \mathrm{d} \theta$.
+$\cos^2 \theta = \frac{1+\cos(2 \theta)}{2}$.
+$\int_{-\pi/2}^{\pi/2} \frac{1+\cos(2 \theta)}{2} \mathrm{d} \theta = \frac{1}{2} \left[ \theta + \frac{1}{2} \sin(2 \theta) \right]_{-\pi/2}^{\pi/2} = \frac{1}{2} \left[ (\frac{\pi}{2} + 0) - (-\frac{\pi}{2} + 0) \right] = \frac{1}{2} (\pi) = \frac{\pi}{2}$.
+
+Check the formulas as $x \to 0$:
+For $x > 0$: $\frac{\pi}{2} e^{-2 \pi x} (2 \pi x + 1) \to \frac{\pi}{2} (1) = \frac{\pi}{2}$.
+For $x < 0$: $\frac{\pi}{2} e^{2 \pi x} (1 - 2 \pi x) \to \frac{\pi}{2} (1) = \frac{\pi}{2}$.
+
+Combining the cases,
+If $x > 0$, $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \frac{\pi}{2} e^{-2 \pi x} (1 + 2 \pi x)$.
+If $x < 0$, $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \frac{\pi}{2} e^{2 \pi x} (1 - 2 \pi x)$.
+
+We can write this as $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \frac{\pi}{2} e^{-2 \pi |x|} (1 + 2 \pi |x|)$.
+
+Alternative approach using properties of the Fourier transform.
+Let $\mathcal{F}(f)(y) = \int_{-\infty}^{+\infty} e^{-2 \pi \mathrm{i} x y} f(x) \mathrm{d} x$.
+The given definition is $(S f)(x) = \mathcal{F}(f)(-x)$.
+
+We know that $\mathcal{F}\left(e^{-a|x|}\right)(y) = \frac{2a}{a^2 + (2 \pi y)^2}$ for $a > 0$.
+Let $a = 2 \pi$. $\mathcal{F}\left(e^{-2 \pi |x|}\right)(y) = \frac{4 \pi}{(2 \pi)^2 + (2 \pi y)^2} = \frac{4 \pi}{4 \pi^2 (1 + y^2)} = \frac{1}{\pi (1 + y^2)}$.
+So, $\mathcal{F}\left(\pi e^{-2 \pi |x|}\right)(y) = \frac{1}{1 + y^2}$.
+Using the given definition, $S\left(e^{-2 \pi |x|}\right)(x) = \mathcal{F}(e^{-2 \pi |u|})(-x) = \frac{1}{\pi (1 + (-x)^2)} = \frac{1}{\pi (1 + x^2)}$.
+This means $S\left(\frac{1}{1+x^{2}}\right)(x) = \pi e^{-2 \pi |x|}$, which matches the result from contour integration.
+
+Now, consider the second part. We need the Fourier transform of $\frac{1}{\left(1+x^{2}\right)^{2}}$.
+
+Let $g(x) = \frac{1}{1+x^2}$. We found $S(g)(x) = \pi e^{-2 \pi |x|}$.
+Consider the convolution theorem. $\mathcal{F}(f * g)(y) = \mathcal{F}(f)(y) \mathcal{F}(g)(y)$.
+The inverse Fourier transform of $\frac{1}{(1+y^2)}$ is $\pi e^{-2 \pi |x|}$.
+
+We have $\mathcal{F}\left(\frac{1}{1+x^2}\right)(y) = \int_{-\infty}^{+\infty} e^{-2 \pi \mathrm{i} xy} \frac{1}{1+x^2} \mathrm{d} x = \pi e^{-2 \pi |y|}$.
+
+We want the Fourier transform of $\frac{1}{(1+x^2)^2}$.
+$\mathcal{F}\left(\frac{1}{(1+x^2)^2}\right)(y) = \mathcal{F}\left(\frac{1}{1+x^2} \cdot \frac{1}{1+x^2}\right)(y)$.
+This is not directly the Fourier transform of a convolution.
+
+Consider the property $\mathcal{F}(f')(y) = 2 \pi \mathrm{i} y \mathcal{F}(f)(y)$.
+And $\mathcal{F}(xf(x))(y) = \frac{\mathrm{i}}{2 \pi} \frac{d}{dy} \mathcal{F}(f)(y)$.
+
+Let $f(x) = \frac{1}{1+x^2}$. $\mathcal{F}(f)(y) = \pi e^{-2 \pi |y|}$.
+
+Consider the function $h(x)$ such that $\mathcal{F}(h)(y) = e^{-a|y|}$. Then $h(x) = \frac{a/\pi}{a^2 + x^2}$.
+
+We have $\mathcal{F}\left(\frac{1}{1+x^2}\right)(y) = \pi e^{-2 \pi |y|}$.
+
+Consider the identity $\mathcal{F}(f)(y) = (S f)(-y)$.
+If $S(f)(x) = g(x)$, then $\mathcal{F}(f)(y) = g(-y)$.
+
+We have $S\left(\frac{1}{1+x^{2}}\right)(x) = \pi e^{-2 \pi |x|}$.
+So, $\mathcal{F}\left(\frac{1}{1+x^{2}}\right)(y) = \pi e^{-2 \pi |-y|} = \pi e^{-2 \pi |y|}$. This confirms the previous result.
+
+Now, let's find the inverse Fourier transform of $e^{-a|y|}$.
+Let $g(y) = e^{-a|y|}$.
+$\mathcal{F}^{-1}(g)(x) = \int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} xy} e^{-a|y|} \mathrm{d} y = \int_{0}^{+\infty} e^{2 \pi \mathrm{i} xy} e^{-ay} \mathrm{d} y + \int_{-\infty}^{0} e^{2 \pi \mathrm{i} xy} e^{ay} \mathrm{d} y$.
+
+First integral: $\int_{0}^{+\infty} e^{(2 \pi \mathrm{i} x - a)y} \mathrm{d} y = \left[ \frac{e^{(2 \pi \mathrm{i} x - a)y}}{2 \pi \mathrm{i} x - a} \right]_{0}^{+\infty}$.
+If $a > 0$, the real part of the exponent is $-ay$, so the limit at $\infty$ is 0.
+Value: $0 - \frac{1}{2 \pi \mathrm{i} x - a} = \frac{1}{a - 2 \pi \mathrm{i} x}$.
+
+Second integral: $\int_{-\infty}^{0} e^{(2 \pi \mathrm{i} x + a)y} \mathrm{d} y$. Let $u = -y$, $\mathrm{d} u = -\mathrm{d} y$.
+$\int_{+\infty}^{0} e^{-(2 \pi \mathrm{i} x + a)u} (-\mathrm{d} u) = \int_{0}^{+\infty} e^{-(2 \pi \mathrm{i} x + a)u} \mathrm{d} u = \left[ \frac{e^{-(2 \pi \mathrm{i} x + a)u}}{-(2 \pi \mathrm{i} x + a)} \right]_{0}^{+\infty}$.
+Exponent: $-a u - 2 \pi \mathrm{i} x u$. Real part is $-au$.
+Value: $0 - \frac{1}{-(2 \pi \mathrm{i} x + a)} = \frac{1}{a + 2 \pi \mathrm{i} x}$.
+
+Sum: $\frac{1}{a - 2 \pi \mathrm{i} x} + \frac{1}{a + 2 \pi \mathrm{i} x} = \frac{(a + 2 \pi \mathrm{i} x) + (a - 2 \pi \mathrm{i} x)}{a^2 - (2 \pi \mathrm{i} x)^2} = \frac{2a}{a^2 + 4 \pi^2 x^2}$.
+
+So, $\mathcal{F}^{-1}(e^{-a|y|})(x) = \frac{2a}{a^2 + 4 \pi^2 x^2}$.
+If $a = 2 \pi$, $\mathcal{F}^{-1}(e^{-2 \pi |y|})(x) = \frac{4 \pi}{4 \pi^2 + 4 \pi^2 x^2} = \frac{1}{\pi (1 + x^2)}$.
+$\mathcal{F}^{-1}(\pi e^{-2 \pi |y|})(x) = \frac{1}{1 + x^2}$.
+
+Now, consider the Fourier transform of $\frac{1}{(1+x^2)^2}$.
+We know $\mathcal{F}\left(\frac{1}{1+x^2}\right)(y) = \pi e^{-2 \pi |y|}$.
+
+Consider the function $h(x)$ such that $\mathcal{F}(h)(y) = e^{-a|y|}$. Then $h(x) = \frac{a/\pi}{a^2 + x^2}$.
+
+Let $g(x) = \frac{1}{1+x^2}$. We want the Fourier transform of $g(x)^2$.
+Parseval's theorem for Fourier transform: $\int_{-\infty}^{+\infty} f(x) \overline{h(x)} \mathrm{d} x = \int_{-\infty}^{+\infty} \mathcal{F}(f)(y) \overline{\mathcal{F}(h)(y)} \mathrm{d} y$.
+
+Consider the convolution theorem for the Fourier transform: $\mathcal{F}(f * g)(y) = \mathcal{F}(f)(y) \mathcal{F}(g)(y)$.
+Here, the Fourier transform is defined with $e^{-2 \pi \mathrm{i} xy}$.
+
+Let $F(y) = \mathcal{F}\left(\frac{1}{1+x^2}\right)(y) = \pi e^{-2 \pi |y|}$.
+We want the inverse Fourier transform of $F(y)^2 = \pi^2 e^{-4 \pi |y|}$.
+
+Using the formula for the inverse Fourier transform of $e^{-a|y|}$ with $a = 4 \pi$:
+$\mathcal{F}^{-1}(e^{-4 \pi |y|})(x) = \frac{2(4 \pi)}{(4 \pi)^2 + 4 \pi^2 x^2} = \frac{8 \pi}{16 \pi^2 + 4 \pi^2 x^2} = \frac{8 \pi}{4 \pi^2 (4 + x^2)} = \frac{2}{\pi (4 + x^2)}$.
+
+So, $\mathcal{F}^{-1}(\pi^2 e^{-4 \pi |y|})(x) = \pi^2 \frac{2}{\pi (4 + x^2)} = \frac{2 \pi}{4 + x^2}$.
+
+Something is wrong.
+
+Let's use the definition of $S$.
+$S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \mathcal{F}\left(\frac{1}{\left(1+u^{2}\right)^{2}}\right)(-x)$.
+
+Consider the Fourier transform of a triangular pulse.
+$\mathcal{F}(\text{rect})(y) = \text{sinc}(y)$.
+
+Let's verify the result for $S\left(\frac{1}{1+x^{2}}\right)$.
+$(S f)(x) = \int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} u x} f(u) \mathrm{d} u$.
+$S\left(\frac{1}{1+x^{2}}\right)(x) = \int_{-\infty}^{+\infty} e^{2 \pi \mathrm{i} u x} \frac{1}{1+u^{2}} \mathrm{d} u$.
+This is the Fourier transform of $\frac{1}{1+u^2}$ evaluated at $-x$.
+$\mathcal{F}\left(\frac{1}{1+u^2}\right)(y) = \pi e^{-2 \pi |y|}$.
+So, $S\left(\frac{1}{1+x^{2}}\right)(x) = \mathcal{F}\left(\frac{1}{1+u^2}\right)(-x) = \pi e^{-2 \pi |-x|} = \pi e^{-2 \pi |x|}$. This matches.
+
+Now, consider $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \mathcal{F}\left(\frac{1}{\left(1+u^{2}\right)^{2}}\right)(-x)$.
+We need the Fourier transform of $\frac{1}{(1+x^2)^2}$.
+
+Let $f(x) = e^{-a|x|}$. $\mathcal{F}(f)(y) = \frac{2a}{a^2 + 4 \pi^2 y^2}$.
+If $a = 2 \pi$, $\mathcal{F}(e^{-2 \pi |x|})(y) = \frac{4 \pi}{4 \pi^2 + 4 \pi^2 y^2} = \frac{1}{\pi (1 + y^2)}$.
+
+Consider the duality property of the Fourier transform:
+If $\mathcal{F}(f)(y) = g(y)$, then $\mathcal{F}(g)(y) = f(-y)$.
+
+Let $f(x) = \frac{1}{1+x^2}$. $\mathcal{F}(f)(y) = \pi e^{-2 \pi |y|}$.
+Let $g(y) = \pi e^{-2 \pi |y|}$.
+$\mathcal{F}(g)(y) = \mathcal{F}(\pi e^{-2 \pi |x|})(y) = \pi \mathcal{F}(e^{-2 \pi |x|})(y) = \pi \frac{1}{\pi (1 + y^2)} = \frac{1}{1 + y^2}$.
+And $f(-y) = \frac{1}{1+(-y)^2} = \frac{1}{1+y^2}$. This confirms duality.
+
+We have $\mathcal{F}\left(\frac{1}{1+x^2}\right)(y) = \pi e^{-2 \pi |y|}$.
+
+Consider the relationship between $S$ and $\mathcal{F}$.
+$(S f)(x) = \mathcal{F}(f)(-x)$.
+If $S(f) = g$, then $\mathcal{F}(f)(y) = g(-y)$.
+
+We found $S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \frac{\pi}{2} e^{-2 \pi |x|} (1 + 2 \pi |x|)$.
+
+Let's verify this using the Fourier transform.
+We need $\mathcal{F}\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(y) = \frac{\pi}{2} e^{-2 \pi |-y|} (1 + 2 \pi |-y|) = \frac{\pi}{2} e^{-2 \pi |y|} (1 + 2 \pi |y|)$.
+
+Consider the Fourier transform of $e^{-a|x|}$.
+$\mathcal{F}(|x| e^{-a|x|})(y) = \frac{d}{da} \mathcal{F}(e^{-a|x|})(y) = \frac{d}{da} \left( \frac{2a}{a^2 + 4 \pi^2 y^2} \right)$.
+$\frac{2(a^2 + 4 \pi^2 y^2) - 2a(2a)}{(a^2 + 4 \pi^2 y^2)^2} = \frac{2a^2 + 8 \pi^2 y^2 - 4a^2}{(a^2 + 4 \pi^2 y^2)^2} = \frac{8 \pi^2 y^2 - 2a^2}{(a^2 + 4 \pi^2 y^2)^2}$.
+
+This doesn't seem right.
+
+Let $f(x) = e^{-a|x|}$. $\mathcal{F}(f)(y) = \frac{2a}{a^2 + 4 \pi^2 y^2}$.
+Consider the inverse Fourier transform.
+$\mathcal{F}^{-1}\left(\frac{1}{1+y^2}\right)(x) = \pi e^{-2 \pi |x|}$.
+$\mathcal{F}^{-1}\left(\frac{1}{(1+y^2)^2}\right)(x) = ?$
+
+Final check on the results:
+$S\left(\frac{1}{1+x^{2}}\right)(x) = \pi e^{-2 \pi |x|}$.
+$S\left(\frac{1}{\left(1+x^{2}\right)^{2}}\right)(x) = \frac{\pi}{2} e^{-2 \pi |x|} (1 + 2 \pi |x|)$.
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Complex Analysis Application</skill>
+<definition>The ability to apply complex analysis techniques, particularly contour integration and residue theory, to solve real-valued integrals. This involves identifying appropriate contours, calculating residues, and applying the residue theorem.</definition>
+
+<start>173</start>
+<end>582</end>
+<text>Consider the function $g(z) = \frac{e^{2 \pi \mathrm{i} z x}}{1+z^{2}} = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)(z+i)}$. The singularities are at $z=i$ and $z=-i$.
+
+Case 1: $x > 0$. We close the contour in the upper half-plane. The contour consists of the real axis from $-R$ to $R$ and a semicircle in the upper half-plane with radius $R$. As $R \to \infty$, the integral over the semicircle goes to zero by Jordan's lemma, since the exponent is $2 \pi \mathrm{i} (t+iy) x = 2 \pi \mathrm{i} t x - 2 \pi y x$, and the factor $e^{-2 \pi y x}$ goes to zero as $y \to \infty$ for $x > 0$.</text>
+<explanation>The solver demonstrates sophisticated application of complex analysis by setting up a contour integral, identifying singularities, and justifying the use of Jordan's lemma to evaluate the behavior of the integral over the semicircle as R approaches infinity. This shows deep understanding of complex analysis techniques applied to Fourier transform evaluation.</explanation>
+
+<start>583</start>
+<end>747</end>
+<text>The residue at $z=i$ is $\lim_{z \to i} (z-i) \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)(z+i)} = \frac{e^{2 \pi \mathrm{i} (i) x}}{i+i} = \frac{e^{-2 \pi x}}{2i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{1+u^{2}} \mathrm{d} u = 2 \pi \mathrm{i} \times \text{Residue at } z=i = 2 \pi \mathrm{i} \frac{e^{-2 \pi x}}{2i} = \pi e^{-2 \pi x}$.</text>
+<explanation>The solver calculates the residue at z=i and applies the residue theorem to evaluate the integral. This demonstrates mastery of complex analysis techniques, particularly in computing residues and applying the residue theorem to obtain a closed-form expression for the integral.</explanation>
+
+<start>1901</start>
+<end>2377</end>
+<text>Consider the function $h(z) = \frac{e^{2 \pi \mathrm{i} z x}}{\left(1+z^{2}\right)^{2}} = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}(z+i)^{2}}$. The singularities are poles of order 2 at $z=i$ and $z=-i$.
+
+Case 1: $x > 0$. We close the contour in the upper half-plane. We need the residue at $z=i$.
+The residue of a function $f(z)$ at a pole of order $m$ at $z_0$ is given by $\frac{1}{(m-1)!} \lim_{z \to z_0} \frac{d^{m-1}}{dz^{m-1}} [(z-z_0)^m f(z)]$.
+Here, $m=2$, $z_0=i$, $f(z) = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}(z+i)^{2}}$.
+$(z-i)^2 f(z) = \frac{e^{2 \pi \mathrm{i} z x}}{(z+i)^{2}}$.</text>
+<explanation>The solver handles a more complex scenario involving higher-order poles. They correctly identify that the residue calculation requires a different approach for poles of order 2, and apply the appropriate formula. This shows advanced knowledge of residue theory for higher-order poles.</explanation>
+
+<skill>Case-Based Problem Decomposition</skill>
+<definition>The ability to break down a problem into distinct cases based on parameter values, solve each case separately using appropriate techniques, and then integrate the results into a comprehensive solution.</definition>
+
+<start>748</start>
+<end>1117</end>
+<text>Case 2: $x < 0$. We close the contour in the lower half-plane. The contour consists of the real axis from $-R$ to $R$ and a semicircle in the lower half-plane with radius $R$. The orientation is clockwise, so we need to consider $-2 \pi \mathrm{i}$ times the sum of the residues.
+
+The relevant singularity is at $z=-i$. The residue at $z=-i$ is $\lim_{z \to -i} (z+i) \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)(z+i)} = \frac{e^{2 \pi \mathrm{i} (-i) x}}{-i-i} = \frac{e^{2 \pi x}}{-2i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{1+u^{2}} \mathrm{d} u = -2 \pi \mathrm{i} \times \text{Residue at } z=-i = -2 \pi \mathrm{i} \frac{e^{2 \pi x}}{-2i} = \pi e^{2 \pi x}$.</text>
+<explanation>The solver recognizes that a different approach is needed when x < 0, closing the contour in the lower half-plane and accounting for the clockwise orientation. This demonstrates the ability to identify how parameter values affect the solution strategy and adapt accordingly.</explanation>
+
+<start>1118</start>
+<end>1294</end>
+<text>Case 3: $x = 0$. $\int_{-\infty}^{+\infty} \frac{1}{1+u^{2}} \mathrm{d} u = [\arctan(u)]_{-\infty}^{+\infty} = \frac{\pi}{2} - (-\frac{\pi}{2}) = \pi$.
+This matches the formulas for $x > 0$ and $x < 0$ as $x \to 0$.
+
+Combining the cases, $S\left(\frac{1}{1+x^{2}}\right)(x) = \pi e^{-2 \pi |x|}$.</text>
+<explanation>The solver handles the special case where x = 0 separately, using a direct integration approach rather than complex analysis. They then verify that this result is consistent with the limits of the formulas for x > 0 and x < 0 as x approaches 0, and combine all cases into a unified expression using the absolute value notation.</explanation>
+
+<start>2378</start>
+<end>2837</end>
+<text>$\frac{d}{dz} \left( \frac{e^{2 \pi \mathrm{i} z x}}{(z+i)^{2}} \right) = \frac{(2 \pi \mathrm{i} x e^{2 \pi \mathrm{i} z x})(z+i)^{2} - e^{2 \pi \mathrm{i} z x} (2(z+i))}{(z+i)^{4}} = \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z+i) - 2]}{(z+i)^{3}}$.
+
+Residue at $z=i$: $\lim_{z \to i} \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z+i) - 2]}{(z+i)^{3}} = \frac{e^{2 \pi \mathrm{i} (i) x} [2 \pi \mathrm{i} x (2i) - 2]}{(2i)^{3}} = \frac{e^{-2 \pi x} [-4 \pi x - 2]}{-8i} = \frac{e^{-2 \pi x} (2 \pi x + 1)}{4i}$.
+
+By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{\left(1+u^{2}\right)^{2}} \mathrm{d} u = 2 \pi \mathrm{i} \times \text{Residue at } z=i = 2 \pi \mathrm{i} \frac{e^{-2 \pi x} (2 \pi x + 1)}{4i} = \frac{\pi}{2} e^{-2 \pi x} (2 \pi x + 1)$.</text>
+<explanation>The solver works through the case where x > 0 for the second function, calculating the derivative needed for the residue of the higher-order pole and applying the residue theorem. This shows systematic case-based problem decomposition.</explanation>
+
+<skill>Advanced Calculus Techniques</skill>
+<definition>The ability to apply sophisticated calculus techniques such as differentiation under the integral sign, substitution methods, and special function properties to evaluate complex integrals.</definition>
+
+<start>2838</start>
+<end>3360</end>
+<text>Case 2: $x < 0$. We close the contour in the lower half-plane. We need the residue at $z=-i$.
+$(z+i)^2 f(z) = \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}}$.
+
+$\frac{d}{dz} \left( \frac{e^{2 \pi \mathrm{i} z x}}{(z-i)^{2}} \right) = \frac{(2 \pi \mathrm{i} x e^{2 \pi \mathrm{i} z x})(z-i)^{2} - e^{2 \pi \mathrm{i} z x} (2(z-i))}{(z-i)^{4}} = \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z-i) - 2]}{(z-i)^{3}}$.
+
+Residue at $z=-i$: $\lim_{z \to -i} \frac{e^{2 \pi \mathrm{i} z x} [2 \pi \mathrm{i} x (z-i) - 2]}{(z-i)^{3}} = \frac{e^{2 \pi \mathrm{i} (-i) x} [2 \pi \mathrm{i} x (-2i) - 2]}{(-2i)^{3}} = \frac{e^{2 \pi x} [4 \pi x - 2]}{8i} = \frac{e^{2 \pi x} (2 \pi x - 1)}{4i}$.</text>
+<explanation>The solver applies advanced calculus techniques to compute the derivative of a complex function and evaluate the limit to find the residue at z=-i. This demonstrates proficiency with complex differentiation and limit evaluation in the context of residue calculation.</explanation>
+
+<start>3361</start>
+<end>3654</end>
+<text>By the residue theorem, $\int_{-\infty}^{+\infty} \frac{e^{2 \pi \mathrm{i} u x}}{\left(1+u^{2}\right)^{2}} \mathrm{d} u = -2 \pi \mathrm{i} \times \text{Residue at } z=-i = -2 \pi \mathrm{i} \frac{e^{2 \pi x} (2 \pi x - 1)}{4i} = -\frac{\pi}{2} e^{2 \pi x} (2 \pi x - 1) = \frac{\pi}{2} e^{2 \pi x} (1 - 2 \pi x)$.</text>
+<explanation>The solver applies the residue theorem with the correct orientation factor (-2πi) and simplifies the expression algebraically. This shows mastery of both complex analysis and algebraic manipulation skills.</explanation>
+
+<start>3655</start>
+<end>4152</end>
+<text>Case 3: $x = 0$. $\int_{-\infty}^{+\infty} \frac{1}{\left(1+u^{2}\right)^{2}} \mathrm{d} u$.
+Use the substitution $u = \tan \theta$, $\mathrm{d} u = \sec^2 \theta \mathrm{d} \theta$.
+$\int_{-\pi/2}^{\pi/2} \frac{\sec^2 \theta}{(1+\tan^2 \theta)^2} \mathrm{d} \theta = \int_{-\pi/2}^{\pi/2} \frac{\sec^2 \theta}{(\sec^2 \theta)^2} \mathrm{d} \theta = \int_{-\pi/2}^{\pi/2} \frac{1}{\sec^2 \theta} \mathrm{d} \theta = \int_{-\pi/2}^{\pi/2} \cos^2 \theta \mathrm{d} \theta$.
+$\cos^2 \theta = \frac{1+\cos(2 \theta)}{2}$.
+$\int_{-\pi/2}^{\pi/2} \frac{1+\cos(2 \theta)}{2} \mathrm{d} \theta = \frac{1}{2} \left[ \theta + \frac{1}{2} \sin(2 \theta) \right]_{-\pi/2}^{\pi/2} = \frac{1}{2} \left[ (\frac{\pi}{2} + 0) - (-\frac{\pi}{2} + 0) \right] = \frac{1}{2} (\pi) = \frac{\pi}{2}$.</text>
+<explanation>For the case where x = 0, the solver employs a clever trigonometric substitution (u = tan θ) to transform the integral into a more manageable form. They then use trigonometric identities and direct integration to evaluate the result. This demonstrates proficiency with substitution methods and trigonometric integration techniques.</explanation>
+
+<skill>Mathematical Verification and Cross-Checking</skill>
+<definition>The ability to verify results through multiple approaches, check consistency across different cases, and validate mathematical solutions by examining limiting behavior or using alternative methods.</definition>
+
+<start>4153</start>
+<end>4354</end>
+<text>Check the formulas as $x \to 0$:
+For $x > 0$: $\frac{\pi}{2} e^{-2 \pi x} (2 \pi x + 1) \to \frac{\pi}{2} (1) = \frac{\pi}{2}$.
+For $x < 0$: $\frac{\pi}{2} e^{2 \pi x} (1 - 2 \pi x
+
+Summary of Key Skills:
+Not found

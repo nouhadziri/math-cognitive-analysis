@@ -1,0 +1,294 @@
+Problem:
+ $K(x, y), f(x)$  and  $g(x)$  are positive and continuous for  $x, y \subseteq [0, 1]$ .  $\int_{0}^{1} f(y) K(x, y) dy = g(x)$  and  $\int_{0}^{1} g(y) K(x, y) dy = f(x)$  for all  $x \subseteq [0, 1]$ . Show that  $f = g$  on  $[0, 1]$ .
+
+Domain: Real functions
+
+Solution Trajectory (gemini):
+Let the given equations be
+(1) $\int_{0}^{1} f(y) K(x, y) dy = g(x)$
+(2) $\int_{0}^{1} g(y) K(x, y) dy = f(x)$
+
+Substitute (1) into (2):
+$\int_{0}^{1} (\int_{0}^{1} f(z) K(y, z) dz) K(x, y) dy = f(x)$
+$\int_{0}^{1} \int_{0}^{1} f(z) K(y, z) K(x, y) dz dy = f(x)$
+
+Substitute (2) into (1):
+$\int_{0}^{1} (\int_{0}^{1} g(z) K(y, z) dz) K(x, y) dy = g(x)$
+$\int_{0}^{1} \int_{0}^{1} g(z) K(y, z) K(x, y) dz dy = g(x)$
+
+Consider the difference $f(x) - g(x)$.
+$f(x) - g(x) = \int_{0}^{1} g(y) K(x, y) dy - \int_{0}^{1} f(y) K(x, y) dy = \int_{0}^{1} (g(y) - f(y)) K(x, y) dy$
+
+Let $h(x) = f(x) - g(x)$. Then $h(x) = \int_{0}^{1} -h(y) K(x, y) dy = - \int_{0}^{1} h(y) K(x, y) dy$.
+
+Multiply the first equation by $f(x)$ and integrate over $x$ from 0 to 1:
+$\int_{0}^{1} f(x) g(x) dx = \int_{0}^{1} f(x) (\int_{0}^{1} f(y) K(x, y) dy) dx = \int_{0}^{1} \int_{0}^{1} f(x) f(y) K(x, y) dy dx$
+
+Multiply the second equation by $g(x)$ and integrate over $x$ from 0 to 1:
+$\int_{0}^{1} g(x) f(x) dx = \int_{0}^{1} g(x) (\int_{0}^{1} g(y) K(x, y) dy) dx = \int_{0}^{1} \int_{0}^{1} g(x) g(y) K(x, y) dy dx$
+
+So, $\int_{0}^{1} \int_{0}^{1} f(x) f(y) K(x, y) dy dx = \int_{0}^{1} \int_{0}^{1} g(x) g(y) K(x, y) dy dx$.
+
+Consider $(f(x)-g(x))^2 \ge 0$.
+$\int_{0}^{1} (f(x)-g(x))^2 dx = \int_{0}^{1} f(x)^2 dx - 2 \int_{0}^{1} f(x) g(x) dx + \int_{0}^{1} g(x)^2 dx$
+
+From (1), multiply by $g(x)$ and integrate:
+$\int_{0}^{1} g(x)^2 dx = \int_{0}^{1} g(x) \int_{0}^{1} f(y) K(x, y) dy dx = \int_{0}^{1} \int_{0}^{1} g(x) f(y) K(x, y) dy dx$
+From (2), multiply by $f(x)$ and integrate:
+$\int_{0}^{1} f(x)^2 dx = \int_{0}^{1} f(x) \int_{0}^{1} g(y) K(x, y) dy dx = \int_{0}^{1} \int_{0}^{1} f(x) g(y) K(x, y) dy dx$
+
+Let's consider $\int_{0}^{1} (f(x)+g(x)) (f(x)-g(x)) dx = \int_{0}^{1} f(x)^2 - g(x)^2 dx$
+$= \int_{0}^{1} (\int_{0}^{1} f(x) g(y) K(x, y) dy - \int_{0}^{1} g(x) f(y) K(x, y) dy) dx$
+$= \int_{0}^{1} \int_{0}^{1} (f(x) g(y) - g(x) f(y)) K(x, y) dy dx$
+
+Let $h(x) = f(x) - g(x)$. We had $h(x) = - \int_{0}^{1} h(y) K(x, y) dy$.
+Multiply by $h(x)$ and integrate:
+$\int_{0}^{1} h(x)^2 dx = - \int_{0}^{1} h(x) \int_{0}^{1} h(y) K(x, y) dy dx = - \int_{0}^{1} \int_{0}^{1} h(x) h(y) K(x, y) dy dx$
+
+Since $K(x,y) > 0$, $f(x) > 0$, $g(x) > 0$.
+If $f(x_0) > g(x_0)$ for some $x_0$, then in a neighborhood of $x_0$, $f(x) > g(x)$.
+If $f(x_0) < g(x_0)$ for some $x_0$, then in a neighborhood of $x_0$, $f(x) < g(x)$.
+
+Consider $\int_0^1 (f(x)-g(x))^2 dx$. We want to show this is 0.
+$\int_0^1 (f(x)-g(x))^2 dx = \int_0^1 f(x)^2 dx - 2 \int_0^1 f(x)g(x) dx + \int_0^1 g(x)^2 dx$
+$= \int_0^1 \int_0^1 f(x)g(y) K(x,y) dy dx - 2 \int_0^1 f(x)g(x) dx + \int_0^1 \int_0^1 g(x)f(y) K(x,y) dy dx$
+$= \int_0^1 \int_0^1 (f(x)g(y) + g(x)f(y)) K(x,y) dy dx - 2 \int_0^1 f(x)g(x) dx$
+
+Let's go back to $h(x) = - \int_{0}^{1} h(y) K(x, y) dy$.
+Suppose there exists some $x_0$ such that $h(x_0) \ne 0$. WLOG, assume $h(x_0) > 0$.
+Since $h$ and $K$ are continuous, there exists an interval $[a, b] \subseteq [0, 1]$ where $x_0 \in [a, b]$ and $h(y) > -\epsilon$ and $K(x_0, y) > \delta$ for some $\epsilon > 0$ and $\delta > 0$ for $y \in [a, b]$.
+$h(x_0) = - \int_{0}^{1} h(y) K(x_0, y) dy = - (\int_{a}^{b} h(y) K(x_0, y) dy + \int_{[0, 1] \setminus [a, b]} h(y) K(x_0, y) dy)$
+If $h(y) \ge 0$ for all $y$, then $h(x) \le 0$ for all $x$, which means $h(x) = 0$.
+If $h(y) \le 0$ for all $y$, then $h(x) \ge 0$ for all $x$, which means $h(x) = 0$.
+
+If $f \ne g$, then there exists $x_0$ such that $f(x_0) \ne g(x_0)$. WLOG, $f(x_0) > g(x_0)$.
+Since $f$ and $g$ are continuous, there exists an interval $[a, b]$ where $f(x) > g(x)$ for all $x \in [a, b]$.
+$f(x) - g(x) = \int_{0}^{1} (g(y) - f(y)) K(x, y) dy$
+For $x \in [a, b]$, $f(x) - g(x) > 0$.
+$\int_{0}^{1} (g(y) - f(y)) K(x, y) dy > 0$
+$\int_{a}^{b} (g(y) - f(y)) K(x, y) dy + \int_{[0, 1] \setminus [a, b]} (g(y) - f(y)) K(x, y) dy > 0$
+The first integral is negative.
+
+Consider $\int_0^1 (f(x)+g(x))(f(x)-g(x)) dx = \int_0^1 (f(x)^2 - g(x)^2) dx = 0$.
+$\int_0^1 f(x)^2 dx = \int_0^1 f(x) (\int_0^1 g(y) K(x,y) dy) dx = \int_0^1 \int_0^1 f(x) g(y) K(x,y) dy dx$
+$\int_0^1 g(x)^2 dx = \int_0^1 g(x) (\int_0^1 f(y) K(x,y) dy) dx = \int_0^1 \int_0^1 g(x) f(y) K(x,y) dy dx$
+So $\int_0^1 f(x)^2 dx = \int_0^1 g(x)^2 dx$.
+$\int_0^1 (f(x)-g(x))^2 dx = \int_0^1 f(x)^2 dx - 2 \int_0^1 f(x)g(x) dx + \int_0^1 g(x)^2 dx = 2 \int_0^1 f(x)^2 dx - 2 \int_0^1 f(x)g(x) dx = 2 \int_0^1 f(x) (f(x)-g(x)) dx$.
+
+We have $f(x) - g(x) = \int_0^1 (g(y) - f(y)) K(x,y) dy$.
+Multiply by $f(x) + g(x)$:
+$(f(x) - g(x))(f(x) + g(x)) = (f(x) + g(x)) \int_0^1 (g(y) - f(y)) K(x,y) dy$.
+Integrate from 0 to 1:
+$\int_0^1 (f(x)^2 - g(x)^2) dx = \int_0^1 (f(x) + g(x)) \int_0^1 (g(y) - f(y)) K(x,y) dy dx$
+$0 = \int_0^1 \int_0^1 (f(x) + g(x)) (g(y) - f(y)) K(x,y) dy dx$
+$0 = \int_0^1 \int_0^1 (f(x)g(y) - f(x)f(y) + g(x)g(y) - g(x)f(y)) K(x,y) dy dx$.
+
+Consider $h(x) = f(x) - g(x)$. We have shown that $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.
+Since $\int_0^1 h(x)^2 dx \ge 0$, we need $- \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx \ge 0$.
+
+Consider the case where $K(x,y) = K(y,x)$.
+Then $\int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx = \int_0^1 \int_0^1 h(y) h(x) K(y, x) dx dy = \int_0^1 \int_0^1 h(x) h(y) K(x, y) dx dy$.
+So $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.
+Let $I = \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$. Then $\int_0^1 h(x)^2 dx = -I$.
+Also $I = \int_0^1 h(x) (\int_0^1 h(y) K(x, y) dy) dx = \int_0^1 h(x) (-h(x)) dx = - \int_0^1 h(x)^2 dx$.
+So $\int_0^1 h(x)^2 dx = - (-\int_0^1 h(x)^2 dx) = \int_0^1 h(x)^2 dx$. This does not help.
+
+Let $||f||^2 = \int_0^1 f(x)^2 dx$.
+We had $\int_0^1 f(x)^2 dx = \int_0^1 \int_0^1 f(x) g(y) K(x,y) dy dx$.
+$\int_0^1 g(x)^2 dx = \int_0^1 \int_0^1 g(x) f(y) K(x,y) dy dx$.
+$\int_0^1 (f(x)-g(x))^2 dx = \int_0^1 f(x)^2 dx - 2 \int_0^1 f(x)g(x) dx + \int_0^1 g(x)^2 dx$.
+
+We know $f(x) - g(x) = \int_0^1 (g(y) - f(y)) K(x, y) dy$.
+If $f(x) \ne g(x)$, then there exists some interval where $f > g$ or $g > f$.
+Assume there exists a set $A$ with positive measure where $f(x) > g(x)$.
+Then on this set, $f(x) - g(x) > 0$.
+$f(x) - g(x) = \int_0^1 (g(y) - f(y)) K(x, y) dy$.
+
+Let $h(x) = f(x) - g(x)$.
+$\int_0^1 h(x)^2 dx = - \int_0^1 h(x) \int_0^1 h(y) K(x, y) dy dx$.
+Since $K(x, y) > 0$, if $h(x) > 0$ and $h(y) > 0$, the integrand is positive. If $h(x) < 0$ and $h(y) < 0$, the integrand is positive.
+
+If $f \ne g$, then there exists a set of positive measure where $f > g$ or $g > f$.
+Suppose $f > g$ on some interval $[a, b]$. Then $h(x) > 0$ on $[a, b]$.
+$h(x) = - \int_0^1 h(y) K(x, y) dy$.
+For $x \in [a, b]$, $h(x) > 0$.
+$- \int_0^1 h(y) K(x, y) dy > 0$.
+$\int_0^1 h(y) K(x, y) dy < 0$.
+But $h(y) \ge 0$ on $[a, b]$ and $K(x, y) > 0$, so $\int_a^b h(y) K(x, y) dy \ge 0$.
+If $h(y) < 0$ on some interval, this might work.
+
+If $\int_0^1 h(x)^2 dx > 0$, then $- \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx > 0$.
+This implies that the integrand $h(x) h(y)$ must be negative somewhere when $K(x,y)$ is positive.
+This means that $h(x)$ must change sign.
+
+Suppose $f \ne g$. Then there exists $x_0$ such that $f(x_0) \ne g(x_0)$. WLOG $f(x_0) > g(x_0)$.
+By continuity, there is an interval $[a, b]$ where $f(x) > g(x)$ for $x \in [a, b]$.
+Then $h(x) > 0$ on $[a, b]$.
+$h(x) = - \int_0^1 h(y) K(x, y) dy$.
+For $x \in [a, b]$, $h(x) > 0$, so $- \int_0^1 h(y) K(x, y) dy > 0$, which means $\int_0^1 h(y) K(x, y) dy < 0$.
+This implies that there must be a region where $h(y) < 0$.
+Suppose there is a region $[c, d]$ where $h(y) < 0$.
+For $x \in [c, d]$, $h(x) < 0$.
+$h(x) = - \int_0^1 h(y) K(x, y) dy$.
+For $x \in [c, d]$, $h(x) < 0$, so $- \int_0^1 h(y) K(x, y) dy < 0$, which means $\int_0^1 h(y) K(x, y) dy > 0$.
+This implies there must be a region where $h(y) > 0$.
+
+If $\int_0^1 h(x)^2 dx > 0$, then there exists a set of positive measure where $h(x) \ne 0$.
+We have $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.
+Since $K(x,y) > 0$, for this equality to hold, we must have $h(x) = 0$ almost everywhere.
+Since $h$ is continuous, $h(x) = 0$ for all $x \in [0, 1]$.
+Therefore, $f(x) = g(x)$ for all $x \in [0, 1]$.
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Equation Manipulation</skill>
+<definition>The ability to transform mathematical equations into equivalent forms by applying algebraic operations, substitutions, or other mathematical techniques to make progress toward a solution.</definition>
+
+<start>148</start>
+<end>354</end>
+<text>Substitute (1) into (2):
+$\int_{0}^{1} (\int_{0}^{1} f(z) K(y, z) dz) K(x, y) dy = f(x)$
+$\int_{0}^{1} \int_{0}^{1} f(z) K(y, z) K(x, y) dz dy = f(x)$</text>
+<explanation>The solver substitutes one equation into another to create a new relationship. This demonstrates the ability to see how equations can be combined through substitution to reveal new mathematical insights.</explanation>
+
+<start>491</start>
+<end>655</end>
+<text>Consider the difference $f(x) - g(x)$.
+$f(x) - g(x) = \int_{0}^{1} g(y) K(x, y) dy - \int_{0}^{1} f(y) K(x, y) dy = \int_{0}^{1} (g(y) - f(y)) K(x, y) dy$</text>
+<explanation>The solver manipulates the equations by taking their difference and then simplifying the resulting expression by factoring out common terms. This shows skilled equation manipulation to create a more useful form.</explanation>
+
+<start>656</start>
+<end>781</end>
+<text>Let $h(x) = f(x) - g(x)$. Then $h(x) = \int_{0}^{1} -h(y) K(x, y) dy = - \int_{0}^{1} h(y) K(x, y) dy$.</text>
+<explanation>The solver introduces a new function h(x) to simplify the notation and manipulates the equation to express h(x) in terms of itself, creating a functional equation that becomes central to the proof.</explanation>
+
+<skill>Strategic Integration</skill>
+<definition>The ability to strategically apply integration operations to equations to extract useful relationships, often by multiplying equations by specific functions before integrating.</definition>
+
+<start>782</start>
+<end>962</end>
+<text>Multiply the first equation by $f(x)$ and integrate over $x$ from 0 to 1:
+$\int_{0}^{1} f(x) g(x) dx = \int_{0}^{1} f(x) (\int_{0}^{1} f(y) K(x, y) dy) dx = \int_{0}^{1} \int_{0}^{1} f(x) f(y) K(x, y) dy dx$</text>
+<explanation>The solver strategically multiplies the first equation by f(x) and then integrates over the interval [0,1]. This demonstrates the ability to recognize that creating integrals of products can lead to useful relationships.</explanation>
+
+<start>963</start>
+<end>1147</end>
+<text>Multiply the second equation by $g(x)$ and integrate over $x$ from 0 to 1:
+$\int_{0}^{1} g(x) f(x) dx = \int_{0}^{1} g(x) (\int_{0}^{1} g(y) K(x, y) dy) dx = \int_{0}^{1} \int_{0}^{1} g(x) g(y) K(x, y) dy dx$</text>
+<explanation>Similar to the previous example, the solver now multiplies the second equation by g(x) and integrates. This shows a systematic approach of applying the same technique to different equations to establish parallel results.</explanation>
+
+<start>4188</start>
+<end>4344</end>
+<text>We have $f(x) - g(x) = \int_0^1 (g(y) - f(y)) K(x,y) dy$.
+Multiply by $f(x) + g(x)$:
+$(f(x) - g(x))(f(x) + g(x)) = (f(x) + g(x)) \int_0^1 (g(y) - f(y)) K(x,y) dy$.</text>
+<explanation>The solver strategically multiplies an equation by f(x)+g(x) to create an expression that will yield f(x)²-g(x)², demonstrating sophisticated understanding of how to manipulate expressions to reveal useful patterns.</explanation>
+
+<skill>Pattern Recognition</skill>
+<definition>The ability to identify mathematical patterns, symmetries, or structures that can be exploited to simplify problems or reveal solution paths.</definition>
+
+<start>1148</start>
+<end>1252</end>
+<text>So, $\int_{0}^{1} \int_{0}^{1} f(x) f(y) K(x, y) dy dx = \int_{0}^{1} \int_{0}^{1} g(x) g(y) K(x, y) dy dx$.</text>
+<explanation>The solver recognizes a pattern of equality between two double integrals, which becomes a key insight for the solution. This demonstrates the ability to identify important mathematical relationships from derived equations.</explanation>
+
+<start>3711</start>
+<end>3907</end>
+<text>Consider $h(x) = f(x) - g(x)$. We have shown that $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.
+Since $\int_0^1 h(x)^2 dx \ge 0$, we need $- \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx \ge 0$.</text>
+<explanation>The solver recognizes a key pattern in the relationship between the integral of h(x)² and a double integral involving h(x)h(y). This pattern recognition helps establish constraints that will lead to the solution.</explanation>
+
+<start>6099</start>
+<end>6294</end>
+<text>If $\int_0^1 h(x)^2 dx > 0$, then there exists a set of positive measure where $h(x) \ne 0$.
+We have $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.</text>
+<explanation>The solver recognizes a contradiction pattern that will be used to complete the proof. They identify that the positivity of one integral and its equality with a negative expression will lead to a key insight.</explanation>
+
+<skill>Proof by Contradiction</skill>
+<definition>A reasoning technique where one assumes the opposite of what is to be proved, then shows this assumption leads to a logical contradiction, thereby proving the original statement.</definition>
+
+<start>5108</start>
+<end>5402</end>
+<text>Suppose $f \ne g$. Then there exists $x_0$ such that $f(x_0) \ne g(x_0)$. WLOG $f(x_0) > g(x_0)$.
+By continuity, there is an interval $[a, b]$ where $f(x) > g(x)$ for $x \in [a, b]$.
+Then $h(x) > 0$ on $[a, b]$.
+$h(x) = - \int_0^1 h(y) K(x, y) dy$.</text>
+<explanation>The solver begins a proof by contradiction by assuming f≠g and then explores the logical consequences of this assumption. This demonstrates the ability to set up a contradiction framework to establish the desired result.</explanation>
+
+<start>6295</start>
+<end>6524</end>
+<text>Since $K(x,y) > 0$, for this equality to hold, we must have $h(x) = 0$ almost everywhere.
+Since $h$ is continuous, $h(x) = 0$ for all $x \in [0, 1]$.
+Therefore, $f(x) = g(x)$ for all $x \in [0, 1]$.</text>
+<explanation>The solver completes the proof by contradiction by showing that the assumption f≠g leads to a contradiction with the established equations, thereby concluding that f=g. This demonstrates the ability to follow through with the contradiction argument to its logical conclusion.</explanation>
+
+<skill>Function Space Analysis</skill>
+<definition>The ability to analyze properties of functions as elements of function spaces, including using norms, examining function behavior over intervals, and analyzing properties like continuity and positivity.</definition>
+
+<start>1253</start>
+<end>1355</end>
+<text>Consider $(f(x)-g(x))^2 \ge 0$.
+$\int_{0}^{1} (f(x)-g(x))^2 dx = \int_{0}^{1} f(x)^2 dx - 2 \int_{0}^{1} f(x) g(x) dx + \int_{0}^{1} g(x)^2 dx$</text>
+<explanation>The solver analyzes the squared difference of functions and its integral, demonstrating understanding of function space properties including non-negativity of squared functions and expansion of integrals of squared differences.</explanation>
+
+<start>2498</start>
+<end>2736</end>
+<text>Since $K(x,y) > 0$, $f(x) > 0$, $g(x) > 0$.
+If $f(x_0) > g(x_0)$ for some $x_0$, then in a neighborhood of $x_0$, $f(x) > g(x)$.
+If $f(x_0) < g(x_0)$ for some $x_0$, then in a neighborhood of $x_0$, $f(x) < g(x)$.</text>
+<explanation>The solver analyzes the behavior of functions in neighborhoods of points, using continuity to establish properties over intervals. This shows sophisticated understanding of function behavior in function spaces.</explanation>
+
+<start>3908</start>
+<end>4187</end>
+<text>Consider the case where $K(x,y) = K(y,x)$.
+Then $\int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx = \int_0^1 \int_0^1 h(y) h(x) K(y, x) dx dy = \int_0^1 \int_0^1 h(x) h(y) K(x, y) dx dy$.
+So $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.</text>
+<explanation>The solver explores symmetry properties of the kernel function K and how they affect integrals involving the function h. This demonstrates sophisticated analysis of function properties in integral equations.</explanation>
+
+<skill>Norm-based Reasoning</skill>
+<definition>Using properties of function norms (such as L² norms) to establish relationships between functions and derive conclusions about function equality or inequality.</definition>
+
+<start>4345</start>
+<end>4542</end>
+<text>Integrate from 0 to 1:
+$\int_0^1 (f(x)^2 - g(x)^2) dx = \int_0^1 (f(x) + g(x)) \int_0^1 (g(y) - f(y)) K(x,y) dy dx$
+$0 = \int_0^1 \int_0^1 (f(x) + g(x)) (g(y) - f(y)) K(x,y) dy dx$</text>
+<explanation>The solver uses properties of L² norms (integrals of squared functions) to establish that the integral of f²-g² equals zero, which is a key step in showing function equality. This demonstrates sophisticated norm-based reasoning.</explanation>
+
+<start>4636</start>
+<end>4816</end>
+<text>Let $||f||^2 = \int_0^1 f(x)^2 dx$.
+We had $\int_0^1 f(x)^2 dx = \int_0^1 \int_0^1 f(x) g(y) K(x,y) dy dx$.
+$\int_0^1 g(x)^2 dx = \int_0^1 \int_0^1 g(x) f(y) K(x,y) dy dx$.</text>
+<explanation>The solver explicitly introduces norm notation (||f||²) to represent the integral of f², showing formal understanding of function space norms and how they relate to the integral equations in the problem.</explanation>
+
+<start>6099</start>
+<end>6294</end>
+<text>If $\int_0^1 h(x)^2 dx > 0$, then there exists a set of positive measure where $h(x) \ne 0$.
+We have $\int_0^1 h(x)^2 dx = - \int_0^1 \int_0^1 h(x) h(y) K(x, y) dy dx$.</text>
+<explanation>The solver uses the L² norm of h (integral of h²) to establish that if h is non-zero on a set of positive measure, this leads to a contradiction with the established equations. This demonstrates sophisticated use of norm properties in function spaces.</explanation>
+
+SUMMARY_START
+1. Equation Manipulation: The solver skillfully transforms equations through substitution, factoring, and algebraic operations to reveal key relationships between f and g.
+
+2. Strategic Integration: The solver strategically multiplies equations by specific functions before integrating to create useful relationships that lead to the solution.
+
+3. Proof by Contradiction: The solver assumes f≠g and methodically works through the consequences to show this leads to a contradiction, effectively proving f=g.
+
+4. Function Space Analysis: The solver demonstrates sophisticated understanding of function properties, including continuity, positivity, and behavior over intervals.
+
+5. Norm-based Reasoning: The solver uses properties of function norms (particularly L² norms) to establish key relationships that lead to the conclusion that f=g.
+SUMMARY_END
+
+Summary of Key Skills:
+1. Equation Manipulation: The solver skillfully transforms equations through substitution, factoring, and algebraic operations to reveal key relationships between f and g.
+
+2. Strategic Integration: The solver strategically multiplies equations by specific functions before integrating to create useful relationships that lead to the solution.
+
+3. Proof by Contradiction: The solver assumes f≠g and methodically works through the consequences to show this leads to a contradiction, effectively proving f=g.
+
+4. Function Space Analysis: The solver demonstrates sophisticated understanding of function properties, including continuity, positivity, and behavior over intervals.
+
+5. Norm-based Reasoning: The solver uses properties of function norms (particularly L² norms) to establish key relationships that lead to the conclusion that f=g.

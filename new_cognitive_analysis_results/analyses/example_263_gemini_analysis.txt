@@ -1,0 +1,601 @@
+Problem:
+Paul and Sara are playing a game with integers on a whiteboard, with Paul going first. When it is Paul's turn, he can pick any two integers on the board and replace them with their product; when it is Sara's turn, she can pick any two integers on the board and replace them with their sum. Play continues until exactly one integer remains on the board. Paul wins if that integer is odd, and Sara wins if it is even. Initially, there are 2021 integers on the board, each one sampled uniformly at random from the set \{0,1,2,3, \ldots, 2021\}. Assuming both players play optimally, the probability that Paul wins is $\frac{m}{n}$, where $m, n$ are positive integers and $\operatorname{gcd}(m, n)=1$. Find the remainder when $m+n$ is divided by 1000.
+
+Domain: Combinatorics
+
+Solution Trajectory (gemini):
+
+The problem describes a game played with integers on a whiteboard. The game starts with 2021 integers, each chosen uniformly at random from the set $\{0, 1, 2, \ldots, 2021\}$. Paul's move is to replace two integers with their product, and Sara's move is to replace two integers with their sum. The game ends when only one integer remains. Paul wins if the final integer is odd, and Sara wins if it is even. We need to find the probability that Paul wins, assuming optimal play.
+
+Let the initial set of integers be $S = \{a_1, a_2, \ldots, a_{2021}\}$.
+The number of turns in the game is $2021 - 1 = 2020$.
+Since Paul goes first, there will be $2020 / 2 = 1010$ moves by Paul and $1010$ moves by Sara.
+
+Consider the effect of the operations on the parity of the integers.
+Product of two integers:
+odd $\times$ odd = odd
+odd $\times$ even = even
+even $\times$ even = even
+
+Sum of two integers:
+odd + odd = even
+odd + even = odd
+even + even = even
+
+Paul wants the final number to be odd, and Sara wants the final number to be even.
+
+Let $n_{odd}$ be the number of odd integers initially, and $n_{even}$ be the number of even integers initially.
+$n_{odd} + n_{even} = 2021$.
+
+Consider the effect of Paul's move: replacing $a, b$ with $a \times b$.
+If both $a$ and $b$ are odd, the number of odd integers decreases by 1.
+If one of $a$ or $b$ is even, the number of odd integers decreases by either 1 or 2, and the number of even integers increases by 1.
+
+Consider the effect of Sara's move: replacing $a, b$ with $a + b$.
+If both $a$ and $b$ are odd, the number of odd integers decreases by 2, and the number of even integers increases by 1.
+If one is odd and one is even, the number of odd integers remains the same, the number of even integers decreases by 1.
+If both are even, the number of odd integers remains the same, the number of even integers decreases by 1.
+
+The game ends with one integer. Let the final integer be $F$. Paul wins if $F$ is odd.
+
+Consider the role of the number of odd integers.
+If Paul can force the situation where only odd numbers remain at his turns, he can eventually pair them up to get an odd product.
+
+Let's analyze the optimal strategies.
+Paul wants the final result to be odd. This means that at the end, there should be at least one odd factor among the original numbers.
+
+Consider the case where there is at least one 0 initially.
+If there is a 0, Paul can pair any number with 0, resulting in 0. If Paul plays optimally, he will do this if he wants the final result to be even (if he were Sara).
+
+If Sara wants the final result to be even, and there is a 0, Sara can try to keep a 0 on the board as long as possible.
+
+Let's think about the invariants.
+The parity of the number of odd integers changes depending on the moves.
+
+Consider the product of all the numbers initially on the board. The parity of this product determines whether there is at least one even number initially.
+Product $P = a_1 \times a_2 \times \cdots \times a_{2021}$.
+$P$ is odd if and only if all $a_i$ are odd.
+
+Consider the sum of all the numbers initially on the board. The parity of this sum depends on the number of odd integers.
+Sum $S = a_1 + a_2 + \cdots + a_{2021}$.
+$S \equiv n_{odd} \pmod{2}$.
+
+If the final number is odd, it means that at some point, Paul must have combined two odd numbers.
+
+Let's consider the number of odd and even numbers initially.
+The numbers are sampled from $\{0, 1, \ldots, 2021\}$.
+Odd numbers: $1, 3, 5, \ldots, 2021$. Number of odd numbers = $(2021 - 1) / 2 + 1 = 1010 + 1 = 1011$.
+Even numbers: $0, 2, 4, \ldots, 2020$. Number of even numbers = $(2020 - 0) / 2 + 1 = 1010 + 1 = 1011$.
+Total numbers = $1011 + 1011 = 2022$. This is incorrect, the set has $2021 - 0 + 1 = 2022$ elements.
+
+The set is $\{0, 1, 2, \ldots, 2021\}$.
+Odd numbers: $1, 3, \ldots, 2021$. There are 1011 odd numbers.
+Even numbers: $0, 2, \ldots, 2020$. There are 1011 even numbers.
+Total = 2022.
+
+The problem states that there are initially 2021 integers on the board, each sampled uniformly at random from the set $\{0, 1, \ldots, 2021\}$.
+
+Consider the parity of the numbers in the set $\{0, 1, \ldots, 2021\}$:
+Even: $0, 2, \ldots, 2020$ (1011 numbers)
+Odd: $1, 3, \ldots, 2021$ (1011 numbers)
+
+Probability of picking an odd number = $1011 / 2022 = 1/2$.
+Probability of picking an even number = $1011 / 2022 = 1/2$.
+
+Let $X_i$ be the $i$-th initial integer. $P(X_i \text{ is odd}) = 1/2$, $P(X_i \text{ is even}) = 1/2$.
+The number of odd integers initially follows a binomial distribution $B(n=2021, p=1/2)$.
+Let $N_{odd}$ be the number of odd integers initially.
+
+Consider the goal of each player. Paul wants the final number to be odd, Sara wants it to be even.
+
+If there is a 0 on the board, Paul can eventually make the final number 0 by multiplying anything with 0.
+If Paul's goal is odd, he should avoid creating a 0 if possible.
+
+If Sara's goal is even, and there is a 0, she might try to bring a 0 to the final step.
+
+Consider the last step of the game, when two numbers $a, b$ remain.
+If it is Paul's turn, he replaces them with $a \times b$.
+If it is Sara's turn, she replaces them with $a + b$.
+
+The game has 2020 moves in total, 1010 by Paul, 1010 by Sara.
+
+Consider the case with a small number of initial integers.
+Case 1: 1 integer initially. The game ends. If the number is odd, Paul wins.
+
+Case 2: 2 integers $a, b$. Paul's turn. Replaces with $a \times b$.
+Paul wins if $a \times b$ is odd, i.e., both $a, b$ are odd.
+
+Case 3: 3 integers $a, b, c$.
+Paul chooses two, say $a, b$, replaces with $ab$. Board: $ab, c$.
+Sara chooses two, $ab, c$, replaces with $ab + c$.
+Sara wins if $ab + c$ is even.
+
+If $a, b, c$ are odd: $ab$ is odd, $ab + c$ is even. Sara wins.
+If $a, b$ odd, $c$ even: $ab$ odd, $ab + c$ odd. Paul wins.
+If $a$ odd, $b$ even, $c$ odd: $ab$ even, $ab + c$ odd. Paul wins.
+If $a$ odd, $b$ even, $c$ even: $ab$ even, $ab + c$ even. Sara wins.
+If $a, b, c$ even: $ab$ even, $ab + c$ even. Sara wins.
+
+Paul's move makes the number of integers decrease by 1, Sara's move also decreases by 1.
+
+The game ends after 2020 moves. The last move is made by Sara.
+The state before the last move has 2 integers.
+If the two integers are $a, b$, Sara replaces them with $a+b$. Sara wins if $a+b$ is even.
+
+Consider the effect of the operations on the parity of the sum of the numbers on the board.
+Paul's move: $a, b \rightarrow ab$. Sum changes by $ab - a - b$.
+$ab - a - b = (a-1)(b-1) - 1$.
+If $a, b$ odd: $(even)(even) - 1 = even - 1 = odd$. Sum parity changes.
+If $a$ odd, $b$ even: $(even)(odd) - 1 = even - 1 = odd$. Sum parity changes.
+If $a, b$ even: $(odd)(odd) - 1 = odd - 1 = even$. Sum parity unchanged.
+
+Sara's move: $a, b \rightarrow a+b$. Sum changes by $a+b - a - b = 0$. Sum is invariant under Sara's move.
+
+Let $S_k$ be the sum of the numbers on the board after $k$ moves.
+If the $k$-th move is Paul's, $S_k \equiv S_{k-1} + (a-1)(b-1) - 1 \pmod{2}$, where $a, b$ were combined.
+If the $k$-th move is Sara's, $S_k = S_{k-1}$.
+
+Consider the parity of the final number.
+The final number is obtained by a sequence of product and sum operations.
+
+Let the initial numbers be $x_1, \ldots, x_{2021}$.
+Consider the polynomial $P(x) = (x - x_1)(x - x_2) \cdots (x - x_{2021})$.
+The coefficients of this polynomial are related to the elementary symmetric polynomials of $x_i$.
+
+Consider the number of odd integers.
+Paul wants to pair odd numbers together to get odd products.
+Sara wants to pair odd numbers together to get even sums.
+
+If at some point there is only one odd number left and some even numbers, Paul can pair the odd number with an even number, resulting in an even number.
+
+Consider the game played backwards from the end.
+One number remains. If odd, Paul won. If even, Sara won.
+
+Before the last move, two numbers $a, b$.
+If it was Paul's move, the previous state had some numbers that multiplied to $a$ or $b$.
+If it was Sara's move, the previous state had some numbers that summed to $a$ or $b$.
+
+The last move is Sara's. She combines two numbers $a, b$ into $a+b$.
+Sara wins if $a+b$ is even, i.e., $a, b$ have the same parity.
+
+Consider the state before Sara's last move. Two numbers remain.
+If these two numbers have the same parity, Sara wins.
+
+Consider the state before that. It was Paul's turn.
+Paul had a set of numbers, and he combined two into their product.
+Paul wants the two remaining numbers to have different parity.
+
+The game always ends after 2020 moves.
+The number of odd numbers changes.
+
+Consider the effect of Paul's move on the number of odd numbers:
+odd $\times$ odd $\rightarrow$ odd (number of odd decreases by 1)
+odd $\times$ even $\rightarrow$ even (number of odd decreases by 1)
+even $\times$ even $\rightarrow$ even (number of odd remains the same)
+
+Consider the effect of Sara's move on the number of odd numbers:
+odd + odd $\rightarrow$ even (number of odd decreases by 2)
+odd + even $\rightarrow$ odd (number of odd remains the same)
+even + even $\rightarrow$ even (number of odd remains the same)
+
+Let $n_{odd}(k)$ be the number of odd integers after $k$ moves.
+
+If Paul can ensure that before Sara's last move, one number is odd and one is even, then Sara will form an odd sum, and Paul wins.
+
+Consider the case where initially there is at least one even number.
+Probability that all numbers are odd is $(1/2)^{2021}$.
+
+If there is at least one even number, Sara can try to maintain an even number on the board.
+If Paul's move involves an even number, the result is even.
+
+If at some point, only even numbers remain, Sara can always make the final number even.
+
+If Paul can eliminate all even numbers, the remaining numbers are odd.
+When combining two odd numbers, the result is odd. The final number will be odd.
+
+Paul wins if the final number is odd. This means that at the end, the single remaining number is odd.
+
+Consider the product of all the initial numbers.
+If the product is odd, all initial numbers are odd.
+If the product is even, at least one initial number is even.
+
+If all initial numbers are odd, Paul can always pair them up, the products will be odd.
+Sara sums odd numbers, which can be even or odd.
+
+If initially all numbers are odd, there are 2021 odd numbers.
+Paul pairs two, gets odd. 2019 numbers, all odd.
+Sara pairs two, gets even. 2017 numbers, 2016 odd, 1 even.
+
+Consider the optimal strategy.
+If there is an even number, Paul can create more even numbers.
+If Sara can create an even number, it might help her.
+
+If there is a 0 initially, Paul can make the final result 0.
+The probability that there is no 0 initially is $(2021/2022)^{2021}$.
+
+If Paul plays optimally to make the final number odd, he should prioritize multiplying odd numbers.
+If Sara plays optimally to make the final number even, she should prioritize summing numbers to get even results.
+
+If there is a 0, Paul's optimal move is to multiply with 0, making the final result 0 (even).
+
+Consider the case where there is no 0 initially. All numbers are from $\{1, 2, \ldots, 2021\}$.
+Probability of picking an odd number = $1011 / 2021$.
+Probability of picking an even number = $1010 / 2021$.
+
+If Paul's goal is to get an odd final number, he needs to ensure that the operations preserve oddness.
+Multiplication of odds is odd. Sum of odds is even.
+
+Consider the parity of the number of odd integers.
+Paul's move: $oo \rightarrow o$, $oe \rightarrow e$, $ee \rightarrow e$. Number of odd changes by -1, -1, 0.
+Sara's move: $oo \rightarrow e$, $oe \rightarrow o$, $ee \rightarrow e$. Number of odd changes by -2, 0, 0.
+
+If the game ends with one odd number, it means that at the start of Sara's last turn, the two numbers had different parity.
+
+Let the number of odd integers initially be $N$.
+If Paul can reduce the number of even integers to 0, all numbers are odd.
+Combining odds results in odds. The final number will be odd.
+
+If initially there is at least one even number, Sara can try to maintain an even number.
+
+Consider the case where there is a 0 initially.
+If Paul picks 0 and any other number $a$, the result is 0.
+If Paul's first move involves a 0, a 0 appears on the board.
+Sara can then sum 0 with any number, the number remains.
+
+If a 0 is present, Paul can force the final result to be 0.
+Probability that at least one 0 is present: $1 - P(\text{no } 0) = 1 - (2021/2022)^{2021}$.
+
+If there is a 0, and Paul plays optimally, the final result is 0, Sara wins.
+If there is a 0, Paul can pick the 0 and some other number, resulting in 0. This can be done in his first turn.
+
+If there is a 0 initially, Paul's first move can create a 0.
+If Paul creates a 0, the board has a 0.
+Sara's move: $0 + a = a$.
+Paul's move: $0 \times a = 0$.
+
+If a 0 is present, Paul can always make the final number 0.
+If Paul plays optimally and there is a 0, the final number is 0 (even), Sara wins.
+
+Probability that there is a 0 initially:
+Each of the 2021 integers can be 0 with probability $1/2022$.
+Probability that the $i$-th integer is not 0 is $2021/2022$.
+Probability that none of the integers is 0 is $(2021/2022)^{2021}$.
+Probability that at least one integer is 0 is $1 - (2021/2022)^{2021}$.
+
+If there is at least one 0, Paul can force a 0. Optimal play leads to final number 0, Sara wins.
+
+If there is no 0 initially, all numbers are from $\{1, 2, \ldots, 2021\}$.
+Paul wants the final number to be odd.
+Sara wants the final number to be even.
+
+Consider the parity of the initial numbers.
+If all initial numbers are odd, Paul can pair them, the product is odd.
+Sara sums odds, result is even.
+
+If there are only odd numbers initially, the sequence of operations involves products of odds (Paul) and sums of odds (Sara).
+Paul's move keeps all numbers odd.
+Sara's move makes one even number.
+
+If initially all numbers are odd, after Paul's first move, 2019 odd numbers.
+Sara combines two odds, gets even. 2017 numbers, 2016 odd, 1 even.
+Paul combines odd and even, gets even. 2015 numbers, 2015 odd.
+
+If initially all numbers are odd, the final result depends on who makes the last pairing.
+The last operation is Sara's (sum).
+
+If the game reaches a state with two odd numbers, Sara sums them to even.
+If the game reaches a state with one odd and one even, Sara sums to odd.
+
+If there are only odd numbers initially, the final operation is sum of two numbers.
+Consider the state before Sara's last move: two numbers.
+If both are odd, Sara sums to even.
+If one odd, one even, Sara sums to odd.
+
+If all initial numbers are odd, Paul's moves keep numbers odd.
+Sara's moves combine two odds to even.
+
+If initially all are odd, and the game ends with one number, this number must be the sum of two numbers at Sara's last turn.
+If the two numbers were odd, sum is even, Sara wins.
+
+If there are no zeros initially, and all numbers are odd, Sara wins.
+
+Paul wins if the final number is odd.
+This can only happen if, before Sara's last move, the two numbers had different parity.
+
+If there is no 0 initially, the game involves only positive integers.
+
+Consider the probability that all initial numbers are odd. $(1011/2022)^{2021} = (1/2)^{2021}$.
+
+If there is no 0, and at least one even number, Sara can try to pair with it.
+
+If there is no 0, the game proceeds with multiplication and addition of positive integers.
+
+Consider the case where there is at least one even number, and no 0.
+Sara's goal is even. Paul's goal is odd.
+
+If the final number is odd, it means that at Sara's last move, she added an odd and an even number.
+The state before that had two numbers of different parity. This was the result of Paul's move.
+
+If the final number is even, it means Sara added two evens or two odds.
+
+If there is exactly one even number initially, Paul can multiply it with an odd number to get even.
+
+The problem is symmetric with respect to Paul and Sara's moves, except for the operation.
+
+If there is no 0 initially, consider the parities.
+If there is an even number, Paul can create more even numbers by multiplying with it.
+Sara can create even numbers by summing odds.
+
+The probability that Paul wins is the probability that the final number is odd.
+This can only happen if there are no zeros initially, and the game progresses such that Sara is forced to sum an odd and an even number at the end.
+
+If there are no zeros, and the number of even numbers is odd, Sara can always pair evens or odds, eventually leading to a sum of two odds or two evens.
+
+If there are no zeros, and the number of odd numbers is initially odd, and Paul plays optimally, he can ensure that before Sara's moves, there are always an odd number of odd integers.
+
+Consider the case where there are no zeros.
+If the number of odd integers is odd, Paul can pair two odds, making it even.
+If the number of odd integers is even, Paul can pair an odd and an even, keeping the number of odds the same.
+
+If there are no zeros, and initially at least one even number.
+If Paul can force the state where before Sara's last move, one odd and one even remain, Paul wins.
+
+The probability that Paul wins is the probability that there are no zeros initially.
+If there are no zeros, and at least one even number, Sara can win.
+
+If there are no zeros, and all numbers are odd, Sara wins.
+
+Paul wins if and only if there are no zeros initially.
+Probability of no zeros = $(2021/2022)^{2021}$.
+This is the probability that Paul wins.
+$m = 2021^{2021}$, $n = 2022^{2021}$.
+gcd(m, n) = 1 since gcd(2021, 2022) = 1.
+
+$m+n = 2021^{2021} + 2022^{2021}$.
+We need $(2021^{2021} + 2022^{2021}) \pmod{1000}$.
+
+$2021 \equiv 21 \pmod{1000}$
+$2022 \equiv 22 \pmod{1000}$
+
+$21^{2021} + 22^{2021} \pmod{1000}$.
+
+Euler's totient function $\phi(1000) = 1000 (1 - 1/2) (1 - 1/5) = 1000 \times 1/2 \times 4/5 = 400$.
+$2021 = 5 \times 400 + 21$.
+$21^{2021} \equiv 21^{21} \pmod{1000}$.
+$22^{2021} \equiv 22^{21} \pmod{1000}$.
+
+Need to compute $21^{21} + 22^{21} \pmod{1000}$.
+
+Consider modulo 8 and 125.
+Modulo 8: $21 \equiv 5 \pmod{8}$, $22 \equiv 6 \pmod{8}$.
+$5^2 = 25 \equiv 1 \pmod{8}$. $5^{21} = 5^{20} \times 5 = (5^2)^{10} \times 5 \equiv 1^{10} \times 5 = 5 \pmod{8}$.
+$6^2 = 36 \equiv 4 \pmod{8}$, $6^3 \equiv 24 \equiv 0 \pmod{8}$.
+$22^{21} \equiv 6^{21} = (6^3)^7 \equiv 0^7 = 0 \pmod{8}$.
+$21^{21} + 22^{21} \equiv 5 + 0 = 5 \pmod{8}$.
+
+Modulo 125: $\phi(125) = 125 (1 - 1/5) = 100$.
+$21^{2021} \equiv 21^{21} \pmod{125}$.
+$22^{2021} \equiv 22^{21} \pmod{125}$.
+
+$21^2 = 441 \equiv 66 \pmod{125}$.
+$22^2 = 484 \equiv 114 \equiv -11 \pmod{125}$.
+
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Problem Representation</skill>
+<definition>The ability to translate a problem statement into a formal mathematical representation, identifying variables, constraints, and goals.</definition>
+
+<start>0</start>
+<end>363</end>
+<text>The problem describes a game played with integers on a whiteboard. The game starts with 2021 integers, each chosen uniformly at random from the set $\{0, 1, \ldots, 2021\}$. Paul's move is to replace two integers with their product, and Sara's move is to replace two integers with their sum. The game ends when only one integer remains. Paul wins if the final integer is odd, and Sara wins if it is even. We need to find the probability that Paul wins, assuming optimal play.</text>
+<explanation>The solver begins by restating the problem in a clear, structured way, identifying the key elements: the game rules, the winning conditions, and what needs to be calculated. This representation forms the foundation for the subsequent analysis.</explanation>
+
+<start>365</start>
+<end>490</end>
+<text>Let the initial set of integers be $S = \{a_1, a_2, \ldots, a_{2021}\}$.
+The number of turns in the game is $2021 - 1 = 2020$.
+Since Paul goes first, there will be $2020 / 2 = 1010$ moves by Paul and $1010$ moves by Sara.</text>
+<explanation>The solver introduces mathematical notation to represent the problem more formally, defining variables and calculating the number of moves each player will make, which helps structure the analysis.</explanation>
+
+<skill>Parity Analysis</skill>
+<definition>The ability to analyze and track how the parity (oddness or evenness) of numbers changes under different operations, which is crucial for many number theory problems.</definition>
+
+<start>492</start>
+<end>694</end>
+<text>Consider the effect of the operations on the parity of the integers.
+Product of two integers:
+odd $\times$ odd = odd
+odd $\times$ even = even
+even $\times$ even = even
+
+Sum of two integers:
+odd + odd = even
+odd + even = odd
+even + even = even</text>
+<explanation>The solver systematically analyzes how the parity of numbers changes under multiplication and addition operations, which is crucial for this problem since the winning condition depends on the parity of the final number.</explanation>
+
+<start>1131</start>
+<end>1606</end>
+<text>Consider the effect of Paul's move: replacing $a, b$ with $a \times b$.
+If both $a$ and $b$ are odd, the number of odd integers decreases by 1.
+If one of $a$ or $b$ is even, the number of odd integers decreases by either 1 or 2, and the number of even integers increases by 1.
+
+Consider the effect of Sara's move: replacing $a, b$ with $a + b$.
+If both $a$ and $b$ are odd, the number of odd integers decreases by 2, and the number of even integers increases by 1.
+If one is odd and one is even, the number of odd integers remains the same, the number of even integers decreases by 1.
+If both are even, the number of odd integers remains the same, the number of even integers decreases by 1.</text>
+<explanation>The solver tracks how each player's moves affect the number of odd and even integers on the board, which is essential for determining the optimal strategy and eventual outcome.</explanation>
+
+<start>5146</start>
+<end>5605</end>
+<text>Consider the effect of the operations on the parity of the sum of the numbers on the board.
+Paul's move: $a, b \rightarrow ab$. Sum changes by $ab - a - b$.
+$ab - a - b = (a-1)(b-1) - 1$.
+If $a, b$ odd: $(even)(even) - 1 = even - 1 = odd$. Sum parity changes.
+If $a$ odd, $b$ even: $(even)(odd) - 1 = even - 1 = odd$. Sum parity changes.
+If $a, b$ even: $(odd)(odd) - 1 = odd - 1 = even$. Sum parity unchanged.</text>
+<explanation>The solver analyzes how the parity of the sum of all numbers changes with each move, using algebraic manipulation to derive patterns in the parity changes.</explanation>
+
+<skill>Invariant Identification</skill>
+<definition>The ability to identify quantities or properties that remain unchanged (invariant) throughout a process, which can simplify complex problems.</definition>
+
+<start>5606</start>
+<end>5705</end>
+<text>Sara's move: $a, b \rightarrow a+b$. Sum changes by $a+b - a - b = 0$. Sum is invariant under Sara's move.</text>
+<explanation>The solver identifies an important invariant: the sum of all numbers on the board remains unchanged when Sara makes a move. This insight helps track how the game state evolves.</explanation>
+
+<start>5707</start>
+<end>5901</end>
+<text>Let $S_k$ be the sum of the numbers on the board after $k$ moves.
+If the $k$-th move is Paul's, $S_k \equiv S_{k-1} + (a-1)(b-1) - 1 \pmod{2}$, where $a, b$ were combined.
+If the $k$-th move is Sara's, $S_k = S_{k-1}$.</text>
+<explanation>The solver formalizes the invariant by defining variables to track the sum after each move, establishing a recurrence relation that shows how the sum changes (or doesn't change) with each player's move.</explanation>
+
+<skill>Case Analysis</skill>
+<definition>The ability to break down a problem into distinct cases or scenarios and analyze each one separately, often used when different initial conditions lead to different outcomes.</definition>
+
+<start>7093</start>
+<end>7478</end>
+<text>Consider the case with a small number of initial integers.
+Case 1: 1 integer initially. The game ends. If the number is odd, Paul wins.
+
+Case 2: 2 integers $a, b$. Paul's turn. Replaces with $a \times b$.
+Paul wins if $a \times b$ is odd, i.e., both $a, b$ are odd.
+
+Case 3: 3 integers $a, b, c$.
+Paul chooses two, say $a, b$, replaces with $ab$. Board: $ab, c$.
+Sara chooses two, $ab, c$, replaces with $ab + c$.
+Sara wins if $ab + c$ is even.</text>
+<explanation>The solver uses case analysis by examining simplified versions of the game with fewer integers to build intuition about the patterns and strategies that might apply to the full problem.</explanation>
+
+<start>7480</start>
+<end>7778</end>
+<text>If $a, b, c$ are odd: $ab$ is odd, $ab + c$ is even. Sara wins.
+If $a, b$ odd, $c$ even: $ab$ odd, $ab + c$ odd. Paul wins.
+If $a$ odd, $b$ even, $c$ odd: $ab$ even, $ab + c$ odd. Paul wins.
+If $a$ odd, $b$ even, $c$ even: $ab$ even, $ab + c$ even. Sara wins.
+If $a, b, c$ even: $ab$ even, $ab + c$ even. Sara wins.</text>
+<explanation>The solver systematically analyzes all possible parity combinations in the 3-integer case, determining the winner for each scenario, which helps identify patterns that might generalize.</explanation>
+
+<start>9874</start>
+<end>10127</end>
+<text>Consider the case where there is a 0 initially.
+If there is a 0, Paul can pair any number with 0, resulting in 0. If Paul plays optimally, he will do this if he wants the final result to be even (if he were Sara).
+
+If Sara wants the final result to be even, and there is a 0, Sara can try to keep a 0 on the board as long as possible.</text>
+<explanation>The solver identifies a special case (presence of 0) that significantly affects the game's outcome and analyzes how it changes the optimal strategies for both players.</explanation>
+
+<skill>Probability Calculation</skill>
+<definition>The ability to calculate probabilities of events, often using combinatorial principles, conditional probability, or other probability theory concepts.</definition>
+
+<start>2371</start>
+<end>2761</end>
+<text>Consider the number of odd and even numbers initially.
+The numbers are sampled from $\{0, 1, \ldots, 2021\}$.
+Odd numbers: $1, 3, 5, \ldots, 2021$. Number of odd numbers = $(2021 - 1) / 2 + 1 = 1010 + 1 = 1011$.
+Even numbers: $0, 2, 4, \ldots, 2020$. Number of even numbers = $(2020 - 0) / 2 + 1 = 1010 + 1 = 1011$.
+Total numbers = $1011 + 1011 = 2022$. This is incorrect, the set has $2021 - 0 + 1 = 2022$ elements.</text>
+<explanation>The solver calculates the number of odd and even numbers in the set from which the initial integers are sampled, which is necessary for determining the probability of different initial configurations.</explanation>
+
+<start>3037</start>
+<end>3233</end>
+<text>Probability of picking an odd number = $1011 / 2022 = 1/2$.
+Probability of picking an even number = $1011 / 2022 = 1/2$.
+
+Let $X_i$ be the $i$-th initial integer. $P(X_i \text{ is odd}) = 1/2$, $P(X_i \text{ is even}) = 1/2$.
+The number of odd integers initially follows a binomial distribution $B(n=2021, p=1/2)$.</text>
+<explanation>The solver calculates the probability of picking odd or even numbers and recognizes that the distribution of odd numbers follows a binomial distribution, showing understanding of probability theory.</explanation>
+
+<start>13631</start>
+<end>13930</end>
+<text>Probability that there is a 0 initially:
+Each of the 2021 integers can be 0 with probability $1/2022$.
+Probability that the $i$-th integer is not 0 is $2021/2022$.
+Probability that none of the integers is 0 is $(2021/2022)^{2021}$.
+Probability that at least one integer is 0 is $1 - (2021/2022)^{2021}$.</text>
+<explanation>The solver calculates the probability of having at least one zero in the initial set, using the complement rule and the independence of the selections.</explanation>
+
+<skill>Modular Arithmetic</skill>
+<definition>The ability to perform arithmetic operations within a modular system, where numbers "wrap around" after reaching a certain value (the modulus).</definition>
+
+<start>16242</start>
+<end>16544</end>
+<text>$m+n = 2021^{2021} + 2022^{2021}$.
+We need $(2021^{2021} + 2022^{2021}) \pmod{1000}$.
+
+$2021 \equiv 21 \pmod{1000}$
+$2022 \equiv 22 \pmod{1000}$
+
+$21^{2021} + 22^{2021} \pmod{1000}$.</text>
+<explanation>The solver applies modular arithmetic to simplify the calculation, recognizing that only the last three digits matter when finding the remainder modulo 1000.</explanation>
+
+<start>16546</start>
+<end>16816</end>
+<text>Euler's totient function $\phi(1000) = 1000 (1 - 1/2) (1 - 1/5) = 1000 \times 1/2 \times 4/5 = 400$.
+$2021 = 5 \times 400 + 21$.
+$21^{2021} \equiv 21^{21} \pmod{1000}$.
+$22^{2021} \equiv 22^{21} \pmod{1000}$.</text>
+<explanation>The solver uses Euler's theorem from number theory to further simplify the modular exponentiation, calculating the totient function of 1000 and reducing the exponents accordingly.</explanation>
+
+<skill>Backward Reasoning</skill>
+<definition>The ability to work backward from the desired end state to determine what conditions or moves would lead to that state, often used in game theory and optimization problems.</definition>
+
+<start>6352</start>
+<end>6502</end>
+<text>Consider the game played backwards from the end.
+One number remains. If odd, Paul won. If even, Sara won.
+
+Before the last move, two numbers $a, b$.
+If it was Paul's move, the previous state had some numbers that multiplied to $a$ or $b$.
+If it was Sara's move, the previous state had some numbers that summed to $a$ or $b$.</text>
+<explanation>The solver works backward from the end of the game to analyze what conditions would lead to a win for each player, a powerful technique in game theory analysis.</explanation>
+
+<start>6504</start>
+<end>6646</end>
+<text>The last move is Sara's. She combines two numbers $a, b$ into $a+b$.
+Sara wins if $a+b$ is even, i.e., $a, b$ have the same parity.
+
+Consider the state before Sara's last move. Two numbers remain.
+If these two numbers have the same parity, Sara wins.</text>
+<explanation>The solver continues the backward reasoning, determining that Sara wins if the two numbers before her last move have the same parity, which is a key insight for solving the problem.</explanation>
+
+<skill>Optimal Strategy Analysis</skill>
+<definition>The ability to determine the best course of action for players in a game or strategic situation, considering all possible moves and countermoves.</definition>
+
+<start>6648</start>
+<end>6789</end>
+<text>Consider the state before that. It was Paul's turn.
+Paul had a set of numbers, and he combined two into their product.
+Paul wants the two remaining numbers to have different parity.</text>
+<explanation>The solver identifies Paul's optimal strategy: ensuring that the two numbers before Sara's last move have different parity, which forces Sara to create an odd sum (a win for Paul).</explanation>
+
+<start>12124</start>
+<end>12291</end>
+<text>If a 0 is present, Paul can always make the final number 0.
+If Paul plays optimally and there is a 0, the final number is 0 (even), Sara wins.</text>
+<explanation>The solver recognizes that if there's a zero, Paul's optimal play leads to a final result of zero (an even number), resulting in a win for Sara.</explanation>
+
+<start>15592</start>
+<end>15757</end>
+<text>Paul wins if and only if there are no zeros initially.
+Probability of no zeros = $(2021/2022)^{2021}$.
+This is the probability that Paul wins.
+$m = 2021^{2021}$, $n = 2022^{2021}$.</text>
+<explanation>The solver concludes that Paul wins exactly when there are no zeros initially, and calculates the corresponding probability, which is the key insight that leads to the final answer.</explanation>
+
+<skill>Chinese Remainder Theorem Application</skill>
+<definition>The ability to solve congruences by breaking them down into simpler congruences with coprime moduli and then combining the results.</definition>
+
+<start>16897</start>
+<end>17324</end>
+<text>Consider modulo 8 and 125.
+Modulo 8: $21 \equiv 5 \pmod{8}$, $22 \equiv 6 \pmod{8}$.
+$5^2 = 25 \equiv 1 \pmod{8}$. $5^{21} = 5^{20} \times 5 = (5^2)^{10} \times 5 \equiv 1^{10} \times 5 = 5 \pmod{8}$.
+$6^2 = 36 \equiv 4 \pmod{8}$, $6^3 \equiv 24 \equiv 0 \pmod{8}$.
+$22^{21} \equiv 6^{
+
+Summary of Key Skills:
+Not found

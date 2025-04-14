@@ -1,0 +1,132 @@
+Problem:
+Let \( X(s, t) := \inf_{u \in [s,t]} \{W(u)\}, \) for standard Brownian motion \( W(t), \) starting at \( W(0) = 0. \) For any \( t > 1 \) and \( \varepsilon > 0, \) denote by \( f_{t, \varepsilon}(x) \) the probability density of \( W(1) \) at \( x \ge 0, \) conditioned on the event \( \{X(0, t) > -\varepsilon\}. \) (a) Express \( f_{t, \varepsilon}(x) \) in terms of the standard normal distribution function \( \Phi(\cdot).\) (b) Compute the density \( g(x) \) of \( R := \sqrt{G_1^2 + G_2^2 + G_3^2}, \) for i.i.d. standard normal variables \( G_i, i = 1,2,3. \) Then deduce from (a) that \[ g(x) = \lim_{t \to \infty, \varepsilon \downarrow 0} \{f_{t, \varepsilon}(x)\} . \]
+
+Domain: Probability theory
+
+Solution Trajectory (groundtruth):
+\begin{enumerate}[label=(\alph*)]\item  We define $M_t = \max_{u \in [0,t]} W_u$. By definition, for $x >0$, \begin{align*} f_{t,\varepsilon}(x) = \dfrac{\partial}{\partial y }\dfrac{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon, W_1 \leq y)}{\mathbb{P}P(\min_{u \in [0,t]} W_u > -\varepsilon)} \Bigg \rvert_{y=x} &= \dfrac{\partial}{\partial y }\dfrac{\int_{-\infty}^{y}\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon \mid W_1 = t)f_{W_1}(t) \, dt}{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon)} \Bigg \rvert_{y=x} \\ &= \dfrac{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon \mid W_1 = x)f_{W_1}(x)}{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon)}. \end{align*} By symmetry of BM and \textit{Reflection Principle}, we have the denominator as follows. \begin{equation}{\label{deno}} \mathbb{P}\left(\min_{u \in [0,t]} W_u > -\varepsilon \right) = \mathbb{P} \left(M_t=\max_{u \in [0,t]} W_u < \varepsilon \right) = 1-\mathbb{P}(M_t \geq \varepsilon) = 1- 2\mathbb{P}(W_t \geq \varepsilon) = 2\Phi \left(\dfrac{\varepsilon}{\sqrt{t}}\right) - 1. \end{equation}  In the numerator, $\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon \mid W_1 = x)$ equals $\mathbb{P}(M_t < \varepsilon \mid W_1 = -x)$ by symmetry. Using the Markov property, we can further split this as \begin{align*} \mathbb{P}(M_t < \varepsilon \mid W_1 = -x) &= \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x)\mathbb{P}\left(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x, M_1< \varepsilon \right) \\ &=\mathbb{P}(M_1 < \varepsilon \mid W_1 = -x)\mathbb{P}\left(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x \right). \end{align*} So the numerator of $f_{t,\varepsilon}(x)$ is \begin{equation}{\label{num}} \mathbb{P}(M_t < \varepsilon \mid W_1 = -x) f_{W_1}(x) = \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x) f_{W_1}(-x) \mathbb{P}(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x). \end{equation} Using the independent increment property for BM, the last term of (\ref{num}) reduces to $\mathbb{P}(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x) = \mathbb{P}(M_{t-1} < \varepsilon + x) = 2 \Phi\left(\frac{\varepsilon + x}{\sqrt{t-1}} \right) - 1.$ To compute the first two terms of (\ref{num}), we integrate the joint density of $(W_1,M_1)$. By \cite[Exercise 10.1.12]{dembo}, the joint density of $(W_1,M_1)$ is $f_{W_1,M_1}(x,u) = \dfrac{2(2u-x)}{\sqrt{2\pi}} \exp\left(-\dfrac{1}{2}(2u-x)^2\right) \mathbbm{1}(u>x \vee 0).$ So the first two terms of (\ref{num}) are  \begin{align*} \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x) f_{W_1}(x) &=  \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x) f_{W_1}(-x) \\ &= f_{W_1}(-x) \int_0^\varepsilon \dfrac{f_{W_1,M_1}(-x,u)}{f_{W_1}(-x)} du \\ &=\int_0^\varepsilon \dfrac{2(2u+x)}{\sqrt{2\pi}} \exp\left(-\dfrac{1}{2}(2u+x)^2\right) du \\ &=\int_{x^2/2}^{(2\varepsilon+x)^2/2} \dfrac{1}{\sqrt{2\pi}} \exp\left(-y\right) dy \\ &=\frac{1}{\sqrt{2\pi}} \left( e^{-x^2/2} - e^{-(2\varepsilon+x)^2/2}\right). \end{align*} Putting it all together and simplifying, we get \[f_{t,\varepsilon}(x) = \dfrac{\frac{1}{\sqrt{2\pi}} \left( e^{-x^2/2} - e^{-(2\varepsilon+x)^2/2}\right) \left(2\Phi\left(\dfrac{\varepsilon+x}{\sqrt{t-1}}\right) - 1\right)}{2\Phi\left(\dfrac{\varepsilon}{\sqrt{t}}\right) - 1}. \] \item It is clear that $R$ is the square root of a $\chi^2_3 = \text{Gamma}(3/2,1/2)$ random variable. Hence the density of $R^2$ is $$ f_{R^2}(b) = \dfrac{1}{\sqrt{2\pi}} b^{1/2}\exp(-b/2)\mathbbm{1}(b>0).$$ Using change of variable formula on the above ,we get \[f_R(x) = g(x) = \sqrt{\frac{2}{\pi}} x^2 e^{-x^2/2}\mathbbm{1}(x>0).\] First use \textit{L'Hospital's Rule} to take limit as $\varepsilon \downarrow 0$ to $f_{t,\varepsilon}(x)$ to get the following. \begin{align*} \lim_{\varepsilon \downarrow 0} f_{t,\varepsilon}(x) &= \left(2\Phi\left(\dfrac{x}{\sqrt{t-1}}\right) - 1\right) \dfrac{\exp(-x^2/2)}{\sqrt{2\pi}} \lim_{\varepsilon \downarrow 0}  \dfrac{\left( 1 - e^{-2\varepsilon x-2\varepsilon^2}\right) }{2\Phi\left(\dfrac{\varepsilon}{\sqrt{t}}\right) - 1} \\ &= \left(2\Phi\left(\dfrac{x}{\sqrt{t-1}}\right) - 1\right) \dfrac{\exp(-x^2/2)}{\sqrt{2\pi}} \lim_{\varepsilon \downarrow 0}  \dfrac{\exp\left({-2\varepsilon x-2\varepsilon^2}\right)(2x+4\varepsilon) }{2\phi(\varepsilon t^{-1/2})t^{-1/2}} \\ &=  \sqrt{t}x\exp(-x^2/2) \left(2 \Phi\left(\dfrac{x}{\sqrt{t-1}}\right) -1 \right). \end{align*} We have as $t \to \infty$, $$ 2 \Phi\left(\dfrac{x}{\sqrt{t-1}}\right) -1 = \int_{-x/\sqrt{t-1}}^{x/\sqrt{t-1}} \phi(u) \; du = \phi(0)\dfrac{2x}{\sqrt{t-1}}(1+o(1)),$$ and therefore, $$ \lim_{t \uparrow \infty, \varepsilon \downarrow 0} f_{t,\varepsilon}(x) = 2x^2\exp(-x^2/2)\phi(0) = \sqrt{\frac{2}{\pi}} x^2 e^{-x^2/2}.$$  This matches $g(x)$, so we are done. \end{enumerate} \begin{thebibliography}{99} \bibitem{dembo} \url{https://statweb.stanford.edu/~adembo/stat-310b/lnotes.pdf} \end{thebibliography} \end{document}
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Probabilistic Reasoning</skill>
+<definition>The ability to understand, manipulate, and reason with probability concepts, distributions, and conditional probabilities to solve problems involving uncertainty.</definition>
+
+<start>0</start>
+<end>179</end>
+<text>We define $M_t = \max_{u \in [0,t]} W_u$. By definition, for $x >0$, \begin{align*} f_{t,\varepsilon}(x) = \dfrac{\partial}{\partial y }\dfrac{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon, W_1 \leq y)}{\mathbb{P}P(\min_{u \in [0,t]} W_u > -\varepsilon)} \Bigg \rvert_{y=x}</text>
+<explanation>The solver demonstrates probabilistic reasoning by defining the density function in terms of conditional probabilities, showing understanding of how to express the density as a derivative of a conditional cumulative distribution function.</explanation>
+
+<start>179</start>
+<end>427</end>
+<text>&= \dfrac{\partial}{\partial y }\dfrac{\int_{-\infty}^{y}\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon \mid W_1 = t)f_{W_1}(t) \, dt}{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon)} \Bigg \rvert_{y=x} \\ &= \dfrac{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon \mid W_1 = x)f_{W_1}(x)}{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon)}.</text>
+<explanation>This shows advanced probabilistic reasoning where the solver reformulates the conditional density using Bayes' rule and conditional probability properties, demonstrating deep understanding of how to manipulate probability expressions.</explanation>
+
+<start>1001</start>
+<end>1200</end>
+<text>In the numerator, $\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon \mid W_1 = x)$ equals $\mathbb{P}(M_t < \varepsilon \mid W_1 = -x)$ by symmetry. Using the Markov property, we can further split this as</text>
+<explanation>The solver applies probabilistic reasoning by using symmetry properties of Brownian motion and the Markov property to transform the conditional probability into a more manageable form.</explanation>
+
+<start>2335</start>
+<end>2483</end>
+<text>It is clear that $R$ is the square root of a $\chi^2_3 = \text{Gamma}(3/2,1/2)$ random variable. Hence the density of $R^2$ is $$ f_{R^2}(b) = \dfrac{1}{\sqrt{2\pi}} b^{1/2}\exp(-b/2)\mathbbm{1}(b>0).$$</text>
+<explanation>The solver demonstrates probabilistic reasoning by recognizing the distribution of the sum of squared normal random variables as a chi-square distribution and correctly identifying its parameters.</explanation>
+
+<skill>Stochastic Process Knowledge</skill>
+<definition>Understanding and applying specialized knowledge about stochastic processes, particularly Brownian motion, including properties like the reflection principle, Markov property, and independent increments.</definition>
+
+<start>427</start>
+<end>560</end>
+<text>By symmetry of BM and \textit{Reflection Principle}, we have the denominator as follows. \begin{equation}{\label{deno}} \mathbb{P}\left(\min_{u \in [0,t]} W_u > -\varepsilon \right)</text>
+<explanation>The solver applies specialized knowledge of Brownian motion by invoking the reflection principle, which is a key property used to analyze the extrema of Brownian paths.</explanation>
+
+<start>560</start>
+<end>774</end>
+<text>= \mathbb{P} \left(M_t=\max_{u \in [0,t]} W_u < \varepsilon \right) = 1-\mathbb{P}(M_t \geq \varepsilon) = 1- 2\mathbb{P}(W_t \geq \varepsilon) = 2\Phi \left(\dfrac{\varepsilon}{\sqrt{t}}\right) - 1.</text>
+<explanation>The solver demonstrates deep knowledge of stochastic processes by applying the reflection principle to transform the probability involving the minimum of Brownian motion into a probability involving the maximum, and then into a simpler expression using the normal distribution.</explanation>
+
+<start>1200</start>
+<end>1462</end>
+<text>\begin{align*} \mathbb{P}(M_t < \varepsilon \mid W_1 = -x) &= \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x)\mathbb{P}\left(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x, M_1< \varepsilon \right) \\ &=\mathbb{P}(M_1 < \varepsilon \mid W_1 = -x)\mathbb{P}\left(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x \right).</text>
+<explanation>The solver applies the Markov property of Brownian motion to decompose a conditional probability into simpler components, showing deep understanding of how to leverage the memoryless property of stochastic processes.</explanation>
+
+<start>1775</start>
+<end>1939</end>
+<text>Using the independent increment property for BM, the last term of (\ref{num}) reduces to $\mathbb{P}(\max_{1 \leq u \leq t} W_u < \varepsilon \mid W_1 = -x) = \mathbb{P}(M_{t-1} < \varepsilon + x)</text>
+<explanation>The solver uses the independent increment property of Brownian motion, a fundamental characteristic of this stochastic process, to simplify a conditional probability expression.</explanation>
+
+<skill>Mathematical Transformation</skill>
+<definition>The ability to reformulate mathematical expressions into equivalent forms that are more amenable to analysis or computation, including change of variables, algebraic manipulations, and applying symmetry properties.</definition>
+
+<start>1939</start>
+<end>2009</end>
+<text>= 2 \Phi\left(\frac{\varepsilon + x}{\sqrt{t-1}} \right) - 1.</text>
+<explanation>The solver transforms a complex probability expression involving the maximum of Brownian motion into a simpler form using the normal distribution function, making the problem more tractable.</explanation>
+
+<start>2009</start>
+<end>2202</end>
+<text>To compute the first two terms of (\ref{num}), we integrate the joint density of $(W_1,M_1)$. By \cite[Exercise 10.1.12]{dembo}, the joint density of $(W_1,M_1)$ is $f_{W_1,M_1}(x,u) = \dfrac{2(2u-x)}{\sqrt{2\pi}} \exp\left(-\dfrac{1}{2}(2u-x)^2\right) \mathbbm{1}(u>x \vee 0).$</text>
+<explanation>The solver transforms the problem by introducing the joint density of Brownian motion and its maximum, which allows for direct computation of the required probabilities.</explanation>
+
+<start>2202</start>
+<end>2483</end>
+<text>So the first two terms of (\ref{num}) are  \begin{align*} \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x) f_{W_1}(x) &=  \mathbb{P}(M_1 < \varepsilon \mid W_1 = -x) f_{W_1}(-x) \\ &= f_{W_1}(-x) \int_0^\varepsilon \dfrac{f_{W_1,M_1}(-x,u)}{f_{W_1}(-x)} du \\ &=\int_0^\varepsilon \dfrac{2(2u+x)}{\sqrt{2\pi}} \exp\left(-\dfrac{1}{2}(2u+x)^2\right) du</text>
+<explanation>The solver applies mathematical transformation by converting a conditional probability into an integral expression using the joint density, then simplifying the integrand.</explanation>
+
+<start>2483</start>
+<end>2634</end>
+<text>\\ &=\int_{x^2/2}^{(2\varepsilon+x)^2/2} \dfrac{1}{\sqrt{2\pi}} \exp\left(-y\right) dy \\ &=\frac{1}{\sqrt{2\pi}} \left( e^{-x^2/2} - e^{-(2\varepsilon+x)^2/2}\right).</text>
+<explanation>The solver performs a change of variables transformation in the integral (substituting y for a function of u) to convert it into a standard form that can be evaluated directly, demonstrating skill in mathematical transformation techniques.</explanation>
+
+<start>2634</start>
+<end>2828</end>
+<text>Putting it all together and simplifying, we get \[f_{t,\varepsilon}(x) = \dfrac{\frac{1}{\sqrt{2\pi}} \left( e^{-x^2/2} - e^{-(2\varepsilon+x)^2/2}\right) \left(2\Phi\left(\dfrac{\varepsilon+x}{\sqrt{t-1}}\right) - 1\right)}{2\Phi\left(\dfrac{\varepsilon}{\sqrt{t}}\right) - 1}. \]</text>
+<explanation>The solver combines multiple mathematical transformations to express the final result in a compact form, showing ability to integrate different mathematical manipulations into a coherent result.</explanation>
+
+<start>2483</start>
+<end>2634</end>
+<text>Using change of variable formula on the above ,we get \[f_R(x) = g(x) = \sqrt{\frac{2}{\pi}} x^2 e^{-x^2/2}\mathbbm{1}(x>0).\]</text>
+<explanation>The solver applies the change of variable formula from probability theory to transform the density of R² into the density of R, demonstrating mathematical transformation skills in the context of probability distributions.</explanation>
+
+<skill>Limit Evaluation</skill>
+<definition>The ability to compute and analyze the behavior of mathematical expressions as parameters approach specific values, including applying techniques like L'Hôpital's rule and asymptotic analysis.</definition>
+
+<start>2828</start>
+<end>2940</end>
+<text>First use \textit{L'Hospital's Rule} to take limit as $\varepsilon \downarrow 0$ to $f_{t,\varepsilon}(x)$ to get the following.</text>
+<explanation>The solver identifies the need to apply L'Hôpital's rule to evaluate an indeterminate form in the limit as ε approaches zero, demonstrating knowledge of limit evaluation techniques.</explanation>
+
+<start>2940</start>
+<end>3259</end>
+<text>\begin{align*} \lim_{\varepsilon \downarrow 0} f_{t,\varepsilon}(x) &= \left(2\Phi\left(\dfrac{x}{\sqrt{t-1}}\right) - 1\right) \dfrac{\exp(-x^2/2)}{\sqrt{2\pi}} \lim_{\varepsilon \downarrow 0}  \dfrac{\left( 1 - e^{-2\varepsilon x-2\varepsilon^2}\right) }{2\Phi\left(\dfrac{\varepsilon}{\sqrt{t}}\right) - 1} \\ &= \left(2\Phi\left(\dfrac{x}{\sqrt{t-1}}\right) - 1\right) \dfrac{\exp(-x^2/2)}{\sqrt{2\pi}} \lim_{\varepsilon \downarrow 0}  \dfrac{\exp\left({-2\varepsilon x-2\varepsilon^2}\right)(2x+4\varepsilon) }{2\phi(\varepsilon t^{-1/2})t^{-1/2}}</text>
+<explanation>The solver applies L'Hôpital's rule by differentiating the numerator and denominator with respect to ε, showing skill in computing derivatives of complex expressions and handling indeterminate forms.</explanation>
+
+<start>3259</start>
+<end>3384</end>
+<text>\\ &=  \sqrt{t}x\exp(-x^2/2) \left(2 \Phi\left(\dfrac{x}{\sqrt{t-1}}\right) -1 \right). \end{align*}</text>
+<explanation>The solver completes the application of L'Hôpital's rule to obtain a simplified expression for the limit as ε approaches zero, demonstrating ability to follow through with limit evaluation techniques.</explanation>
+
+<start>3384</start>
+<end>3597</end>
+<text>We have as $t \to \infty$, $$ 2 \Phi\left(\dfrac{x}{\sqrt{t-1}}\right) -1 = \int_{-x/\sqrt{t-1}}^{x/\sqrt{t-1}} \phi(u) \; du = \phi(0)\dfrac{2x}{\sqrt{t-1}}(1+o(1)),$$</text>
+<explanation>The solver performs asymptotic analysis of the normal CDF as t approaches infinity, using a Taylor series approximation and little-o notation to capture the limiting behavior, showing sophisticated limit evaluation skills.</explanation>
+
+<start>3597</start>
+<end>3789</end>
+<text>and therefore, $$ \lim_{t \uparrow \infty, \varepsilon \downarrow 0} f_{t,\varepsilon}(x) = 2x^2\exp(-x^2/2)\phi(0) = \sqrt{\frac{2}{\pi}} x^2 e^{-x^2/2}.$$  This matches $g(x)$, so we are done.</text>
+<explanation>The solver combines the limits as both t approaches infinity and ε approaches zero to obtain the final result, demonstrating ability to handle multiple limiting processes simultaneously and verify the result against the expected answer.</explanation>
+
+<skill>Strategic Problem Decomposition</skill>
+<definition>The ability to break down a complex mathematical problem into manageable sub-problems, solve them separately, and then recombine the results to obtain the final solution.</definition>
+
+<start>0</start>
+<end>179</end>
+<text>We define $M_t = \max_{u \in [0,t]} W_u$. By definition, for $x >0$, \begin{align*} f_{t,\varepsilon}(x) = \dfrac{\partial}{\partial y }\dfrac{\mathbb{P}(\min_{u \in [0,t]} W_u > -\varepsilon, W_1 \leq y)}{\mathbb{P}P(\min_{u \in [0,t]} W_u > -\varepsilon)} \Bigg \rvert_{y=x}</text>
+<explanation>The solver begins by decomposing the problem, first defining the maximum process M_t and expressing the density function in terms of probabilities that can be analyzed separately.</explanation>
+
+<start>427</start>
+<end>774</end>
+<text>By symmetry of BM and \textit{Reflection Principle}, we have the denominator as follows. \begin{equation}{\label{deno}} \mathbb{P}\left(\min_{u \in [0,t]} W_u > -\varepsilon \right) = \mathbb{P} \left(M_t=\max_{u \in [0,t]} W_u < \varepsilon \right) = 1-\mathbb{P}(M_t \geq
+
+Summary of Key Skills:
+Not found

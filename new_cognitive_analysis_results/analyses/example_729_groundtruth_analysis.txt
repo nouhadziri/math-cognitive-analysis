@@ -1,0 +1,148 @@
+Problem:
+Let $A$ be a $2n \times 2n$ matrix, with entries chosen independently at random. Every entry is chosen to be 0 or 1, each with probability $1/2$. Find the expected value of $\det(A-A^t)$ (as a function of $n$), where $A^t$ is the transpose of $A$.
+
+Domain: Linear algebra
+
+Solution Trajectory (groundtruth):
+The expected value equals \[ \frac{(2n)!}{4^n n!}. \] Write the determinant of $A-A^t$ as the sum over permutations $\sigma$ of $\{1,\dots,2n\}$ of the product \[ \sgn(\sigma) \prod_{i=1}^{2n} (A-A^t)_{i \sigma(i)} = \sgn(\sigma) \prod_{i=1}^{2n} (A_{i \sigma(i)} - A_{\sigma(i) i}); \] then the expected value of the determinant is the sum over $\sigma$ of the expected value of this product, which we denote by $E_\sigma$. Note that if we partition $\{1,\dots,2n\}$ into orbits for the action of $\sigma$, then partition the factors of the product accordingly, then no entry of $A$ appears in more than one of these factors; consequently, these factors are independent random variables. This means that we can compute $E_\sigma$ as the product of the expected values of the individual factors. It is obvious that any orbit of size 1 gives rise to the zero product, and hence the expected value of the corresponding factor is zero. For an orbit of size $m \geq 3$, the corresponding factor contains $2m$ distinct matrix entries, so again we may compute the expected value of the factor as the product of the expected values of the individual terms $A_{i \sigma(i)} - A_{\sigma(i) i}$. However, the distribution of this term is symmetric about 0, so its expected value is 0. We conclude that $E_\sigma = 0$ unless $\sigma$ acts with $n$ orbits of size 2. To compute $E_\sigma$ in this case, assume without loss of generality that the orbits of $\sigma$ are $\{1,2\}, \dots, \{2n-1,2n\}$; note that $\sgn(\sigma) = (-1)^n$. Then $E_\sigma$ is the expected value of $\prod_{i=1}^n -(A_{(2i-1)2i} - A_{2i(2i-1)})^2$, which is $(-1)^n$ times the $n$-th power of the expected value of $(A_{12} - A_{21})^2$. Since $A_{12} - A_{21}$ takes the values $-1, 0, 1$ with probabilities $\frac{1}{4}, \frac{1}{2}, \frac{1}{4}$, its square takes the values $0,1$ with probabilities $\frac{1}{2}, \frac{1}{2}$; we conclude that \[ E_\sigma = 2^{-n}. \] The permutations $\sigma$ of this form correspond to unordered partitions of $\{1,\dots,2n\}$ into $n$ sets of size 2, so there are \[ \frac{(2n)!}{n!(2!)^n} \] such permutations. Putting this all together yields the claimed result.
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Strategic problem decomposition</skill>
+<definition>Breaking down a complex problem into manageable sub-problems and identifying a systematic approach to tackle the overall problem.</definition>
+
+<start>0</start>
+<end>119</end>
+<text>The expected value equals \[ \frac{(2n)!}{4^n n!}. \] Write the determinant of $A-A^t$ as the sum over permutations $\sigma$ of $\{1,\dots,2n\}$</text>
+<explanation>The solver immediately begins by decomposing the problem using the definition of determinant as a sum over permutations, which is a strategic way to make the random matrix problem more tractable. This shows the ability to identify a productive starting point for the complex problem.</explanation>
+
+<start>119</start>
+<end>276</end>
+<text>of the product \[ \sgn(\sigma) \prod_{i=1}^{2n} (A-A^t)_{i \sigma(i)} = \sgn(\sigma) \prod_{i=1}^{2n} (A_{i \sigma(i)} - A_{\sigma(i) i}); \]</text>
+<explanation>The solver further decomposes the problem by expanding the matrix entries of A-A^t, showing the ability to break down the determinant into individual terms that can be analyzed separately.</explanation>
+
+<skill>Probabilistic reasoning</skill>
+<definition>Applying concepts from probability theory to analyze random variables, expected values, and distributions.</definition>
+
+<start>276</start>
+<end>395</end>
+<text>then the expected value of the determinant is the sum over $\sigma$ of the expected value of this product, which we denote by $E_\sigma$.</text>
+<explanation>The solver applies linearity of expectation to express the expected value of the determinant as a sum of expected values of products, demonstrating probabilistic reasoning.</explanation>
+
+<start>1001</start>
+<end>1195</end>
+<text>For an orbit of size $m \geq 3$, the corresponding factor contains $2m$ distinct matrix entries, so again we may compute the expected value of the factor as the product of the expected values of the individual terms</text>
+<explanation>The solver applies independence of random variables to compute expected values, showing sophisticated probabilistic reasoning in the context of matrix entries.</explanation>
+
+<start>1195</start>
+<end>1322</end>
+<text>$A_{i \sigma(i)} - A_{\sigma(i) i}$. However, the distribution of this term is symmetric about 0, so its expected value is 0.</text>
+<explanation>The solver identifies that certain terms have symmetric distributions around zero, making their expected values zero, which demonstrates understanding of probability distributions.</explanation>
+
+<skill>Case analysis</skill>
+<definition>Systematically examining different scenarios or cases that could arise in a problem and analyzing each one separately.</definition>
+
+<start>395</start>
+<end>670</end>
+<text>Note that if we partition $\{1,\dots,2n\}$ into orbits for the action of $\sigma$, then partition the factors of the product accordingly, then no entry of $A$ appears in more than one of these factors; consequently, these factors are independent random variables.</text>
+<explanation>The solver introduces a case analysis based on how permutations partition the set, showing the ability to identify a structure that simplifies the analysis.</explanation>
+
+<start>670</start>
+<end>807</end>
+<text>This means that we can compute $E_\sigma$ as the product of the expected values of the individual factors. It is obvious that any orbit of size 1 gives rise to the zero product</text>
+<explanation>The solver analyzes the specific case of orbits of size 1, showing systematic case analysis.</explanation>
+
+<start>1001</start>
+<end>1195</end>
+<text>For an orbit of size $m \geq 3$, the corresponding factor contains $2m$ distinct matrix entries, so again we may compute the expected value of the factor as the product of the expected values of the individual terms</text>
+<explanation>The solver analyzes another case (orbits of size ≥ 3), demonstrating thorough case analysis of different orbit structures.</explanation>
+
+<start>1322</start>
+<end>1414</end>
+<text>We conclude that $E_\sigma = 0$ unless $\sigma$ acts with $n$ orbits of size 2.</text>
+<explanation>The solver identifies the critical case (permutations with n orbits of size 2) that contributes non-zero terms, showing effective case elimination and identification.</explanation>
+
+<skill>Algebraic manipulation</skill>
+<definition>Transforming mathematical expressions using algebraic rules and properties to simplify or rewrite them in more useful forms.</definition>
+
+<start>119</start>
+<end>276</end>
+<text>of the product \[ \sgn(\sigma) \prod_{i=1}^{2n} (A-A^t)_{i \sigma(i)} = \sgn(\sigma) \prod_{i=1}^{2n} (A_{i \sigma(i)} - A_{\sigma(i) i}); \]</text>
+<explanation>The solver transforms the matrix difference entries into explicit terms involving the original matrix entries, demonstrating algebraic manipulation skills.</explanation>
+
+<start>1414</start>
+<end>1659</end>
+<text>To compute $E_\sigma$ in this case, assume without loss of generality that the orbits of $\sigma$ are $\{1,2\}, \dots, \{2n-1,2n\}$; note that $\sgn(\sigma) = (-1)^n$. Then $E_\sigma$ is the expected value of $\prod_{i=1}^n -(A_{(2i-1)2i} - A_{2i(2i-1)})^2$</text>
+<explanation>The solver transforms the expression for the specific case of interest, using algebraic manipulation to express the product in a more analyzable form.</explanation>
+
+<start>1659</start>
+<end>1780</end>
+<text>, which is $(-1)^n$ times the $n$-th power of the expected value of $(A_{12} - A_{21})^2$.</text>
+<explanation>The solver further simplifies the expression by factoring out common terms and identifying a pattern that can be raised to a power, showing strong algebraic manipulation.</explanation>
+
+<skill>Combinatorial reasoning</skill>
+<definition>Applying principles of counting, arrangement, and selection to determine the number of ways certain mathematical structures can be formed.</definition>
+
+<start>1414</start>
+<end>1550</end>
+<text>To compute $E_\sigma$ in this case, assume without loss of generality that the orbits of $\sigma$ are $\{1,2\}, \dots, \{2n-1,2n\}$; note that $\sgn(\sigma) = (-1)^n$.</text>
+<explanation>The solver determines the sign of permutations with n transpositions, applying combinatorial reasoning about permutation parity.</explanation>
+
+<start>1938</start>
+<end>2075</end>
+<text>The permutations $\sigma$ of this form correspond to unordered partitions of $\{1,\dots,2n\}$ into $n$ sets of size 2, so there are \[ \frac{(2n)!}{n!(2!)^n} \]</text>
+<explanation>The solver counts the number of permutations with the required structure using combinatorial principles, specifically counting the ways to partition a set into pairs.</explanation>
+
+<skill>Symmetry exploitation</skill>
+<definition>Recognizing and leveraging symmetry properties in mathematical structures to simplify calculations or derive insights.</definition>
+
+<start>1195</start>
+<end>1322</end>
+<text>$A_{i \sigma(i)} - A_{\sigma(i) i}$. However, the distribution of this term is symmetric about 0, so its expected value is 0.</text>
+<explanation>The solver recognizes the symmetry in the distribution of certain random variables to conclude their expected value is zero, demonstrating the ability to exploit symmetry to simplify calculations.</explanation>
+
+<start>1780</start>
+<end>1938</end>
+<text>Since $A_{12} - A_{21}$ takes the values $-1, 0, 1$ with probabilities $\frac{1}{4}, \frac{1}{2}, \frac{1}{4}$, its square takes the values $0,1$ with probabilities $\frac{1}{2}, \frac{1}{2}$; we conclude that \[ E_\sigma = 2^{-n}. \]</text>
+<explanation>The solver exploits the symmetry in the distribution of A₁₂-A₂₁ to determine its probability distribution and expected value, showing how symmetry can be used to simplify probabilistic calculations.</explanation>
+
+<skill>Mathematical modeling</skill>
+<definition>Representing a mathematical problem in terms of well-defined structures, variables, and relationships that capture its essential features.</definition>
+
+<start>395</start>
+<end>670</end>
+<text>Note that if we partition $\{1,\dots,2n\}$ into orbits for the action of $\sigma$, then partition the factors of the product accordingly, then no entry of $A$ appears in more than one of these factors; consequently, these factors are independent random variables.</text>
+<explanation>The solver models the problem using permutation orbits, creating a mathematical structure that reveals the independence of certain random variables, which is crucial for the solution.</explanation>
+
+<start>1414</start>
+<end>1659</end>
+<text>To compute $E_\sigma$ in this case, assume without loss of generality that the orbits of $\sigma$ are $\{1,2\}, \dots, \{2n-1,2n\}$; note that $\sgn(\sigma) = (-1)^n$. Then $E_\sigma$ is the expected value of $\prod_{i=1}^n -(A_{(2i-1)2i} - A_{2i(2i-1)})^2$</text>
+<explanation>The solver creates a specific model for the non-zero case by choosing a canonical representation of the permutation structure, demonstrating the ability to model the problem in a way that facilitates calculation.</explanation>
+
+SUMMARY_START
+The most important cognitive skills demonstrated in this solution are:
+
+1. Strategic problem decomposition - The solver breaks down the complex determinant problem into manageable components using permutation structure.
+
+2. Probabilistic reasoning - The solver effectively applies concepts of expected value, independence, and distribution symmetry to analyze the random matrix.
+
+3. Case analysis - The solver systematically examines different orbit structures of permutations, identifying which cases contribute non-zero terms.
+
+4. Combinatorial reasoning - The solver counts the number of relevant permutations and determines their signs, crucial for computing the final expected value.
+
+5. Symmetry exploitation - The solver leverages symmetry in the distributions of random variables to simplify calculations and determine expected values.
+SUMMARY_END
+
+Summary of Key Skills:
+The most important cognitive skills demonstrated in this solution are:
+
+1. Strategic problem decomposition - The solver breaks down the complex determinant problem into manageable components using permutation structure.
+
+2. Probabilistic reasoning - The solver effectively applies concepts of expected value, independence, and distribution symmetry to analyze the random matrix.
+
+3. Case analysis - The solver systematically examines different orbit structures of permutations, identifying which cases contribute non-zero terms.
+
+4. Combinatorial reasoning - The solver counts the number of relevant permutations and determines their signs, crucial for computing the final expected value.
+
+5. Symmetry exploitation - The solver leverages symmetry in the distributions of random variables to simplify calculations and determine expected values.

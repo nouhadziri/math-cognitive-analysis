@@ -18,7 +18,7 @@ args = parser.parse_args()
 
 # Configuration
 API_KEY = args.api_key  # Get API key from command line
-TOTAL_EXAMPLES = 3  # Analyze only one example
+TOTAL_EXAMPLES = 200  # Analyze only one example
 OUTPUT_DIR = "new_cognitive_analysis_results"
 MODEL = "claude-3-7-sonnet-20250219"
 
@@ -148,22 +148,28 @@ Please provide a comprehensive analysis following this structure:
 2. Finally, provide a summary between SUMMARY_START and SUMMARY_END tags listing the 3-5 most important cognitive skills demonstrated
 """
 
-    try:
-        response = client.messages.create(
-            model=MODEL,
-            max_tokens=4096,  # Increased to ensure we get the complete analysis
-            temperature=0.6,
-            system=system_prompt,
-            messages=[
-                {"role": "user", "content": user_prompt}
-            ]
-        )
-        
-        return response.content[0].text
-    except Exception as e:
-        print(f"Error analyzing thinking trajectory: {e}")
-        time.sleep(5)  # Wait in case of rate limiting
-        return None
+    max_retries = 3
+    retry_delay = 2  # Reduced from 5 to 2 seconds
+    
+    for attempt in range(max_retries):
+        try:
+            response = client.messages.create(
+                model=MODEL,
+                max_tokens=4096,
+                temperature=0.6,
+                system=system_prompt,
+                messages=[
+                    {"role": "user", "content": user_prompt}
+                ]
+            )
+            return response.content[0].text
+        except Exception as e:
+            if attempt < max_retries - 1:
+                print(f"Error analyzing thinking trajectory (attempt {attempt + 1}/{max_retries}): {e}")
+                time.sleep(retry_delay)
+            else:
+                print(f"Failed to analyze thinking trajectory after {max_retries} attempts: {e}")
+                return None
 
 def extract_skills_from_analysis(analysis):
     """Extract the identified cognitive skills and their spans from Claude's analysis"""
@@ -277,60 +283,95 @@ def analyze_cognitive_skills():
         'deepseek': 'deepseek_thinking_trajectory'
     }
     
-    # Process examples
-    print(f"\nAnalyzing {TOTAL_EXAMPLES} examples...")
-    for i in range(TOTAL_EXAMPLES):
-        print(f"\nProcessing example {i+1}/{TOTAL_EXAMPLES}")
+    # First pass: classify all examples by domain
+    print("\nClassifying examples by domain...")
+    domain_examples = defaultdict(list)
+    
+    for i in tqdm(range(len(dataset['train'])), desc="Classifying examples"):
         example = dataset['train'][i]
-        
-        # Print example structure for debugging
-        print("\nExample structure:")
-        for key in example.keys():
-            print(f"- {key}: {type(example[key])}")
+        problem_text = get_problem_text(example)
+        if not problem_text:
+            continue
+            
+        metadata = extract_metadata(example)
+        domain = classify_to_domain(example, metadata, problem_text)
+        domain_examples[domain].append(i)
+    
+    # Print domain distribution
+    print("\nDomain distribution in dataset:")
+    for domain, examples in domain_examples.items():
+        print(f"{domain}: {len(examples)} examples")
+    
+    # Calculate how many examples to take from each domain
+    examples_per_domain = TOTAL_EXAMPLES // len(domain_examples)
+    remaining_examples = TOTAL_EXAMPLES % len(domain_examples)
+    
+    # Select examples uniformly from each domain
+    selected_indices = []
+    for domain, indices in domain_examples.items():
+        # Take examples_per_domain examples from each domain
+        # If there are fewer examples than examples_per_domain, take all of them
+        num_to_take = min(examples_per_domain, len(indices))
+        selected_indices.extend(random.sample(indices, num_to_take))
+    
+    # If we need more examples, distribute them randomly across domains
+    if len(selected_indices) < TOTAL_EXAMPLES:
+        remaining_needed = TOTAL_EXAMPLES - len(selected_indices)
+        all_indices = [idx for indices in domain_examples.values() for idx in indices]
+        remaining_indices = list(set(all_indices) - set(selected_indices))
+        selected_indices.extend(random.sample(remaining_indices, remaining_needed))
+    
+    # Print detailed breakdown of selected examples
+    print("\nSelected examples breakdown:")
+    selected_by_domain = defaultdict(list)
+    for idx in selected_indices:
+        example = dataset['train'][idx]
+        problem_text = get_problem_text(example)
+        metadata = extract_metadata(example)
+        domain = classify_to_domain(example, metadata, problem_text)
+        selected_by_domain[domain].append(idx)
+    
+    print(f"\nTotal examples to analyze: {TOTAL_EXAMPLES}")
+    print("\nDistribution of selected examples by domain:")
+    for domain, indices in selected_by_domain.items():
+        print(f"{domain}: {len(indices)} examples (indices: {indices})")
+    
+    # Process selected examples
+    print(f"\nAnalyzing {TOTAL_EXAMPLES} examples (selected uniformly from domains)...")
+    start_time = time.time()
+    
+    for i in tqdm(selected_indices, desc="Processing examples"):
+        example = dataset['train'][i]
         
         # Get problem text
         problem_text = get_problem_text(example)
         if not problem_text:
-            print(f"Skipping example {i} - no problem text found")
             continue
             
-        print(f"\nProblem text found ({len(problem_text)} chars)")
-        
         # Get metadata and classify domain
         metadata = extract_metadata(example)
         domain = classify_to_domain(example, metadata, problem_text)
-        print(f"Domain: {domain}")
         
         # Analyze each trajectory type
         for trajectory_type, column in trajectory_columns.items():
-            print(f"\nAnalyzing {trajectory_type} trajectory...")
-            print(f"Looking for column: {column}")
-            
             if column not in example:
-                print(f"Column {column} not found in example. Available columns are: {list(example.keys())}")
                 continue
                 
             trajectory = example[column]
             if not trajectory:
-                print(f"No {trajectory_type} trajectory found (empty)")
                 continue
                 
-            print(f"Found {trajectory_type} trajectory ({len(str(trajectory))} chars)")
-            
             # Get analysis from Claude
             analysis = analyze_thinking_trajectory(problem_text, trajectory, domain, trajectory_type)
             if not analysis:
-                print(f"Failed to get analysis for {trajectory_type}")
                 continue
                 
             # Save analysis with problem and solution added by us
-            output_file = save_enhanced_analysis(i, analysis, os.path.join(OUTPUT_DIR, "analyses"), trajectory_type, problem_text, trajectory, domain)
-            print(f"Saved analysis to {output_file}")
-            
-            # Add a small delay between API calls
-            time.sleep(1)
+            save_enhanced_analysis(i, analysis, os.path.join(OUTPUT_DIR, "analyses"), trajectory_type, problem_text, trajectory, domain)
     
-    print("\nAnalysis complete!")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"\nAnalysis complete! Processed {TOTAL_EXAMPLES} examples in {elapsed_time:.2f} seconds ({elapsed_time/TOTAL_EXAMPLES:.2f} seconds per example)")
 
 if __name__ == "__main__":
     analyze_cognitive_skills() 

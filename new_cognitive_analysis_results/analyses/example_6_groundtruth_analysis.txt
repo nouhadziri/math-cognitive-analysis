@@ -1,0 +1,251 @@
+Problem:
+Let's say a language  $L \subseteq \{0,1\}^*$  is in  $\textbf{P}_{angel}$  if there exists a polynomial  $p : \mathbb{N} \mapsto \mathbb{N}$ , a sequence of strings  $\{\alpha_n\}_{n \in \mathbb{N}}$  with  $\alpha_n \in \{0,1\}^{p(n)}$ , and a deterministic polynomial time Turing Machine  $M$  such that for every  $x \in \{0,1\}^n$   $$ x \in L \Leftrightarrow M(x, \alpha_n) = 1 $$  Let us call  $\alpha_n$  to be the *angel string*for all  $x$  of the length  $n$ . Note that the *angel string* is  $\textbf{not}$  similar to a *witness* or *certificate*as used in the definition of  $\textbf{NP}$  For example, all unary languages, even  $UHALT$  which is undecidable, are in  $\textbf{P}_{angel}$  because the \textit{angel string} can simply be a single bit that tells us if the given unary string is in  $UHALT$  or not.
+
+
+A set  $S \subseteq \Sigma^*$  is said to be **sparse** if there exists a polynomial   $p : \mathbb{N} \mapsto \mathbb{N}$  such that for each  $n \in \mathbb{N}$ , the number of strings of length  $n$  in  $S$  is bounded by  $p(n)$ . In other words,  $|S^{=n}| \leq p(n)$ , where  $S^{=n} \subseteq S$  contains all the strings in  $S$  that are of length  $n$ . 
+
+[list=1]
+    [*] Given  $k \in \mathbb{N}$  sparse sets  $S_1, S_2 \ldots S_k$ , show that there exists a sparse set  $S$  and a deterministic polynomial time TM  $M$  with oracle access to  $S$  such that given an input  $\langle x,i \rangle$  the TM  $M$  will accept it if and only if  $x \in S_i$ .
+    Define the set  $S$  (note that it need not be computable), and give the description of  $M$  with oracle  $S$ .
+    Note that a TM  $M$  with oracle access to  $S$  can query whether  $s \in S$  and get the correct answer in return in constant time. [/*]
+    
+    [*] Let us define a variant of  $\textbf{P}_{angel}$  called  $\textbf{P}_{bad-angel}$  with a constraint that there should exists a polynomial time algorithm that can **compute** the angel string for any length  $n \in \mathbb{N}$ . In other words, there is a poly-time algorithm  $A$  such that  $\alpha_n = A(n)$ . 
+    Is  $\textbf{P} =\textbf{P}_{bad-angel}$ ? Is  $\textbf{NP}=\textbf{P}_{bad-angel}$ ? Justify.
+    [/*]
+    
+    [*] Let the language  $L \in$   $\textbf{P}_{angel}$ . Show that there exists a sparse set  $S_L$  and a deterministic polynomial time TM  $M$  with oracle access to  $S_L$  that can decide the language  $L$ .  [/*]
+
+Domain: Geometry
+
+Solution Trajectory (groundtruth):
+1. **Defining the Sparse Set \( S \) and the Turing Machine \( M \)**
+
+   We need to construct a sparse set \( S \) and a deterministic polynomial time Turing Machine \( M \) with oracle access to \( S \) such that given an input \( \langle x, i \rangle \), the TM \( M \) will accept it if and only if \( x \in S_i \).
+
+   - **Definition of \( S \)**:
+     Define \( S \) as the set containing strings of the form \( 1^i0^{k-i}x \) where \( x \in S_i \). Formally,
+     \[
+     S = \{ 1^i0^{k-i}x \mid x \in S_i \text{ for some } 1 \leq i \leq k \}.
+     \]
+
+   - **Description of \( M \)**:
+     Given an input \( \langle x, i \rangle \), the Turing Machine \( M \) will:
+     1. Construct the string \( 1^i0^{k-i}x \).
+     2. Query the oracle \( S \) to check if \( 1^i0^{k-i}x \in S \).
+     3. Accept if the oracle returns "yes", otherwise reject.
+
+   - **Proof that \( S \) is Sparse**:
+     Let \( p_i(n) \) be the polynomial bounding the number of strings of length \( n \) in \( S_i \). Define \( p(n) \) as a polynomial such that \( p(n) > p_i(n) \) for all \( 1 \leq i \leq k \) and for all \( n \in \mathbb{N} \). For any \( n \geq k \), the number of strings in \( S \) of length \( n \) is bounded by \( k \cdot p(n-k) \), which is a polynomial.
+
+2. **Equivalence of \(\textbf{P}\) and \(\textbf{P}_{bad-angel}\)**
+
+   - **Claim**: \(\textbf{P} = \textbf{P}_{bad-angel}\).
+
+   - **Proof**:
+     If \( L \in \textbf{P}_{bad-angel} \), there exists a polynomial time algorithm \( A \) that computes the angel string \( \alpha_n \) for any length \( n \). We also have a polynomial time Turing Machine \( M' \) that decides membership in \( L \) given \( x \) and \( \alpha_n \).
+
+     To decide \( L \) in polynomial time:
+     1. Given an input \( x \), compute its length \( n \).
+     2. Use the algorithm \( A \) to compute the angel string \( \alpha_n \).
+     3. Simulate \( M' \) on input \( (x, \alpha_n) \).
+
+     Since all steps are polynomial time, \( L \in \textbf{P} \). Hence, \(\textbf{P} = \textbf{P}_{bad-angel}\).
+
+3. **Existence of Sparse Set \( S_L \) for \( L \in \textbf{P}_{angel} \)**
+
+   - **Claim**: For any language \( L \in \textbf{P}_{angel} \), there exists a sparse set \( S_L \) and a deterministic polynomial time Turing Machine \( M \) with oracle access to \( S_L \) that can decide \( L \).
+
+   - **Proof**:
+     Let \( \{\alpha_n\}_{n \in \mathbb{N}} \) be the sequence of angel strings for \( L \). Let \( \alpha_n = a_1a_2\ldots a_{p(n)} \).
+
+     Define \( S_L \) as the set containing prefixes of the angel strings:
+     \[
+     S_L = \bigcup_{n \in \mathbb{N}} \{1^n0a_1, 1^n0a_1a_2, \ldots, 1^n0a_1a_2\ldots a_{p(n)}\}.
+     \]
+
+     - **Sparsity of \( S_L \)**:
+       For each \( n \), we add \( p(n) \) strings of lengths ranging from \( n+2 \) to \( n+p(n)+1 \). The number of strings of length \( n+p(n)+1 \) is bounded by \( p(n) \), ensuring \( S_L \) is sparse.
+
+     - **Description of \( M \)**:
+       Given an input \( x \) of length \( n \):
+       1. Initialize an empty string \( \alpha \).
+       2. For \( i = 1 \) to \( p(n) \):
+          - Query the oracle \( S_L \) with \( 1^n0\alpha a_i \).
+          - If the oracle returns "yes", append \( a_i \) to \( \alpha \).
+       3. Simulate the Turing Machine \( M' \) on input \( (x, \alpha) \).
+
+     Since \( M \) makes polynomially many queries to the sparse set \( S_L \) and each query is polynomial time, \( M \) decides \( L \) in polynomial time.
+
+\(\blacksquare\)
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem-Solving
+
+<skill>Problem decomposition</skill>
+<definition>Breaking down a complex problem into smaller, more manageable sub-problems that can be solved individually. This involves identifying the key components of a problem and understanding how they relate to each other.</definition>
+
+<start>0</start>
+<end>124</end>
+<text>1. **Defining the Sparse Set \( S \) and the Turing Machine \( M \)**
+
+   We need to construct a sparse set \( S \) and a deterministic polynomial time Turing Machine \( M \) with oracle access to \( S \)</text>
+<explanation>The solver begins by decomposing the first part of the problem into two clear components: defining the sparse set S and describing the Turing Machine M. This shows the ability to break down the complex problem into more manageable parts that can be addressed separately.</explanation>
+
+<start>842</start>
+<end>886</end>
+<text>2. **Equivalence of \(\textbf{P}\) and \(\textbf{P}_{bad-angel}\)**</text>
+<explanation>The solver identifies the second part of the problem as a separate component that requires establishing the relationship between two complexity classes, showing the ability to decompose the multi-part problem.</explanation>
+
+<start>1367</start>
+<end>1467</end>
+<text>3. **Existence of Sparse Set \( S_L \) for \( L \in \textbf{P}_{angel} \)**
+
+   - **Claim**: For any language \( L \in \textbf{P}_{angel} \)</text>
+<explanation>The solver addresses the third part of the problem as a distinct component, demonstrating continued decomposition of the multi-part problem into manageable pieces.</explanation>
+
+<skill>Mathematical formalization</skill>
+<definition>The ability to translate informal or verbal descriptions into precise mathematical notation and structures, ensuring clarity and rigor in the problem-solving process.</definition>
+
+<start>250</start>
+<end>380</end>
+<text>Define \( S \) as the set containing strings of the form \( 1^i0^{k-i}x \) where \( x \in S_i \). Formally,
+     \[
+     S = \{ 1^i0^{k-i}x \mid x \in S_i \text{ for some } 1 \leq i \leq k \}.
+     \]</text>
+<explanation>The solver translates the informal idea of a set that encodes both the index i and the string x into precise mathematical notation, using set-builder notation to formally define the set S with clear conditions.</explanation>
+
+<start>1544</start>
+<end>1682</end>
+<text>Define \( S_L \) as the set containing prefixes of the angel strings:
+     \[
+     S_L = \bigcup_{n \in \mathbb{N}} \{1^n0a_1, 1^n0a_1a_2, \ldots, 1^n0a_1a_2\ldots a_{p(n)}\}.
+     \]</text>
+<explanation>Here the solver formalizes the construction of set S_L using precise mathematical notation, including the union over all natural numbers and the explicit listing of elements in the set, demonstrating the ability to express complex ideas in formal mathematical language.</explanation>
+
+<skill>Algorithm design</skill>
+<definition>The process of creating step-by-step procedures to solve computational problems efficiently, considering both correctness and resource constraints.</definition>
+
+<start>383</start>
+<end>553</end>
+<text>- **Description of \( M \)**:
+     Given an input \( \langle x, i \rangle \), the Turing Machine \( M \) will:
+     1. Construct the string \( 1^i0^{k-i}x \).
+     2. Query the oracle \( S \) to check if \( 1^i0^{k-i}x \in S \).
+     3. Accept if the oracle returns "yes", otherwise reject.</text>
+<explanation>The solver designs a clear, step-by-step algorithm for the Turing Machine M that efficiently solves the problem of determining whether x is in Si using the oracle S. The algorithm is concise, correct, and addresses the requirements of the problem.</explanation>
+
+<start>1684</start>
+<end>1962</end>
+<text>- **Description of \( M \)**:
+       Given an input \( x \) of length \( n \):
+       1. Initialize an empty string \( \alpha \).
+       2. For \( i = 1 \) to \( p(n) \):
+          - Query the oracle \( S_L \) with \( 1^n0\alpha a_i \).
+          - If the oracle returns "yes", append \( a_i \) to \( \alpha \).
+       3. Simulate the Turing Machine \( M' \) on input \( (x, \alpha) \).</text>
+<explanation>The solver designs another algorithm, this time for reconstructing the angel string using the sparse set S_L as an oracle. The algorithm is iterative, building the angel string bit by bit through oracle queries, and demonstrates careful consideration of how to use the oracle to solve the problem efficiently.</explanation>
+
+<skill>Proof construction</skill>
+<definition>The systematic development of logical arguments that establish the truth of mathematical statements, involving the application of definitions, theorems, and logical reasoning.</definition>
+
+<start>555</start>
+<end>840</end>
+<text>- **Proof that \( S \) is Sparse**:
+     Let \( p_i(n) \) be the polynomial bounding the number of strings of length \( n \) in \( S_i \). Define \( p(n) \) as a polynomial such that \( p(n) > p_i(n) \) for all \( 1 \leq i \leq k \) and for all \( n \in \mathbb{N} \). For any \( n \geq k \), the number of strings in \( S \) of length \( n \) is bounded by \( k \cdot p(n-k) \), which is a polynomial.</text>
+<explanation>The solver constructs a proof that the defined set S is sparse by establishing a polynomial bound on the number of strings of any given length. The proof uses the sparsity of the original sets S_i and demonstrates how the encoding preserves sparsity, showing careful logical reasoning.</explanation>
+
+<start>888</start>
+<end>1365</end>
+<text>- **Claim**: \(\textbf{P} = \textbf{P}_{bad-angel}\).
+
+   - **Proof**:
+     If \( L \in \textbf{P}_{bad-angel} \), there exists a polynomial time algorithm \( A \) that computes the angel string \( \alpha_n \) for any length \( n \). We also have a polynomial time Turing Machine \( M' \) that decides membership in \( L \) given \( x \) and \( \alpha_n \).
+
+     To decide \( L \) in polynomial time:
+     1. Given an input \( x \), compute its length \( n \).
+     2. Use the algorithm \( A \) to compute the angel string \( \alpha_n \).
+     3. Simulate \( M' \) on input \( (x, \alpha_n) \).
+
+     Since all steps are polynomial time, \( L \in \textbf{P} \). Hence, \(\textbf{P} = \textbf{P}_{bad-angel}\).</text>
+<explanation>This is a complete proof that P = P_bad-angel, structured with a clear claim followed by logical steps that establish the equality of the two complexity classes. The solver demonstrates formal proof construction by first showing that P_bad-angel is contained in P, and implicitly using the fact that P is contained in P_bad-angel to establish equality.</explanation>
+
+<skill>Complexity analysis</skill>
+<definition>The evaluation of algorithm efficiency in terms of time and space requirements, often expressed using asymptotic notation and considering worst-case scenarios.</definition>
+
+<start>1964</start>
+<end>2134</end>
+<text>Since \( M \) makes polynomially many queries to the sparse set \( S_L \) and each query is polynomial time, \( M \) decides \( L \) in polynomial time.</text>
+<explanation>The solver analyzes the time complexity of the algorithm M, noting that it makes a polynomial number of queries to the oracle and each operation is polynomial time, thus establishing that the overall algorithm runs in polynomial time. This demonstrates the ability to evaluate algorithm efficiency.</explanation>
+
+<start>1241</start>
+<end>1365</end>
+<text>Since all steps are polynomial time, \( L \in \textbf{P} \). Hence, \(\textbf{P} = \textbf{P}_{bad-angel}\).</text>
+<explanation>The solver analyzes the time complexity of the algorithm for deciding languages in P_bad-angel, concluding that since all steps run in polynomial time, the language is in P, which is crucial for establishing the equality of the complexity classes.</explanation>
+
+<skill>Strategic encoding</skill>
+<definition>The technique of representing information in a specific format that facilitates problem-solving, often involving the creation of data structures or encodings that preserve essential properties while enabling efficient manipulation.</definition>
+
+<start>250</start>
+<end>380</end>
+<text>Define \( S \) as the set containing strings of the form \( 1^i0^{k-i}x \) where \( x \in S_i \). Formally,
+     \[
+     S = \{ 1^i0^{k-i}x \mid x \in S_i \text{ for some } 1 \leq i \leq k \}.
+     \]</text>
+<explanation>The solver designs a clever encoding scheme that prefixes each string with a marker (1^i0^{k-i}) that indicates which original set S_i the string belongs to. This encoding preserves the membership information while allowing the oracle to efficiently determine which set a string belongs to.</explanation>
+
+<start>1544</start>
+<end>1682</end>
+<text>Define \( S_L \) as the set containing prefixes of the angel strings:
+     \[
+     S_L = \bigcup_{n \in \mathbb{N}} \{1^n0a_1, 1^n0a_1a_2, \ldots, 1^n0a_1a_2\ldots a_{p(n)}\}.
+     \]</text>
+<explanation>The solver creates another strategic encoding, this time for storing angel strings in a way that allows them to be reconstructed bit by bit. By storing all prefixes of each angel string and marking them with 1^n0, the solver enables the algorithm to efficiently query and build the angel string.</explanation>
+
+<skill>Verification of solution properties</skill>
+<definition>The process of checking that a proposed solution satisfies all the required properties or constraints specified in the problem, often involving mathematical proof or systematic testing.</definition>
+
+<start>555</start>
+<end>840</end>
+<text>- **Proof that \( S \) is Sparse**:
+     Let \( p_i(n) \) be the polynomial bounding the number of strings of length \( n \) in \( S_i \). Define \( p(n) \) as a polynomial such that \( p(n) > p_i(n) \) for all \( 1 \leq i \leq k \) and for all \( n \in \mathbb{N} \). For any \( n \geq k \), the number of strings in \( S \) of length \( n \) is bounded by \( k \cdot p(n-k) \), which is a polynomial.</text>
+<explanation>The solver verifies that the constructed set S satisfies the sparsity property required by the problem, by showing that the number of strings of any length is polynomially bounded. This demonstrates the ability to check that the solution meets the problem constraints.</explanation>
+
+<start>1684</start>
+<end>2134</end>
+<text>- **Description of \( M \)**:
+       Given an input \( x \) of length \( n \):
+       1. Initialize an empty string \( \alpha \).
+       2. For \( i = 1 \) to \( p(n) \):
+          - Query the oracle \( S_L \) with \( 1^n0\alpha a_i \).
+          - If the oracle returns "yes", append \( a_i \) to \( \alpha \).
+       3. Simulate the Turing Machine \( M' \) on input \( (x, \alpha) \).
+
+     Since \( M \) makes polynomially many queries to the sparse set \( S_L \) and each query is polynomial time, \( M \) decides \( L \) in polynomial time.</text>
+<explanation>The solver verifies that the proposed algorithm M with oracle access to S_L correctly decides the language L and does so in polynomial time, ensuring that the solution satisfies the efficiency requirements of the problem.</explanation>
+
+SUMMARY_START
+The most important cognitive skills demonstrated in this mathematical problem-solving trajectory are:
+
+1. Problem decomposition - The solver breaks down the complex multi-part problem into manageable components, addressing each part methodically.
+
+2. Mathematical formalization - The solver translates informal ideas into precise mathematical notation, particularly when defining sets and encoding schemes.
+
+3. Algorithm design - The solver creates efficient step-by-step procedures for the Turing Machines that solve the required problems.
+
+4. Proof construction - The solver builds logical arguments to establish key properties like sparsity and complexity class relationships.
+
+5. Strategic encoding - The solver develops clever representation schemes that preserve essential information while enabling efficient processing.
+SUMMARY_END
+
+Summary of Key Skills:
+The most important cognitive skills demonstrated in this mathematical problem-solving trajectory are:
+
+1. Problem decomposition - The solver breaks down the complex multi-part problem into manageable components, addressing each part methodically.
+
+2. Mathematical formalization - The solver translates informal ideas into precise mathematical notation, particularly when defining sets and encoding schemes.
+
+3. Algorithm design - The solver creates efficient step-by-step procedures for the Turing Machines that solve the required problems.
+
+4. Proof construction - The solver builds logical arguments to establish key properties like sparsity and complexity class relationships.
+
+5. Strategic encoding - The solver develops clever representation schemes that preserve essential information while enabling efficient processing.

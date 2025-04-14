@@ -34,19 +34,29 @@ def parse_analysis_file(file_path):
         span_pattern = r'<start>(.*?)</start>\s*<end>(.*?)</end>\s*<text>(.*?)</text>\s*<explanation>(.*?)</explanation>'
         span_matches = re.findall(span_pattern, skill_content, re.DOTALL)
         
-        for start, end, text, explanation in span_matches:
-            spans.append({
-                'start': int(start.strip()),
-                'end': int(end.strip()),
-                'text': text.strip(),
-                'explanation': explanation.strip()
-            })
+        for span_match in span_matches:
+            try:
+                start = int(span_match[0].strip())
+                end = int(span_match[1].strip())
+                text = span_match[2].strip()
+                explanation = span_match[3].strip()
+                
+                spans.append({
+                    'start': start,
+                    'end': end,
+                    'text': text,
+                    'explanation': explanation
+                })
+            except (ValueError, IndexError):
+                # Skip invalid spans
+                continue
         
-        skills.append({
-            'name': skill_name,
-            'definition': skill_def,
-            'spans': spans
-        })
+        if spans:  # Only add skills that have valid spans
+            skills.append({
+                'name': skill_name,
+                'definition': skill_def,
+                'spans': spans
+            })
     
     return {
         'problem': problem,
@@ -105,9 +115,11 @@ def main():
         
         data['examples'].append(example_data)
     
-    # Save to data.json
-    with open('data.json', 'w', encoding='utf-8') as f:
+    # Save to new_data.json
+    with open('new_data.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    
+    print(f"Generated new_data.json with {len(data['examples'])} examples")
 
 if __name__ == "__main__":
     main() 

@@ -1,0 +1,696 @@
+Problem:
+Let $|M|$ denote the determinant of a square matrix $M$. Let $g:\left[0, \frac{\pi}{2}\right] \rightarrow \mathbb{R}$ be the function defined by
+
+where
+
+\[
+g(\theta)=\sqrt{f(\theta)-1}+\sqrt{f\left(\frac{\pi}{2}-\theta\right)-1}
+\]
+
+$f(\theta)=\frac{1}{2}\left|\begin{array}{ccc}1 & \sin \theta & 1 \\ -\sin \theta & 1 & \sin \theta \\ -1 & -\sin \theta & 1\end{array}\right|+\left|\begin{array}{ccc}\sin \pi & \cos \left(\theta+\frac{\pi}{4}\right) & \tan \left(\theta-\frac{\pi}{4}\right) \\ \sin \left(\theta-\frac{\pi}{4}\right) & -\cos \frac{\pi}{2} & \log _{e}\left(\frac{4}{\pi}\right) \\ \cot \left(\theta+\frac{\pi}{4}\right) & \log _{e}\left(\frac{\pi}{4}\right) & \tan \pi\end{array}\right|$
+
+Let $p(x)$ be a quadratic polynomial whose roots are the maximum and minimum values of the function $g(\theta)$, and $p(2)=2-\sqrt{2}$. Then, which of the following is/are TRUE?
+
+(A) $p\left(\frac{3+\sqrt{2}}{4}\right)<0$
+
+(B) $p\left(\frac{1+3 \sqrt{2}}{4}\right)>0$
+
+(C) $p\left(\frac{5 \sqrt{2}-1}{4}\right)>0$
+
+(D) $p\left(\frac{5-\sqrt{2}}{4}\right)<0$
+
+Domain: Linear algebra
+
+Solution Trajectory (deepseek):
+Okay, so I need to solve this problem about the function \( g(\theta) \), find its maximum and minimum values, construct a quadratic polynomial \( p(x) \) with those roots, and then evaluate the given statements about \( p(x) \) at certain points. Let me try to break this down step by step.
+
+First, let me understand the function \( g(\theta) \). It's defined as the sum of two square roots: \( \sqrt{f(\theta) - 1} \) and \( \sqrt{f\left(\frac{\pi}{2} - \theta\right) - 1} \). The domain is \( \theta \in \left[0, \frac{\pi}{2}\right] \).
+
+So, in order to find \( g(\theta) \), I need to first compute \( f(\theta) \). The function \( f(\theta) \) is given as the average of the determinant of a 3x3 matrix plus the determinant of another 3x3 matrix. Let's parse that:
+
+\( f(\theta) = \frac{1}{2} \times \text{det}(M_1) + \text{det}(M_2) \)
+
+where
+
+\( M_1 = \begin{pmatrix}1 & \sin\theta & 1 \\ -\sin\theta & 1 & \sin\theta \\ -1 & -\sin\theta & 1\end{pmatrix} \)
+
+and
+
+\( M_2 = \begin{pmatrix}\sin\pi & \cos\left(\theta + \frac{\pi}{4}\right) & \tan\left(\theta - \frac{\pi}{4}\right) \\ \sin\left(\theta - \frac{\pi}{4}\right) & -\cos\frac{\pi}{2} & \log_e\left(\frac{4}{\pi}\right) \\ \cot\left(\theta + \frac{\pi}{4}\right) & \log_e\left(\frac{\pi}{4}\right) & \tan\pi\end{pmatrix} \).
+
+So, my first task is to compute the determinants of \( M_1 \) and \( M_2 \).
+
+Let me start with \( M_1 \): it's a 3x3 matrix with some sine terms. To compute the determinant, I can use the rule of Sarrus or expansion by minors. Let me go with the cofactor expansion.
+
+For the determinant of \( M_1 \):
+
+Row 1: 1, \( \sin\theta \), 1
+
+Row 2: \( -\sin\theta \), 1, \( \sin\theta \)
+
+Row 3: -1, \( -\sin\theta \), 1
+
+Let me expand along the first row.
+
+det(M1) = 1 * det(minor(1,1)) - sinθ * det(minor(1,2)) + 1 * det(minor(1,3))
+
+Minor(1,1) is the submatrix when we remove row 1 and column 1:
+
+[1, sinθ; -sinθ, 1]
+
+So its determinant is (1)(1) - (-sinθ)(sinθ) = 1 + sin2θ
+
+Minor(1,2) is the submatrix removing row 1 and column 2:
+
+[-sinθ, sinθ; -1, 1]
+
+Determinant: (-sinθ)(1) - (sinθ)(-1) = -sinθ + sinθ = 0
+
+Minor(1,3) is removing row 1 and column 3:
+
+[-sinθ, 1; -1, -sinθ]
+
+Determinant: (-sinθ)(-sinθ) - (1)(-1) = sin2θ + 1
+
+Therefore, det(M1) = 1*(1 + sin2θ) - sinθ*0 + 1*(1 + sin2θ) = (1 + sin2θ) + (1 + sin2θ) = 2(1 + sin2θ)
+
+Therefore, det(M1) = 2(1 + sin2θ). So the first term in f(θ) is (1/2)*det(M1) = (1/2)*2(1 + sin2θ) = 1 + sin2θ.
+
+Alright, that part is straightforward. So, the first term in f(θ) simplifies to \( 1 + \sin^2\theta \).
+
+Now, moving on to the determinant of \( M_2 \). Let's look at \( M_2 \):
+
+First row:
+
+- \( \sin\pi \): well, sin(π) is 0.
+
+- \( \cos\left(\theta + \frac{\pi}{4}\right) \)
+
+- \( \tan\left(\theta - \frac{\pi}{4}\right) \)
+
+Second row:
+
+- \( \sin\left(\theta - \frac{\pi}{4}\right) \)
+
+- \( -\cos\frac{\pi}{2} \): cos(π/2) is 0, so this term is -0 = 0.
+
+- \( \log_e\left( \frac{4}{\pi} \right) \): that's a constant. Let's note that \( \log_e(4/\pi) = \ln(4) - \ln(\pi) \approx 1.386 - 1.144 ≈ 0.242. So positive.
+
+Third row:
+
+- \( \cot\left(\theta + \frac{\pi}{4}\right) \)
+
+- \( \log_e\left(\frac{\pi}{4}\right) \): that's \( \ln(\pi) - \ln(4) ≈ 1.144 - 1.386 ≈ -0.242 \). So negative.
+
+- \( \tan\pi \): tanπ is 0.
+
+So, most of the entries with trigonometric functions evaluated at multiples of π are 0. Let me rewrite the matrix \( M_2 \):
+
+Row 1: 0, \( \cos\left(\theta + \frac{\pi}{4}\right) \), \( \tan\left(\theta - \frac{\pi}{4}\right) \)
+
+Row 2: \( \sin\left(\theta - \frac{\pi}{4}\right) \), 0, \( \ln\left(4/\pi\right) \)
+
+Row 3: \( \cot\left(\theta + \frac{\pi}{4}\right) \), \( \ln\left(\pi/4\right) \), 0
+
+So, a sparse matrix with several trigonometric expressions and two log terms.
+
+Calculating the determinant of this matrix. Let me use the cofactor expansion again, maybe along the first row since the first element is 0, which might simplify.
+
+det(M2) = 0 * minor(1,1) - \( \cos\left(\theta + \frac{\pi}{4}\right) \) * minor(1,2) + \( \tan\left(\theta - \frac{\pi}{4}\right) \) * minor(1,3)
+
+So, first term is 0. The second term is - \( \cos\left(\theta + \frac{\pi}{4}\right) \) times the determinant of the minor matrix at (1,2), and the third term is \( \tan\left(\theta - \frac{\pi}{4}\right) \) times the minor determinant at (1,3).
+
+Therefore, det(M2) = - \( \cos\left(\theta + \frac{\pi}{4}\right) \) * det(Minor(1,2)) + \( \tan\left(\theta - \frac{\pi}{4}\right) \) * det(Minor(1,3))
+
+First compute minor(1,2):
+
+Remove row 1, column 2. So,
+
+Rows 2 and 3, columns 1,3:
+
+Row 2: \( \sin\left(\theta - \frac{\pi}{4}\right) \), \( \ln\left(4/\pi\right) \)
+
+Row 3: \( \cot\left(\theta + \frac{\pi}{4}\right) \), 0
+
+Thus, determinant of minor(1,2) is \( \sin\left(\theta - \frac{\pi}{4}\right) \times 0 - \ln\left(4/\pi\right) \times \cot\left(\theta + \frac{\pi}{4}\right) \) = - \( \ln\left(4/\pi\right) \times \cot\left(\theta + \frac{\pi}{4}\right) \)
+
+Similarly, minor(1,3):
+
+Remove row 1, column 3. So rows 2 and 3, columns 1 and 2:
+
+Row 2: \( \sin\left(\theta - \frac{\pi}{4}\right) \), 0
+
+Row 3: \( \cot\left(\theta + \frac{\pi}{4}\right) \), \( \ln\left(\pi/4\right) \)
+
+Determinant is \( \sin\left(\theta - \frac{\pi}{4}\right) \times \ln\left(\pi/4\right) - 0 \times \cot\left(\theta + \frac{\pi}{4}\right) = \ln\left(\pi/4\right) \times \sin\left(\theta - \frac{\pi}{4}\right) \)
+
+Putting this back into det(M2):
+
+det(M2) = - \( \cos\left(\theta + \frac{\pi}{4}\right) \) \times [ - \( \ln\left(4/\pi\right) \times \cot\left(\theta + \frac{\pi}{4}\right) \times 1 ) ] + \( \tan\left(\theta - \frac{\pi}{4}\right) \times \ln\left(\pi/4\right) \times \sin\left(\theta - \frac{\pi}{4}\right) \)
+
+Simplify step by step:
+
+First term: -cos(a) * [ - ln(4/π) * cot(a) ], where a = θ + π/4.
+
+So this becomes cos(a) * ln(4/π) * cot(a). But cot(a) = cos(a)/sin(a), so
+
+cos(a) * ln(4/π) * cos(a)/sin(a) = ln(4/π) * cos2(a)/sin(a)
+
+Second term: tan(b) * ln(π/4) * sin(b), where b = θ - π/4.
+
+tan(b) = sin(b)/cos(b), so:
+
+tan(b) * sin(b) = sin2(b)/cos(b)
+
+Thus, this term is ln(π/4) * (sin2(b)/cos(b)).
+
+But ln(π/4) is negative of ln(4/π), so ln(π/4) = -ln(4/π).
+
+Therefore, the second term is -ln(4/π) * sin2(b)/cos(b)
+
+So, det(M2) = [ ln(4/pi) * cos2(a)/sin(a) ] - [ ln(4/pi) * sin2(b)/cos(b) ] = ln(4/pi) [ cos2(a)/sin(a) - sin2(b)/cos(b) ]
+
+Since ln(4/π) is a constant, let's factor that out. Let me denote C = ln(4/π), so det(M2) = C [ cos2(a)/sin(a) - sin2(b)/cos(b) ], where a = θ + π/4 and b = θ - π/4.
+
+Hmm. Let's also note that C = ln(4/π) ≈ 0.242 as I calculated earlier.
+
+So, overall, det(M2) is in terms of trigonometric functions of a and b, which are shifted versions of θ.
+
+Perhaps we can simplify cos2(a)/sin(a) - sin2(b)/cos(b):
+
+First, note that cos(a) = cos(θ + π/4) and sin(a) = sin(θ + π/4). Similarly, sin(b) = sin(θ - π/4), cos(b) = cos(θ - π/4).
+
+So let's see:
+
+cos2(a)/sin(a) = [1 - sin2(a)] / sin(a) = 1/sin(a) - sin(a)
+
+Similarly, sin2(b)/cos(b) = [1 - cos2(b)] / cos(b) = 1/cos(b) - cos(b)
+
+But not sure if that helps. Alternatively, perhaps write them in terms of sin and cos of θ.
+
+Let me recall that:
+
+cos(θ + π/4) = cosθ cos(π/4) - sinθ sin(π/4) = (cosθ - sinθ)/√2
+
+Similarly, sin(θ + π/4) = sinθ cos(π/4) + cosθ sin(π/4) = (sinθ + cosθ)/√2
+
+Similarly, sin(θ - π/4) = sinθ cos(π/4) - cosθ sin(π/4) = (sinθ - cosθ)/√2
+
+cos(θ - π/4) = cosθ cos(π/4) + sinθ sin(π/4) = (cosθ + sinθ)/√2
+
+Thus, substituting:
+
+cos(a) = (cosθ - sinθ)/√2
+
+sin(a) = (sinθ + cosθ)/√2
+
+sin(b) = (sinθ - cosθ)/√2
+
+cos(b) = (cosθ + sinθ)/√2
+
+So, plugging these into the expression:
+
+cos2(a)/sin(a) = [ ( (cosθ - sinθ)/√2 )2 ] / [ (sinθ + cosθ)/√2 ]
+
+= [ (cosθ - sinθ)2 / 2 ] / [ (sinθ + cosθ)/√2 ]
+
+= [ (cosθ - sinθ)^2 / 2 ] * [ √2 / (sinθ + cosθ) ]
+
+= (cosθ - sinθ)^2 / (2 / √2 (sinθ + cosθ)) )
+
+= (cosθ - sinθ)^2 / ( sqrt(2) (sinθ + cosθ) )
+
+Similarly, sin2(b)/cos(b) = [ ( (sinθ - cosθ)/√1 )^2 ] / [ (cosθ + sinθ)/√2 )
+
+Wait, hold on:
+
+Wait, sin2(b)/cos(b):
+
+sin(b) = (sinθ - cosθ)/√2
+
+So sin2(b) = (sinθ - cosθ)^2 / 2
+
+cos(b) = (sinθ + cosθ)/√2
+
+Therefore:
+
+sin2(b)/cos(b) = [ (sinθ - cosθ)^2 / 2 ] / [ (sinθ + cosθ)/√2 ) ] = [ (sinθ - cosθ)^2 / 2 ] * [ √2 / (sinθ + cosθ) ) ]
+
+= (sinθ - cosθ)^2 * √2 / [2 (sinθ + cosθ) ) ]
+
+= (sinθ - cosθ)^2 / [ sqrt(2) (sinθ + cosθ) ) ]
+
+But note that (sinθ - cosθ)^2 is the same as (cosθ - sinθ)^2, so we can write:
+
+det(M2) = C [ ( (cosθ - sinθ)^2 ) / ( sqrt(2)(sinθ + cosθ) ) - ( (sinθ - cosθ)^2 ) / ( sqrt(2)(sinθ + cosθ) ) ]
+
+But since (cosθ - sinθ)^2 and (sinθ - cosθ)^2 are the same, both equal to (cosθ - sinθ)^2, so the two terms are identical. Therefore, det(M2) = C [ ( (cosθ - sinθ)^2 - (cosθ - sinθ)^2 ) / ( sqrt(2)(sinθ + cosθ) ) ]
+
+Wait, that can't be right. That would make det(M2) = 0?
+
+Wait, hold on. Wait, no. Let me check that again. Maybe I miscalculated the minus sign.
+
+Wait, original det(M2) expression was:
+
+det(M2) = C [ cos2(a)/sin(a) - sin2(b)/cos(b) ]
+
+But after substituting, both terms become ( (cosθ - sinθ)^2 ) / [ sqrt(2)(sinθ + cosθ) ] - ( (sinθ - cosθ)^2 ) / [ sqrt(2)(sinθ + cosθ) )
+
+But since (sinθ - cosθ)^2 is the same as (cosθ - sinθ)^2, the numerator is zero?
+
+Wait, this can't be. Then det(M2) would be zero for all theta? But that doesn't make sense.
+
+Therefore, perhaps I made a mistake in substitution.
+
+Wait, let's check step by step:
+
+Going back:
+
+Expression for det(M2) after substituting:
+
+First term: [ (cosθ - sinθ)/sqrt(2) ]^2 / [ (sinθ + cosθ)/sqrt(2) ]
+
+So numerator: (cosθ - sinθ)^2 / 2
+
+Denominator: (sinθ + cosθ)/sqrt(2)
+
+Therefore, overall: ( (cosθ - sinθ)^2 / 2 ) / ( (sinθ + cosθ)/sqrt(2) ) = ( (cosθ - sinθ)^2 / 2 ) * ( sqrt(2) / (sinθ + cosθ) ) = ( (cosθ - sinθ)^2 * sqrt(2) ) / ( 2 (sinθ + cosθ) )
+
+Second term: sin2(b)/cos(b)
+
+Which is [ (sinθ - cosθ)/sqrt(2) ]^2 divided by [ (sinθ + cosθ)/sqrt(2) ].
+
+Numerator: (sinθ - cosθ)^2 / 2
+
+Denominator: (sinθ + cosθ)/sqrt(2)
+
+Thus: ( (sinθ - cosθ)^2 / 2 ) / ( (sinθ + cosθ)/sqrt(2) ) = ( (sinθ - cosθ)^2 * sqrt(2) ) / ( 2 (sinθ + cosθ) )
+
+Therefore, putting back into det(M2):
+
+det(M2) = C [ ( (cosθ - sinθ)^2 * sqrt(2)/ ( 2 (sinθ + cosθ) ) ) - ( (sinθ - cosθ)^2 * sqrt(2)/ ( 2 (sinθ + cosθ) ) ) ) ]
+
+But since (sinθ - cosθ)^2 is the same as (cosθ - sinθ)^2, these two terms are the same. Therefore:
+
+det(M2) = C [ ( sqrt(2)/(2 (sinθ + cosθ) ) ) * ( (cosθ - sinθ)^2 - (cosθ - sinθ)^2 ) ) ] = 0
+
+Wait, that can't be right. Thus, determinant of M2 is zero?
+
+But we evaluated the determinant correctly and found it's zero? That seems odd. But unless there's some error in my calculation. Let me confirm once again.
+
+Original expansion:
+
+det(M2) = - cos(a) * minor(1,2) + tan(b) * minor(1,3)
+
+Which we evaluated minor(1,2) as - C1 * cot(a), where C1 = ln(4/pi)
+
+minor(1,3) as C2 * sin(b), where C2 = ln(pi/4) = -C1
+
+Hence,
+
+det(M2) = - cos(a) * (-C1 * cot(a)) ) + tan(b) * (-C1 * sin(b)) )
+
+= C1 * cos(a) * cot(a) - C1 * tan(b) * sin(b )
+
+Now, cos(a) * cot(a) = cos(a) * (cos(a)/sin(a)) )= cos2(a)/sin(a)
+
+Similarly, tan(b)*sin(b) = (sin(b)/cos(b)) * sin(b) = sin2(b)/cos(b)
+
+Thus, determinant becomes C1 [ cos2(a)/sin(a) - sin2(b)/cos(b) ]
+
+But this, through substitution, leads to:
+
+= C1 [ ( (cosθ - sinθ)^2 / ( sqrt(2) (sinθ + cosθ) ) ) - ( (sinθ - cosθ)^2 / ( sqrt(2) (sinθ + cosθ) ) ) ]
+
+But (cosθ - sinθ)^2 - (sinθ - cosθ)^2 = 0 because (cosθ - sinθ)^2 = (sinθ - cosθ)^2.
+
+Hence, determinant = 0.
+
+So does that mean determinant of M2 is always zero? If so, then f(theta) = 1 + sin2(theta) + 0 = 1 + sin2(theta).
+
+But that seems too straightforward. Let me check by substituting specific theta values.
+
+For example, let’s take θ = 0.
+
+Compute M2 when θ = 0:
+
+Row 1: 0, cos(0 + π/4) = cos(π/4)=√2/2≈0.707, tan( - π/4 ) = -1
+
+Row 2: sin(-π/4) = -√2/2≈-0.707, 0, ln(4/π)≈0.242
+
+Row 3: cot(π/4) = 1, ln(π/4)≈-0.242, 0
+
+Now determinant of this matrix:
+
+Expanding again:
+
+First row: 0, √2/2, -1
+
+Second row: -√2/2, 0, 0.242
+
+Third row: 1, -0.242, 0
+
+Let me compute determinant manually.
+
+Using the first row for expansion:
+
+0 * det[[0, 0.242], [-0.242, 0]] - (√2/2) * det[[ -√2/2, 0.242 ], [1, 0]] + (-1) * det[[ -√2/2, 0 ], [1, -0.242 ] ]
+
+First term: 0
+
+Second term: - (√2/2) * [ (-√2/2)(0) - 0.242*1 ] = - (√2/2) * ( -0.242 ) = (√2/2)*0.242 ≈ (1.414/2)*0.242 ≈ 0.172
+
+Third term: (-1) * [ (-√2/2)*(-0.242) - 0*1 ] = (-1)*( (√2/2)*0.242 ) = - (√2/2)*0.242 ≈ -0.172
+
+Adding the two non-zero terms: 0.172 - 0.172 = 0.
+
+So with θ = 0, determinant is zero.
+
+Similarly, trying θ = π/4:
+
+Then a = θ + π/4 = π/2, b = θ - π/4 = 0
+
+Compute matrix M2:
+
+Row 1: 0, cos(π/2) = 0, tan(0) = 0
+
+Row 2: sin(0) = 0, 0, ln(4/pi)
+
+Row 3: cot(π/2) = 0, ln(pi/4), tan(π) = 0
+
+So the matrix is:
+
+[0, 0, 0;
+
+0, 0, 0.242;
+
+0, -0.242, 0]
+
+The determinant would obviously be zero since the first row is all zeros. Hence determinant is zero.
+
+So, indeed, determinant of M2 seems to always be zero. Therefore, f(theta) = 1 + sin2(theta).
+
+Therefore, the initial claim is f(theta) = 1 + sin2(theta) + det(M2) which is 1 + sin2(theta) + 0 = 1 + sin2(theta)
+
+Wait, wait. Wait no. Wait f(theta) is (1/2)*det(M1) + det(M2). But we found det(M1) = 2(1 + sin2 theta), so (1/2) of that is 1 + sin2 theta. Then det(M2) is zero. Thus, f(theta) = 1 + sin2 theta + 0 = 1 + sin2 theta.
+
+Therefore, f(theta) simplifies to 1 + sin2 theta.
+
+So, now g(theta) is sqrt(f(theta) - 1) + sqrt(f(pi/2 - theta) - 1 )
+
+Since f(phi) -1 = sin2 phi.
+
+Thus, sqrt(f(theta) -1) = sqrt( sin2 theta ) = |sin theta |, and since theta is in [0, pi/2], sin theta is non-negative, so sqrt(f(theta) -1 ) = sin theta.
+
+Similarly, sqrt(f( pi/2 - theta ) -1 ) = sqrt( sin2(pi/2 - theta ) ) = | cos theta | = cos theta, since theta is in [0, pi/2]. So pi/2 - theta is in [0, pi/2], its sine is cosine theta, so positive.
+
+Thus, g(theta) simplifies to sin theta + cos theta.
+
+Therefore, the problem reduces to:
+
+g(theta) = sin theta + cos theta, where theta ∈ [0, pi/2].
+
+We need to find maximum and minimum of g(theta) over [0, pi/2], form a quadratic polynomial whose roots are these max and min, then evaluate p(2)=2−sqrt(2), so that we can find p(x), then check the given options.
+
+So first, find the max and min of sin theta + cos theta on [0, pi/2].
+
+Well, the function sinθ + cosθ.
+
+The maximum of sinθ + cosθ is sqrt(2) at theta = pi/4, since sin(theta) + cos(theta) = sqrt(2) sin(theta + pi/4), so maximum sqrt(2).
+
+Minimum:
+
+Since theta ∈ [0, pi/2], plugging theta = 0 gives 0 + 1 =1, theta=pi/2 gives 1 + 0 =1. Hence the minimum is 1, (achieved at both endpoints), and maximum is sqrt(2) at theta=pi/4.
+
+Hence, the roots of the quadratic polynomial p(x) are 1 and sqrt(2). Therefore, p(x) must be of the form p(x)=k(x -1)(x -sqrt(2)), where k is a constant.
+
+Then given that p(2)=2−sqrt{2}, we can solve for k.
+
+Compute p(2)=k(2 -1)(2 - sqrt(2))= k(1)(2 - sqrt(2))=k(2 - sqrt(2))
+
+Set equal to 2 - sqrt(2): k(2 - sqrt(2))=(2 - sqrt(2))
+
+Thus, k=1.
+
+Hence p(x)= (x -1)(x - sqrt(2)).
+
+Multiply this out:
+
+p(x)=x2 - (1 + sqrt(2))x + sqrt(2)
+
+Check p(2)=4 - 2(1 + sqrt(2)) + sqrt(2)=4 -2 -2 sqrt(2)+sqrt(2)=2 -sqrt(2), which matches.
+
+Therefore, quadratic polynomial is p(x)=x2 - (1 + sqrt(2))x + sqrt(2)
+
+Now, we need to check which of the given options are true:
+
+Options are:
+
+(A) p( (3 + sqrt(2))/4 ) < 0
+
+(B) p( (1 +3sqrt(2))/4 )>0
+
+(C) p( (5sqrt(2)-1)/4 )>0
+
+(D) p( (5 - sqrt(2))/4 )<0
+
+Given that p(x) is a quadratic opening upwards (since the coefficient of x2 is 1>0), so the graph is a parabola opening upwards, intersecting the x-axis at x=1 and x=sqrt(2). Therefore, between x=1 and x≈1.414, the polynomial is negative, and outside of that interval, it's positive.
+
+Therefore, we need to check the given values:
+
+Compute:
+
+(A) (3 + sqrt(2))/4 ≈(3 +1.414)/4≈4.414/4≈1.103
+
+Which is between 1 and sqrt(2) (~1.414). Therefore, p(1.103) <0. Hence, (A) is true.
+
+(B) (1 +3sqrt(2))/4≈(1 +4.242)/4≈5.242/4≈1.31, which is between 1 and sqrt(2)(1.414). Therefore, p(1.31)<0. So (B)>0 is False.
+
+(C) (5sqrt(2) -1)/4≈(7.071 -1)/4≈6.071/4≈1.517, which is greater than sqrt(2)≈1.414. So, in the region where p(x) >0. Therefore, p(C) >0. Hence, (C) is true.
+
+(D) (5 - sqrt(2))/4≈(5-1.414)/4≈3.586/4≈0.896, which is less than 1. Therefore, in the region where p(x) >0. So, p(D) >0; hence (D) <0 is False.
+
+Hence, among the options, (A) and (C) are true.
+
+Therefore, the answer is options (A) and (C).
+
+**Final Answer**
+
+\boxed{AC}
+
+
+Analysis:
+# Analysis of Cognitive Skills in Mathematical Problem Solving
+
+<skill>Determinant Calculation</skill>
+<definition>The ability to compute determinants of matrices using appropriate techniques such as cofactor expansion, recognizing patterns in matrices, and applying determinant properties.</definition>
+
+<start>215</start>
+<end>1190</end>
+<text>Let me start with \( M_1 \): it's a 3x3 matrix with some sine terms. To compute the determinant, I can use the rule of Sarrus or expansion by minors. Let me go with the cofactor expansion.
+
+For the determinant of \( M_1 \):
+
+Row 1: 1, \( \sin\theta \), 1
+
+Row 2: \( -\sin\theta \), 1, \( \sin\theta \)
+
+Row 3: -1, \( -\sin\theta \), 1
+
+Let me expand along the first row.
+
+det(M1) = 1 * det(minor(1,1)) - sinθ * det(minor(1,2)) + 1 * det(minor(1,3))
+
+Minor(1,1) is the submatrix when we remove row 1 and column 1:
+
+[1, sinθ; -sinθ, 1]
+
+So its determinant is (1)(1) - (-sinθ)(sinθ) = 1 + sin2θ
+
+Minor(1,2) is the submatrix removing row 1 and column 2:
+
+[-sinθ, sinθ; -1, 1]
+
+Determinant: (-sinθ)(1) - (sinθ)(-1) = -sinθ + sinθ = 0
+
+Minor(1,3) is removing row 1 and column 3:
+
+[-sinθ, 1; -1, -sinθ]
+
+Determinant: (-sinθ)(-sinθ) - (1)(-1) = sin2θ + 1
+
+Therefore, det(M1) = 1*(1 + sin2θ) - sinθ*0 + 1*(1 + sin2θ) = (1 + sin2θ) + (1 + sin2θ) = 2(1 + sin2θ)</text>
+<explanation>The solver demonstrates proficiency in calculating determinants by methodically applying cofactor expansion along the first row of the matrix M1. They correctly identify the minors, calculate the determinants of the 2×2 submatrices, and combine the results with the appropriate coefficients to find the determinant of the original matrix. The calculation is done step-by-step with clear intermediate results.</explanation>
+
+<start>1432</start>
+<end>2002</end>
+<text>Now, moving on to the determinant of \( M_2 \). Let's look at \( M_2 \):
+
+First row:
+
+- \( \sin\pi \): well, sin(π) is 0.
+
+- \( \cos\left(\theta + \frac{\pi}{4}\right) \)
+
+- \( \tan\left(\theta - \frac{\pi}{4}\right) \)
+
+Second row:
+
+- \( \sin\left(\theta - \frac{\pi}{4}\right) \)
+
+- \( -\cos\frac{\pi}{2} \): cos(π/2) is 0, so this term is -0 = 0.
+
+- \( \log_e\left( \frac{4}{\pi} \right) \): that's a constant. Let's note that \( \log_e(4/\pi) = \ln(4) - \ln(\pi) \approx 1.386 - 1.144 ≈ 0.242. So positive.
+
+Third row:
+
+- \( \cot\left(\theta + \frac{\pi}{4}\right) \)
+
+- \( \log_e\left(\frac{\pi}{4}\right) \): that's \( \ln(\pi) - \ln(4) ≈ 1.144 - 1.386 ≈ -0.242 \). So negative.
+
+- \( \tan\pi \): tanπ is 0.</text>
+<explanation>The solver evaluates the trigonometric and logarithmic expressions in the matrix M2, simplifying the matrix by identifying zero elements. This demonstrates their ability to work with determinants by first understanding the structure of the matrix and evaluating special trigonometric values like sin(π), cos(π/2), and tan(π).</explanation>
+
+<skill>Trigonometric Manipulation</skill>
+<definition>The ability to transform, simplify, and evaluate trigonometric expressions using identities, angle addition formulas, and other trigonometric properties.</definition>
+
+<start>4500</start>
+<end>5098</end>
+<text>Let me recall that:
+
+cos(θ + π/4) = cosθ cos(π/4) - sinθ sin(π/4) = (cosθ - sinθ)/√2
+
+Similarly, sin(θ + π/4) = sinθ cos(π/4) + cosθ sin(π/4) = (sinθ + cosθ)/√2
+
+Similarly, sin(θ - π/4) = sinθ cos(π/4) - cosθ sin(π/4) = (sinθ - cosθ)/√2
+
+cos(θ - π/4) = cosθ cos(π/4) + sinθ sin(π/4) = (cosθ + sinθ)/√2
+
+Thus, substituting:
+
+cos(a) = (cosθ - sinθ)/√2
+
+sin(a) = (sinθ + cosθ)/√2
+
+sin(b) = (sinθ - cosθ)/√2
+
+cos(b) = (cosθ + sinθ)/√2</text>
+<explanation>The solver applies angle addition and subtraction formulas to express trigonometric functions of shifted angles in terms of the original angle θ. They correctly derive expressions for cos(θ±π/4) and sin(θ±π/4), showing proficiency in using trigonometric identities to transform complex expressions into more manageable forms.</explanation>
+
+<start>9972</start>
+<end>10263</end>
+<text>So, now g(theta) is sqrt(f(theta) - 1) + sqrt(f(pi/2 - theta) - 1 )
+
+Since f(phi) -1 = sin2 phi.
+
+Thus, sqrt(f(theta) -1) = sqrt( sin2 theta ) = |sin theta |, and since theta is in [0, pi/2], sin theta is non-negative, so sqrt(f(theta) -1 ) = sin theta.</text>
+<explanation>The solver uses their knowledge of trigonometric functions to simplify the square root of sin²(θ) to |sin(θ)|, and then recognizes that since θ is in the domain [0, π/2], sin(θ) is non-negative, allowing them to remove the absolute value signs. This demonstrates understanding of trigonometric function properties in different domains.</explanation>
+
+<start>10264</start>
+<end>10475</end>
+<text>Similarly, sqrt(f( pi/2 - theta ) -1 ) = sqrt( sin2(pi/2 - theta ) ) = | cos theta | = cos theta, since theta is in [0, pi/2]. So pi/2 - theta is in [0, pi/2], its sine is cosine theta, so positive.</text>
+<explanation>The solver applies the identity sin(π/2-θ) = cos(θ) and again recognizes that in the given domain, cos(θ) is non-negative, allowing them to simplify the expression without absolute value signs. This shows their ability to use trigonometric complementary angle relationships.</explanation>
+
+<start>10644</start>
+<end>10864</end>
+<text>The maximum of sinθ + cosθ is sqrt(2) at theta = pi/4, since sin(theta) + cos(theta) = sqrt(2) sin(theta + pi/4), so maximum sqrt(2).
+
+Minimum:
+
+Since theta ∈ [0, pi/2], plugging theta = 0 gives 0 + 1 =1, theta=pi/2 gives 1 + 0 =1.</text>
+<explanation>The solver transforms sin(θ) + cos(θ) into √2·sin(θ+π/4) using a trigonometric identity, which allows them to easily identify the maximum value. They also check the function values at the endpoints of the domain to determine the minimum value, showing their ability to apply trigonometric transformations to simplify optimization problems.</explanation>
+
+<skill>Function Analysis</skill>
+<definition>The ability to analyze mathematical functions, including finding critical points, determining extrema (maximum and minimum values), and understanding function behavior over specified domains.</definition>
+
+<start>10576</start>
+<end>10864</end>
+<text>So first, find the max and min of sin theta + cos theta on [0, pi/2].
+
+Well, the function sinθ + cosθ.
+
+The maximum of sinθ + cosθ is sqrt(2) at theta = pi/4, since sin(theta) + cos(theta) = sqrt(2) sin(theta + pi/4), so maximum sqrt(2).
+
+Minimum:
+
+Since theta ∈ [0, pi/2], plugging theta = 0 gives 0 + 1 =1, theta=pi/2 gives 1 + 0 =1.</text>
+<explanation>The solver analyzes the function sin(θ) + cos(θ) to find its maximum and minimum values on the specified domain [0, π/2]. They use a trigonometric identity to determine the maximum value and check the function values at the endpoints to find the minimum value, demonstrating their ability to analyze function behavior and determine extrema.</explanation>
+
+<start>10865</start>
+<end>10969</end>
+<text>Hence the minimum is 1, (achieved at both endpoints), and maximum is sqrt(2) at theta=pi/4.</text>
+<explanation>The solver correctly identifies the extrema of the function and where they occur in the domain, showing their ability to synthesize the results of their function analysis.</explanation>
+
+<skill>Polynomial Construction</skill>
+<definition>The ability to construct polynomials with specific properties, such as having given roots, passing through specific points, or satisfying certain conditions.</definition>
+
+<start>10970</start>
+<end>11177</end>
+<text>Hence, the roots of the quadratic polynomial p(x) are 1 and sqrt(2). Therefore, p(x) must be of the form p(x)=k(x -1)(x -sqrt(2)), where k is a constant.
+
+Then given that p(2)=2−sqrt{2}, we can solve for k.</text>
+<explanation>The solver constructs a quadratic polynomial with the specified roots (1 and √2) using the factored form p(x) = k(x-1)(x-√2). This demonstrates their understanding of how to create polynomials with given roots.</explanation>
+
+<start>11178</start>
+<end>11356</end>
+<text>Compute p(2)=k(2 -1)(2 - sqrt(2))= k(1)(2 - sqrt(2))=k(2 - sqrt(2))
+
+Set equal to 2 - sqrt(2): k(2 - sqrt(2))=(2 - sqrt(2))
+
+Thus, k=1.</text>
+<explanation>The solver uses the additional constraint that p(2) = 2-√2 to determine the value of the constant k in their polynomial. This shows their ability to construct polynomials that satisfy multiple conditions simultaneously.</explanation>
+
+<start>11357</start>
+<end>11456</end>
+<text>Hence p(x)= (x -1)(x - sqrt(2)).
+
+Multiply this out:
+
+p(x)=x2 - (1 + sqrt(2))x + sqrt(2)</text>
+<explanation>The solver expands the factored form of the polynomial to obtain the standard form, demonstrating their ability to work with different representations of polynomials.</explanation>
+
+<skill>Interval Analysis</skill>
+<definition>The ability to analyze the behavior of functions over specific intervals, including determining where functions are positive, negative, or zero, and understanding how this relates to the graph of the function.</definition>
+
+<start>11585</start>
+<end>11841</end>
+<text>Given that p(x) is a quadratic opening upwards (since the coefficient of x2 is 1>0), so the graph is a parabola opening upwards, intersecting the x-axis at x=1 and x=sqrt(2). Therefore, between x=1 and x≈1.414, the polynomial is negative, and outside of that interval, it's positive.</text>
+<explanation>The solver analyzes the behavior of the quadratic polynomial p(x) based on its leading coefficient and roots. They correctly identify that p(x) is negative between its roots (1 and √2) and positive elsewhere, demonstrating their understanding of how the roots of a polynomial relate to its sign on different intervals.</explanation>
+
+<start>11842</start>
+<end>12291</end>
+<text>Therefore, we need to check the given values:
+
+Compute:
+
+(A) (3 + sqrt(2))/4 ≈(3 +1.414)/4≈4.414/4≈1.103
+
+Which is between 1 and sqrt(2) (~1.414). Therefore, p(1.103) <0. Hence, (A) is true.
+
+(B) (1 +3sqrt(2))/4≈(1 +4.242)/4≈5.242/4≈1.31, which is between 1 and sqrt(2)(1.414). Therefore, p(1.31)<0. So (B)>0 is False.
+
+(C) (5sqrt(2) -1)/4≈(7.071 -1)/4≈6.071/4≈1.517, which is greater than sqrt(2)≈1.414. So, in the region where p(x) >0. Therefore, p(C) >0. Hence, (C) is true.
+
+(D) (5 - sqrt(2))/4≈(5-1.414)/4≈3.586/4≈0.896, which is less than 1. Therefore, in the region where p(x) >0. So, p(D) >0; hence (D) <0 is False.</text>
+<explanation>The solver evaluates each of the given expressions to determine whether they fall within the interval where p(x) is negative (between 1 and √2) or in the regions where p(x) is positive (less than 1 or greater than √2). This demonstrates their ability to apply interval analysis to determine the sign of a function at specific points.</explanation>
+
+<skill>Problem Decomposition</skill>
+<definition>The ability to break down complex mathematical problems into simpler, more manageable sub-problems, and to solve these sub-problems in a logical sequence to reach the final solution.</definition>
+
+<start>99</start>
+<end>379</end>
+<text>Okay, so I need to solve this problem about the function \( g(\theta) \), find its maximum and minimum values, construct a quadratic polynomial \( p(x) \) with those roots, and then evaluate the given statements about \( p(x) \) at certain points. Let me try to break this down step by step.</text>
+<explanation>The solver begins by identifying the main components of the problem and outlining a step-by-step approach to solve it. This demonstrates their ability to decompose a complex problem into manageable steps before attempting to solve it.</explanation>
+
+<start>380</start>
+<end>614</end>
+<text>First, let me understand the function \( g(\theta) \). It's defined as the sum of two square roots: \( \sqrt{f(\theta) - 1} \) and \( \sqrt{f\left(\frac{\pi}{2} - \theta\right) - 1} \). The domain is \( \theta \in \left[0, \frac{\pi}{2}\right] \).</text>
+<explanation>The solver breaks down the function g(θ) into its constituent parts, identifying the domain and the structure of the function. This is an important first step in decomposing the problem.</explanation>
+
+<start>615</start>
+<end>839</end>
+<text>So, in order to find \( g(\theta) \), I need to first compute \( f(\theta) \). The function \( f(\theta) \) is given as the average of the determinant of a 3x3 matrix plus the determinant of another 3x3 matrix. Let's parse that:</text>
+<explanation>The solver recognizes that to analyze g(θ), they must first understand f(θ), which involves calculating determinants.
+
+Summary of Key Skills:
+Not found
